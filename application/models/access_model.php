@@ -54,7 +54,8 @@ class Access_model extends CI_Model {
                 
                 LEFT JOIN
                 (SELECT fabric_id, SUM(cutting_assignment_length) AS total_cutting_assignment_length
-                FROM `tb_fabric_assignment_to_cutting` GROUP BY fabric_id) AS t3
+                FROM `tb_fabric_assignment_to_cutting`
+                WHERE destination=0 GROUP BY fabric_id) AS t3
                 ON t1.id=t3.fabric_id
                 
                 LEFT JOIN

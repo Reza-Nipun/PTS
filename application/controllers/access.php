@@ -1376,6 +1376,9 @@ class Access extends CI_Controller {
         $get_data['so_no'] = $so_no;
         $get_data['cut_tracking_no'] = $cut_tracking_no;
 
+        $part_info = $this->access_model->selectTableDataRowQuery("*", "tb_gmt_part", " AND part_code='$part_name'");
+        $get_data['gmt_part_name'] = $part_info[0]['part_name'];
+
         $get_data['bundle_others_list'] = $this->access_model->getBundleSummaryInfo($po_no, $so_no, $cut_tracking_no);
 
         if(!empty($get_data['bundle_others_list'])){
@@ -2573,12 +2576,13 @@ class Access extends CI_Controller {
         $fabric_code = $this->input->post('fabric_code');
         $data['fabric_id'] = $this->input->post('fabric_id');
         $data['cutting_assignment_length'] = $this->input->post('cutting_assignment_length');
+        $data['destination'] = $this->input->post('destination');
         $data['remarks'] = $this->input->post('remarks');
         $data['assignment_date'] = $date;
 
         $this->access_model->insertingData('tb_fabric_assignment_to_cutting', $data);
 
-        $data_s['message'] = $fabric_code.' - '.$data['cutting_assignment_length']."(m) is Assigned to Cutting!";
+        $data_s['message'] = $fabric_code.' - '.$data['cutting_assignment_length']."(m) is Assigned successfully!";
         $this->session->set_userdata($data_s);
         redirect('access/getFabricCodes');
     }

@@ -3,69 +3,10 @@
 <head>
     <title>Bundle - <?php
 
-        if($part_name=='collar_outer'){
-            echo 'COLLAR_OUTER';
+        if($gmt_part_name!=''){
+            echo $gmt_part_name;
         }
-        if($part_name=='cuff_outer'){
-            echo 'CUFF_OUTER';
-        }
-        if($part_name=='back'){
-            echo 'BACK';
-        }
-        if($part_name=='front_l'){
-            echo 'FRONT_L';
-        }
-        if($part_name=='front_r'){
-            echo 'FRONT_R';
-        }
-        if($part_name=='yoke_upper'){
-            echo 'YOKE_OUTER';
-        }
-        if($part_name=='yoke_inner'){
-            echo 'YOKE_INNER';
-        }
-        if($part_name=='sleeve_r'){
-            echo 'SLEEVE_R';
-        }
-        if($part_name=='sleeve_l'){
-            echo 'SLEEVE_L';
-        }
-        if($part_name=='slv_plkt_r'){
-            echo 'SLV_PLKT_R';
-        }
-        if($part_name=='slv_plkt_l'){
-            echo 'SLV_PLKT_L';
-        }
-        if($part_name=='pocket'){
-            echo 'Pocket';
-        }
-        if($part_name=='box_plkt'){
-            echo 'BOX_PLKT';
-        }
-        //                if($part_name=='collar_upper'){
-        //                    echo '<b>Collar_Upper</b>';
-        //                }
-        if($part_name=='collar_inner'){
-            echo 'COLLAR_INNER';
-        }
-        if($part_name=='collar_inner_2'){
-            echo 'COLLAR_INNER_2';
-        }
-        if($part_name=='collar_outer_2'){
-            echo 'COLLAR_OUTER_2';
-        }
-        if($part_name=='band_upper'){
-            echo 'BAND_OUTER';
-        }
-        if($part_name=='band_inner'){
-            echo 'BAND_INNER';
-        }
-        //                if($part_name=='cuff_upper'){
-        //                    echo '<b>Cuff_Upper</b>';
-        //                }
-        if($part_name=='cuff_inner'){
-            echo 'CUFF_INNER';
-        }
+
         ?>
     </title>
     <style>
@@ -124,76 +65,29 @@ $cl_ending = $packing_order_size[0]['cl_ending'];
                 $bundle_tracking_no = '';
 
                 if($part_name=='collar_outer'){
-                    echo '<b>COLLAR_OUTER</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'clr.';
                 }
-
                 if($part_name=='cuff_outer'){
-                    echo '<b>CUFF_OUTER</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'cff.';
                 }
-
                 if($part_name=='back'){
-                    echo '<b>BACK</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'bck.';
                 }
-                if($part_name=='front_l'){
-                    echo '<b>FRONT_L</b>';
-                }
-                if($part_name=='front_r'){
-                    echo '<b>FRONT_R</b>';
-                }
                 if($part_name=='yoke_upper'){
-                    echo '<b>YOKE_OUTER</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'yok.';
                 }
-                if($part_name=='yoke_inner'){
-                    echo '<b>YOKE_INNER</b>';
-                }
                 if($part_name=='sleeve_r'){
-                    echo '<b>SLEEVE_R</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'slv.';
                 }
-                if($part_name=='sleeve_l'){
-                    echo '<b>SLEEVE_L</b>';
-                }
                 if($part_name=='slv_plkt_r'){
-                    echo '<b>SLV_PLKT_R</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'spt.';
                 }
-                if($part_name=='slv_plkt_l'){
-                    echo '<b>SLV_PLKT_L</b>';
-                }
-                if($part_name=='box_plkt'){
-                    echo '<b>BOX_PLKT</b>';
-                }
                 if($part_name=='pocket'){
-                    echo '<b>Pocket</b>';
                     $bundle_tracking_no = $bundle_trcking_no.'pkt.';
                 }
-//                if($part_name=='collar_upper'){
-//                    echo '<b>Collar_Upper</b>';
-//                }
-                if($part_name=='collar_inner'){
-                    echo '<b>COLLAR_INNER</b>';
-                }
-                if($part_name=='collar_inner_2'){
-                    echo '<b>COLLAR_INNER_2</b>';
-                }
-                if($part_name=='collar_outer_2'){
-                    echo '<b>COLLAR_OUTER_2</b>';
-                }
-                if($part_name=='band_upper'){
-                    echo '<b>BAND_OUTER</b>';
-                }
-                if($part_name=='band_inner'){
-                    echo '<b>BAND_INNER</b>';
-                }
-//                if($part_name=='cuff_upper'){
-//                    echo '<b>Cuff_Upper</b>';
-//                }
-                if($part_name=='cuff_inner'){
-                    echo '<b>CUFF_INNER</b>';
+
+                if($gmt_part_name!=''){
+                    echo '<b>'.$gmt_part_name.'</b>';
                 }
                 ?></p>
 <!--            <p style="margin-bottom: -5px; font-size: 10.5px;"><b>SAP_Cut_PO_Item_S-Grp_B</b></p>-->

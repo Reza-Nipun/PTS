@@ -60,8 +60,19 @@
 
                 <div class="col-md-2">
                     <div class="form-group">
+                        <select class="form-control" id="destination" name="destination" onchange="checkRemarksMendatory();" required="required">
+                            <option value="">Select Destination</option>
+                            <option value="0">Cutting</option>
+                            <option value="1">Others</option>
+                        </select>
+                        <p style="font-size: 11px;">* Destination</p>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
                         <input type="text" id="remarks" name="remarks" autocomplete="off" />
-                        <p style="font-size: 11px;"> Remarks</p>
+                        <p style="font-size: 11px;"><span id="remarks_required_sign"></span> Remarks</p>
                     </div>
                 </div>
 
@@ -80,6 +91,23 @@
 <script type="text/javascript">
     $('select').select2();
 
+    function checkRemarksMendatory() {
+        var destination=$("#destination").val();
+
+        $("#remarks_required_sign").empty();
+
+        if(destination == 0){
+            $("#remarks").attr('required', false);
+            $("#remarks_required_sign").empty();
+        }
+
+        if(destination == 1){
+            $("#remarks").attr('required', 'required');
+            $("#remarks_required_sign").append('* ');
+        }
+
+    }
+    
     function checkFabricCodeAvailability() {
 
         var fabric_code=$("#fabric_code").val();
