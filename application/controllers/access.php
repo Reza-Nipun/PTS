@@ -4358,6 +4358,41 @@ class Access extends CI_Controller {
         $this->load->view('po_item_detail', $data);
     }
 
+    public function getPieceByPieceDetailBySo($so_no){
+        $data['title'] = "Piece By Piece Detail";
+
+        $where = '';
+        if($so_no != ''){
+            $where .= " AND so_no='$so_no'";
+        }
+
+        $data['pieces'] = $this->dashboard_model->getPieceByPieceDetailBySo($where);
+
+        $data['maincontent'] = $this->load->view('piece_by_piece_detail', $data, true);
+        $this->load->view('master', $data);
+    }
+
+    public function deletePieceNo($pc_tracking_no){
+        $res = $this->access_model->deleteTableData('tb_care_labels', 'pc_tracking_no', $pc_tracking_no);
+
+        if($res == 1){
+            $data['message'] = "Successfully deleted: $pc_tracking_no";
+            $this->session->set_userdata($data);
+        }else{
+            $data['exception'] = "Failed to delete: $pc_tracking_no";
+            $this->session->set_userdata($data);
+        }
+
+        $this->load->library('user_agent');
+        if ($this->agent->is_referral())
+        {
+            $previous_url = $this->agent->referrer();
+
+            redirect("$previous_url");
+        }
+
+    }
+
     public function washGmtStatus($so_no, $status){
 
         $where = '';

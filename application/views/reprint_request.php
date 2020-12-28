@@ -19,7 +19,7 @@
                     <div class="actions"> <a class="minimize" href="#"><i class="fa fa-chevron-down"></i></a> <a class="refresh" href="#"><i class="fa fa-repeat"></i></a> <a class="close-down" href="#"><i class="fa fa-times"></i></a> </div>
                 </div>
                 <div class="col-md-3">
-                    <input id="cl_no" onblur="chkReprintStatus1();">
+                    <input id="cl_no" onblur="chkReprintStatus();">
                 </div>
                 <!--              <div class="col-md-3">-->
                 <!--                  <select class="form-control" required id="cut_no">-->
@@ -95,7 +95,7 @@
             $("#dynamic-table tbody tr").remove();
 
             $.ajax({
-                url: "<?php echo base_url();?>access/chkReprintStatus/",
+                url: "<?php echo base_url();?>access/getClDetail/",
                 type: "POST",
                 data: {cl_no: cl_no},
                 dataType: "html",

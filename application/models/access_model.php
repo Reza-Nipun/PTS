@@ -22,7 +22,7 @@ class Access_model extends CI_Model {
     public function deleteTableData($tbl, $condition_column, $condition_value)
     {
         $this->db->where($condition_column, $condition_value);
-        $this->db->delete($tbl);
+        return $this->db->delete($tbl);
     }
 
     public function getSegments($time)
@@ -5173,7 +5173,7 @@ class Access_model extends CI_Model {
     }
 
     public function getCareLabelDetailByClNo($cl_no){
-        $sql = "SELECT * FROM `vt_few_days_po_pcs` WHERE pc_tracking_no = '$cl_no'";
+        $sql = "SELECT * FROM `tb_care_labels` WHERE pc_tracking_no = '$cl_no'";
         $query = $this->db->query($sql)->result_array();
         return $query;
     }

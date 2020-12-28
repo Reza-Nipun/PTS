@@ -3590,6 +3590,7 @@ class Dashboard_model extends CI_Model {
                 GROUP BY so_no) AS t1
                 
                 LEFT JOIN
+                LEFT JOIN
                 (SELECT so_no, COUNT(id) AS total_cut_qty, COUNT(sent_to_production) AS total_cut_input_qty, 
                 COUNT(line_id) AS count_input_qty_line, COUNT(mid_line_qc_date_time) AS count_mid_line_qc_pass, COUNT(end_line_qc_date_time) AS count_end_line_qc_pass,
                 COUNT(is_going_wash) AS count_washing_qty, COUNT(washing_status) AS count_washing_pass, COUNT(packing_status) AS count_packing_pass, 

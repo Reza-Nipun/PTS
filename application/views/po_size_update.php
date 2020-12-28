@@ -76,6 +76,9 @@
                                             <button class="btn btn-success">UPDATE</button>
                                         </td>
                                         <td class="center">
+                                            <span class="btn btn-warning" onclick="getPieceByPieceDetailBySo()">PIECE DETAIL</span>
+                                        </td>
+                                        <td class="center">
                                             <span class="btn btn-danger" onclick="deletePO()">DELETE</span>
                                         </td>
                                     </tr>
@@ -224,6 +227,16 @@
 <script type="text/javascript">
     $('#so_no').select2();
 
+    function getPieceByPieceDetailBySo() {
+        var so_no = $("#so_no").val();
+
+        if(so_no != ''){
+            window.open("<?php echo base_url();?>access/getPieceByPieceDetailBySo/"+so_no,"_blank");
+        }else{
+            alert("Please Select SO!");
+        }
+
+    }
 
     function getPoSizeQty() {
         $("#purchase_order").val('');
