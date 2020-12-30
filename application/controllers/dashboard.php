@@ -1698,11 +1698,67 @@ class Dashboard extends CI_Controller {
 
     }
 
-    public function poWiseSizeReport()
+    public function cutToSewInputReport()
     {
 
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Cut To Sew Input Report';
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $get_data['purchase_order_nos'] = $this->access_model->getAllPurchaseOrders();
+
+        $data['maincontent'] = $this->load->view('reports/cut_to_sew_input_report', $get_data, true);
+        $this->load->view('reports/master', $data);
+
+    }
+
+    public function getCutToSewInputReportBySo(){
+        $so_no = $this->input->post('so_no');
+
+        $input_report = $this->access_model->selectTableDataRowQuery("so_no, purchase_order, item, quality, color, style_no, style_name, 
+        brand, ex_factory_date, package_sent_to_production_date_time AS input_man_ticket_sacnning, 
+        SUM(cut_qty) as input_qty", 'tb_cut_summary', " AND so_no='$so_no' AND package_sent_to_production=1 
+        GROUP BY package_sent_to_production_date_time");
+
+        $total_input_qty=0;
+
+        $new_row = '';
+
+        foreach ($input_report as $v){
+            $new_row .= '<tr>';
+            $new_row .= '<td class="center">'.$v['so_no'].'</td>';
+            $new_row .= '<td class="center">'.$v['purchase_order'].'</td>';
+            $new_row .= '<td class="center">'.$v['item'].'</td>';
+            $new_row .= '<td class="center">'.$v['style_no'].'</td>';
+            $new_row .= '<td class="center">'.$v['style_name'].'</td>';
+            $new_row .= '<td class="center">'.$v['quality'].'</td>';
+            $new_row .= '<td class="center">'.$v['color'].'</td>';
+            $new_row .= '<td class="center">'.$v['brand'].'</td>';
+            $new_row .= '<td class="center">'.$v['ex_factory_date'].'</td>';
+            $new_row .= '<td class="center">'.$v['input_man_ticket_sacnning'].'</td>';
+            $new_row .= '<td class="center">'.$v['input_qty'].'</td>';
+            $new_row .= '</tr>';
+
+            $total_input_qty += $v['input_qty'];
+        }
+        $new_row .= '<tr style="font-size: 16px; font-weight: 700;">';
+        $new_row .= '<td align="right" colspan="10">TOTAL</td>';
+        $new_row .= '<td class="center">'.$total_input_qty.'</td>';
+        $new_row .= '</tr>';
+
+         echo $new_row;
+    }
+
+    public function poWiseSizeReport()
+    {
+
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
         $date_time=$datex->format('Y-m-d H:i:s');
         $date=$datex->format('Y-m-d');
 

@@ -230,6 +230,7 @@
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/package_ready_report"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Ready Summary </b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/packageReadyByPO"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>PO Wise Package</b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/cutPackageReportChart" target="_blank"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Cutting Dashboard</b> </a> </li>
+                  <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/cutToSewInputReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Cut to Sew Input</b> </a> </li>
               </ul>
             </li>
 

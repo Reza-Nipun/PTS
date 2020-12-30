@@ -236,7 +236,7 @@
                             <td class=""><?php echo $v['total_cut_input_qty'];?></td>
                             <!--                    <td class=""><span style="color: #ffffff;">'</span>--><?php //echo $v['bundle_start'].'-'.$v['bundle_end'];?><!--</td>-->
                             <!--                    <td class="" title="Bundles: --><?php //echo $v['bundle_start'].'-'.$v['bundle_end'];?><!--">--><?php //echo $v['min_care_label'].'-'.$v['max_care_label'];?><!--</td>-->
-                            <td class="">
+                            <td class="" title="">
                                 <?php echo $v['count_input_qty_line'];?>
                             </td>
                             <td class=""><?php echo $v['collar_bndl_qty'];?></td>
