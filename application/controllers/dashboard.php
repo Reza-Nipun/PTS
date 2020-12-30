@@ -1157,7 +1157,7 @@ class Dashboard extends CI_Controller {
 
                 $content_data = '';
                 $content_data .= 'Dear Concern,' . '<br />';
-                $content_data .= 'Please find the Last Day Production from attached file.' . '<br />' . '<br />' . '<br />';
+                $content_data .= 'Please find the Last Day Production from attached file' . '<br />' . '<br />' . '<br />';
                 $content_data .= 'Best Regards' . '<br />';
                 $content_data .= 'Ecofab Ltd' . '<br />';
                 //$content_data .= 'VIYELLATEX Group, BANGLADESH';
