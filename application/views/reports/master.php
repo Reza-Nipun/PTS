@@ -226,11 +226,11 @@
 <!--                  <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/dateWiseCuttingReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Date Wise Cutting</b> </a> </li>-->
 <!--                  <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/lineWIPReportChart"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>WIP Report Graph</b> </a> </li>-->
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/print_bundle_summary_page"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Bundle Summary</b> </a> </li>
-                  <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/dailyPackageReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Package Report</b> </a> </li>
+                  <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/dailyPackageReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Daily Package Report</b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/package_ready_report"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Ready Summary </b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/packageReadyByPO"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>PO Wise Package</b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/cutPackageReportChart" target="_blank"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Cutting Dashboard</b> </a> </li>
-                  <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/cutToSewInputReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Cut to Sew Input</b> </a> </li>
+                  <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/cutToSewInputReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>PO Input to Sew</b> </a> </li>
               </ul>
             </li>
 
@@ -243,16 +243,18 @@
 <!--                    <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/lineInputReportChart"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Pass Report Graph</b> </a> </li>-->
 <!--                    <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/lineDefectReportChart"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Defect Report Graph</b> </a> </li>-->
 <!--                    <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/lineSummaryReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Summary Report</b> </a> </li>-->
-                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/allLinePerformanceDashboard"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Summary Report</b> </a> </li>
+                    <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/lineWisePoItemReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Running POs</b> </a> </li>
                     <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/lineHourlyReport" target="_blank"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Hourly Report</b> </a> </li>
                     <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/lineQualityReport" target="_blank"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Quality Report</b> </a> </li>
+                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/allLinePerformanceDashboard"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Summary Cart</b> </a> </li>
                 </ul>
             </li>
 
             <li> <a href="javascript:void(0);"> <i class="fa fa-archive"></i> Finishing Reports <span class="plus"><i class="fa fa-plus"></i></span></a>
                 <ul>
-                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/dateWiseWashSendReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Wash Send</b> </a> </li>
-                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/dateWiseWashReturnReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Wash Return</b> </a> </li>
+                    <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/dateWiseWashSendReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Wash Send</b> </a> </li>
+                    <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/dateWiseWashReturnReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Wash Return</b> </a> </li>
+                    <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/finishingRunningPoReportByBrand"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Running POs</b> </a> </li>
                     <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/finishingPerformanceDashboard"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Performance Report</b> </a> </li>
                     <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/aqlReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>AQL Report</b> </a> </li>
                 </ul>
