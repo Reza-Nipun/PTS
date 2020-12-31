@@ -3240,7 +3240,11 @@ class Dashboard_model extends CI_Model {
                 
                 SUM(CASE WHEN is_package_ready=1
                 THEN cut_qty
-                ELSE 0 end) AS count_package_ready_qty
+                ELSE 0 end) AS count_package_ready_qty,
+                
+                SUM(CASE WHEN package_sent_to_production=1
+                THEN cut_qty
+                ELSE 0 end) AS count_package_sent_to_sew_qty
                 
                 FROM tb_cut_summary WHERE 1 $where GROUP BY po_no,so_no,item,quality,color,purchase_order
                 )  as t1
@@ -3306,7 +3310,11 @@ class Dashboard_model extends CI_Model {
                 
                 SUM(CASE WHEN is_package_ready=1
                 THEN cut_qty
-                ELSE 0 end) AS count_package_ready_qty
+                ELSE 0 end) AS count_package_ready_qty,
+                
+                SUM(CASE WHEN package_sent_to_production=1
+                THEN cut_qty
+                ELSE 0 end) AS count_package_sent_to_sew_qty
                 
                 FROM tb_cut_summary WHERE 1 
                 GROUP BY po_no,so_no,item,quality,color,purchase_order

@@ -56,7 +56,9 @@
                                     $po_type='SAMPLE';
                                 }
                                 ?>
-                                <option value="<?php echo $pos['so_no'];?>"><?php echo $pos['so_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['quality'].'_'.$pos['color'].'_'.$pos['style_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?></option>
+                                <option value="<?php echo $pos['so_no'];?>">
+                                    <?php echo $pos['so_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['quality'].'_'.$pos['color'].'_'.$pos['style_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?>
+                                </option>
                                 <?php
                             }
                             ?>
@@ -115,6 +117,12 @@
 //    setTimeout(function(){
 //        window.location.reload(1);
 //    }, 5000);
+
+//    $(document).ready(function(){
+//
+//        $( "#so_no" ).change( 300 ).delay( 800 ).fadeIn( 400 );
+//
+//    });
 
     $(function(){
         $('#btnExport').click(function(){

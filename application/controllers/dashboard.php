@@ -1700,7 +1700,6 @@ class Dashboard extends CI_Controller {
 
     public function cutToSewInputReport()
     {
-
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         
         $date_time=$datex->format('Y-m-d H:i:s');
@@ -2323,7 +2322,7 @@ class Dashboard extends CI_Controller {
 
         $data['purchase_order_nos'] = $this->access_model->getAllPurchaseOrders();
 
-        $data['pending_po_package_list'] = $this->dashboard_model->getPendingPOPackage();
+//        $data['pending_po_package_list'] = $this->dashboard_model->getPendingPOPackage();
 
         $data['maincontent'] = $this->load->view('package_ready_by_po', $data, true);
         $this->load->view('reports/master', $data);
@@ -2331,34 +2330,11 @@ class Dashboard extends CI_Controller {
 
     public function getReadyPackageByPo()
     {
-        $purchase_order_stuff = $this->input->post('purchase_order_stuff');
-        $purchase_order_stuff_array = explode('_', $purchase_order_stuff);
-
-        $so_no = $purchase_order_stuff_array[0];
-        $po_no = $purchase_order_stuff_array[1];
-        $purchase_order = $purchase_order_stuff_array[2];
-        $item_week = $purchase_order_stuff_array[3];
-        $color = $purchase_order_stuff_array[4];
-        $ex_factory = $purchase_order_stuff_array[5];
+        $so_no = $this->input->post('so_no');
 
         $where = '';
         if($so_no != ''){
             $where .= " AND so_no = '$so_no'";
-        }
-        if($po_no != ''){
-            $where .= " AND po_no = '$po_no'";
-        }
-        if($purchase_order != ''){
-            $where .= " AND purchase_order = '$purchase_order'";
-        }
-        if($item_week != ''){
-            $where .= " AND item = '$item_week'";
-        }
-        if($color != ''){
-            $where .= " AND color = '$color'";
-        }
-        if($ex_factory != ''){
-            $where .= " AND ex_factory_date = '$ex_factory'";
         }
         $get_data['package_info'] = $this->dashboard_model->getReadyPackageByPo($where);
 

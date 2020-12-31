@@ -38,7 +38,7 @@
                 <tr>
                     <th class="hidden-phone" colspan="7"></th>
 <!--                    <th class="hidden-phone center" colspan="1">Range</th>-->
-                    <th class="hidden-phone center" colspan="9">Cutting</th>
+                    <th class="hidden-phone center" colspan="10">Cutting</th>
 
                 </tr>
                 <tr>
@@ -54,14 +54,15 @@
                     <th class="hidden-phone center"><span data-toggle="tooltip" title="Cut QTY">Cut</span></th>
                     <!--                                        <th class="hidden-phone center"><span data-toggle="tooltip" title="Cut Pass QTY">CPQ</span></th>-->
                     <!--                                        <th class="hidden-phone center"><span data-toggle="tooltip" title="Cut Balance">CBQ</span></th>-->
-                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Collar">Package</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Input Ticket Scanned">Sent to Sew</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Package">Package</span></th>
                     <th class="hidden-phone center"><span data-toggle="tooltip" title="Collar">Collar</span></th>
                     <th class="hidden-phone center"><span data-toggle="tooltip" title="Cuff">Cuff</span></th>
-                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Cuff">Back</span></th>
-                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Cuff">Yoke</span></th>
-                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Cuff">Sleeve</span></th>
-                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Cuff">Slv-Plkt</span></th>
-                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Cuff">Pocket</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Back">Back</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Yoke">Yoke</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Sleeve">Sleeve</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Sleeve-Placket">Slv-Plkt</span></th>
+                    <th class="hidden-phone center"><span data-toggle="tooltip" title="Pocket">Pocket</span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -83,6 +84,9 @@
 <!--                            <td class="hidden-phone center">--><?php //echo $package_info[0]['bundle_start'].'-'.$package_info[0]['bundle_end'];?><!--</td>-->
                             <!--                            <td class="hidden-phone center">--><?php //echo $v['min_care_label'].'-'.$v['max_care_label'];?><!--</td>-->
                             <td class="hidden-phone center"><?php echo $package_info[0]['total_cut_qty'];?></td>
+                            <td class="hidden-phone center" style="<?php if(($package_info[0]['count_package_sent_to_sew_qty'] >= $package_info[0]['total_cut_qty']) && ($package_info[0]['count_package_sent_to_sew_qty'] != '') && ($package_info[0]['count_package_sent_to_sew_qty'] != 0)){ ?>background-color: darkgreen;<?php }else{?>background-color: #ff2a27;<?php } ?>">
+                                <span style="color: white; font-size: 15px;"><?php echo $package_info[0]['count_package_sent_to_sew_qty'];?></span>
+                            </td>
                             <td class="hidden-phone center" data-target="#myModal2" data-toggle="modal" onclick="getRemainingPart('<?php echo $package_info[0]['po_no'];?>', '<?php echo $package_info[0]['so_no'];?>', '<?php echo $package_info[0]['purchase_order']; ?>','<?php echo $package_info[0]['item']; ?>','<?php echo $package_info[0]['quality']; ?>','<?php echo $package_info[0]['color']; ?>' ,'<?php echo $package_info[0]['ex_factory_date']; ?>', 'Package');" style="<?php if(($package_info[0]['count_package_ready_qty'] >= $package_info[0]['total_cut_qty']) && ($package_info[0]['count_package_ready_qty'] != '') && ($package_info[0]['count_cutting_collar_bundle_qty'] != 0)){ ?>background-color: darkgreen;<?php }else{?>background-color: #ff2a27;<?php } ?>">
                                 <span style="color: white; font-size: 15px;"><?php echo $package_info[0]['count_package_ready_qty'];?></span>
                             </td>
@@ -122,7 +126,6 @@
 
 <script type="text/javascript">
 
-
     function getRemainingPart(po_no, so_no, po, item, quality, color, ex_factory_date, part) {
 
         $("#remain_cl_list").empty();
@@ -140,17 +143,6 @@
             }
         });
     }
-
-
-
-
-
-
-
-
-
-
-
 
     function getSizeWiseReport(po_no, so_no, po, item, quality, color) {
         $("#size_tbl").empty();
