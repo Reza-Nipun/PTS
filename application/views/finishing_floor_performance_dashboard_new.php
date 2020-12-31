@@ -94,9 +94,9 @@ $dataPoints = array(
 
 ?>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel-body" style="background-color: #34b077; color: white;">
+<div class="row" style="background-color: #34b077; color: white;">
+    <div class="col-md-10">
+        <div class="" style="font-weight: 900; font-size: 50px; text-align: center; margin-left: 230px">
 
             <center>
                 <div style="font-weight: 900; font-size: 50px;">
@@ -107,6 +107,9 @@ $dataPoints = array(
             </center>
 
         </div>
+    </div>
+    <div class="col-md-2">
+        <center style="font-weight: 900; font-size: 35px;" id="ct"></center>
     </div>
 </div>
 
@@ -170,6 +173,9 @@ $dataPoints = array(
 
 <script type="text/javascript">
     $(document).ready(function(){
+        setInterval(function(){
+            $("#ct").load('<?php echo base_url();?>dashboard/clockTimer/');
+        }, 1000);
 //        setInterval(function(){
 //            $("#reload_div").load('<?php //echo base_url();?>//access/getProductionSummaryReportByUID');
 //        }, 10000);
