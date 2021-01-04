@@ -2052,6 +2052,38 @@ class Access_model extends CI_Model {
         return $query;
     }
 
+    public function getFabricAssignmentReport($where){
+        $sql = "SELECT t1.*, t2.fabric_code 
+                FROM (SELECT * FROM `tb_fabric_assignment_to_cutting`) AS t1
+                
+                LEFT JOIN
+                tb_fabric_code AS t2
+                ON t1.fabric_id=t2.id
+                
+                WHERE 1 $where
+                
+                ORDER BY t1.assignment_date DESC";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function getFabricInhouseReport($where){
+        $sql = "SELECT t1.*, t2.fabric_code 
+                FROM (SELECT * FROM `tb_fabric_inhouse_log`) AS t1
+                
+                LEFT JOIN
+                tb_fabric_code AS t2
+                ON t1.fabric_id=t2.id
+                
+                WHERE 1 $where
+                
+                ORDER BY t1.inhouse_date DESC";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
     public function getPrinterOn($user_id)
     {
         $sql = "UPDATE tb_user SET is_print_allowed='1' WHERE id =$user_id";

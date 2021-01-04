@@ -2595,6 +2595,50 @@ class Access extends CI_Controller {
         echo json_encode($res);
     }
 
+    public function editFabricInhouse($fb_inhouse_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Fabric Inhouse';
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $where=" AND t1.id=$fb_inhouse_id";
+            $data['fabric_inhouse'] = $this->access_model->getFabricInhouseReport($where);
+
+            $data['maincontent'] = $this->load->view('fabric_inhouse_edit', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function updateFabricInhouse(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $fabric_code = $this->input->post('fabric_code');
+        $fabric_inhouse_id = $this->input->post('fabric_inhouse_id');
+        $fabric_inhouse_date = $this->input->post('fabric_inhouse_date');
+        $data['inhouse_length'] = $this->input->post('inhouse_length');
+        $data['remarks'] = $this->input->post('remarks');
+        $data['update_date'] = $date;
+
+        $this->access_model->updateTblNew('tb_fabric_inhouse_log', 'id', $fabric_inhouse_id, $data);
+
+        $data_s['message'] = 'Fabric Code: '.$fabric_code.' ~ In-house Date: '.$fabric_inhouse_date.' ~ '.$data['inhouse_length']."(m) Successfully Updated!";
+        $this->session->set_userdata($data_s);
+        redirect('access/getFabricInhouseReport');
+    }
+
     public function fabricInhouse($fabric_id){
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         $date_time=$datex->format('Y-m-d H:i:s');
@@ -2704,6 +2748,186 @@ class Access extends CI_Controller {
         }else{
             echo $this->load->view('404');
         }
+    }
+
+    public function getFabricAssignmentReport(){
+        $data['title']='Fabric Assignment Report';
+
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['fabric_codes'] = $this->access_model->selectTableDataRowQuery('*', 'tb_fabric_code', "");
+            $data['fabric_assignment'] = $this->access_model->getFabricAssignmentReport();
+
+            $data['maincontent'] = $this->load->view('fabric_assignment_report', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function getFabricAssignmentFilterReport(){
+        $fabric_id = $this->input->post('fabric_id');
+        $destination_id = $this->input->post('destination_id');
+        $from_date = $this->input->post('from_date');
+        $to_date = $this->input->post('to_date');
+
+        $where = '';
+
+        if($fabric_id != ''){
+            $where .= " AND t1.fabric_id=$fabric_id";
+        }
+
+        if($destination_id != ''){
+            $where .= " AND t1.destination=$destination_id";
+        }
+
+        if($from_date != '' && $from_date != 'undefined--undefined' && $to_date != '' && $to_date != 'undefined--undefined'){
+            $where .= " AND t1.assignment_date BETWEEN '$from_date' AND '$to_date'";
+        }
+
+        $fabric_assignment = $this->access_model->getFabricAssignmentReport($where);
+
+        $new_row = '';
+
+        foreach ($fabric_assignment AS $fb){
+
+            $destination = '';
+
+            if($fb['destination'] == 0){
+                $destination = 'Cutting';
+            }
+
+            if($fb['destination'] == 1){
+                $destination = 'Others';
+            }
+
+            $new_row .= '<tr>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['fabric_code'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['assignment_date'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['update_date'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['cutting_assignment_length'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$destination.'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['remarks'].'</td>';
+            $new_row .= '<td class="center hidden-phone"><a href="'.base_url().'access/editFabricAssignment/'.$fb['id'].'" class="btn btn-warning" title="Edit"><i class="fa fa-pencil"></i></a></td>';
+            $new_row .= '</tr>';
+        }
+
+        echo $new_row;
+    }
+
+    public function editFabricAssignment($fb_inhouse_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Fabric Inhouse';
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $where=" AND t1.id=$fb_inhouse_id";
+            $data['fabric_assignment'] = $this->access_model->getFabricAssignmentReport($where);
+
+            $data['maincontent'] = $this->load->view('fabric_assignment_edit', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function updateFabricAssignment(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $fabric_code = $this->input->post('fabric_code');
+        $fabric_assignment_id = $this->input->post('fabric_assignment_id');
+        $fabric_assignment_date = $this->input->post('fabric_assignment_date');
+        $data['cutting_assignment_length'] = $this->input->post('assignment_length');
+        $data['destination'] = $this->input->post('destination');
+        $data['remarks'] = $this->input->post('remarks');
+        $data['update_date'] = $date;
+
+        $this->access_model->updateTblNew('tb_fabric_assignment_to_cutting', 'id', $fabric_assignment_id, $data);
+
+        $data_s['message'] = 'Fabric Code: '.$fabric_code.' ~ Assignment Date: '.$fabric_assignment_date.' ~ '.$data['cutting_assignment_length']."(m) Successfully Updated!";
+        $this->session->set_userdata($data_s);
+        redirect('access/getFabricAssignmentReport');
+    }
+
+    public function getFabricInhouseReport(){
+        $data['title']='Fabric In-house';
+
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['fabric_codes'] = $this->access_model->selectTableDataRowQuery('*', 'tb_fabric_code', "");
+            $data['fabric_inhouse'] = $this->access_model->getFabricInhouseReport();
+
+            $data['maincontent'] = $this->load->view('fabric_inhouse_report', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function getFabricInhouseFilterReport(){
+        $fabric_id = $this->input->post('fabric_id');
+        $from_date = $this->input->post('from_date');
+        $to_date = $this->input->post('to_date');
+
+        $where = '';
+
+        if($fabric_id != ''){
+            $where .= " AND t1.fabric_id=$fabric_id";
+        }
+
+        if($from_date != '' && $from_date != 'undefined--undefined' && $to_date != '' && $to_date != 'undefined--undefined'){
+            $where .= " AND t1.inhouse_date BETWEEN '$from_date' AND '$to_date'";
+        }
+
+        $fabric_inhouse = $this->access_model->getFabricInhouseReport($where);
+
+        $new_row = '';
+        
+        foreach ($fabric_inhouse AS $fb){
+            $new_row .= '<tr>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['fabric_code'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['inhouse_date'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['update_date'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['inhouse_length'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$fb['remarks'].'</td>';
+            $new_row .= '<td class="center hidden-phone"><a href="'.base_url().'access/editFabricInhouse/'.$fb['id'].'" class="btn btn-warning" title="Edit"><i class="fa fa-pencil"></i></a></td>';
+            $new_row .= '</tr>';
+        }
+
+        echo $new_row;
     }
 
     public function getDefectCodes(){

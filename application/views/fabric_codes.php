@@ -66,7 +66,7 @@
                             foreach($fabric_codes AS $fb){ ?>
                                 <tr>
                                     <td class="center hidden-phone">
-                                        <?php echo $sl; $sl++;?>
+                                        <?php echo $fb['id'];?>
                                     </td>
                                     <td class="center hidden-phone"><?php echo $fb['fabric_code'];?></td>
                                     <td class="center hidden-phone"><?php echo $fb['total_inhouse_length']-$fb['total_cutting_assignment_length'];?></td>
@@ -74,7 +74,7 @@
                                     <td class="center hidden-phone">
                                         <a href="<?php echo base_url()?>access/fabricInhouse/<?php echo $fb['id'];?>" class="btn btn-success" title="Fabric Inhouse"><i class="fa fa-plus-square"></i></a>
                                         <a href="<?php echo base_url()?>access/fabricAssignToCutting/<?php echo $fb['id'];?>" class="btn btn-danger" title="Fabric Assign to Cutting"><i class="fa fa-minus-square"></i></a>
-                                        <!--                                    <a href="--><?php //echo base_url()?><!--access/editFabricCode/--><?php //echo $fb['id'];?><!--" class="btn btn-warning" title="EDIT"><i class="fa fa-pencil"></i></a>-->
+<!--                                        <a href="--><?php //echo base_url()?><!--access/editFabricCode/--><?php //echo $fb['id'];?><!--" class="btn btn-warning" title="EDIT"><i class="fa fa-list"></i></a>-->
                                     </td>
                                 </tr>
                             <?php } ?>

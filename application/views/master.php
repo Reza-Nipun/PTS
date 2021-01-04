@@ -534,6 +534,13 @@
 
                 <li><a href="<?php echo base_url();?>access/getFabricCodes"><i class="fa fa-bars"></i> Fabric Codes </a></li>
 
+                <li> <a href="javascript:void(0);"> <i class="fa fa-bar-chart-o"></i> Reports <span class="plus"><i class="fa fa-plus"></i></span></a>
+                    <ul>
+                        <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>access/getFabricInhouseReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Fabric In-house</b> </a> </li>
+                        <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>access/getFabricAssignmentReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Fabric Assignment</b> </a> </li>
+                    </ul>
+                </li>
+
             <?php } ?>
 
             <li> <a href="<?php echo base_url(); ?>access/logout"><i class="fa fa-power-off"></i> Logout</a> </li>
