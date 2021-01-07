@@ -6172,6 +6172,7 @@ class Access extends CI_Controller {
         $carelabel_tracking_no = $this->input->post('cl_track_no_defect');
 
         $line_check = $this->access_model->lineValidation($carelabel_tracking_no);
+        $so_no = $line_check[0]['so_no'];
         $line_id = $line_check[0]['line_id'];
         $last_access_points = $line_check[0]['access_points'];
         $last_access_points_status = $line_check[0]['access_points_status'];
@@ -6190,6 +6191,7 @@ class Access extends CI_Controller {
                         if($count_def_row == 0){
                             $defect_data = array(
                                 'pc_tracking_no' => $carelabel_tracking_no,
+                                'so_no' => $so_no,
                                 'line_id' => $line,
                                 'qc_point' => $access_points,
 //                            'defect_part' => $v,
@@ -6213,6 +6215,7 @@ class Access extends CI_Controller {
                         if($count_def_row == 0){
                             $defect_data = array(
                                 'pc_tracking_no' => $carelabel_tracking_no,
+                                'so_no' => $so_no,
                                 'line_id' => $line,
                                 'qc_point' => $access_points,
 //                            'defect_part' => $v,
