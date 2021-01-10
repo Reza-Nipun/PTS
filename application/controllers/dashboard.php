@@ -2109,7 +2109,7 @@ class Dashboard extends CI_Controller {
 //            $this->email->to('nipun.sarker@interfabshirt.com');// change it to yours
                 $this->email->to($to_mail_address);// change it to yours
                 $this->email->cc($cc_mail_address);// change it to yours
-                $this->email->subject('PTS Summary Report (Auto-Mail)');
+                $this->email->subject('Ecofab PTS Summary Report (Auto-Mail)');
                 $this->email->message("$new_row_tbl");
                 if($this->email->send())
                 {

@@ -10,14 +10,14 @@
     }
 </style>
 <head>
-    <title>PTS Summary Report</title>
+    <title>Ecofab PTS Summary Report</title>
 </head>
 <body style="width: 100%">
 <div style="align-content: center;">
     <table width="100%">
         <thead>
         <tr style="background-color: #2fcd25; color: #FFFFFF;">
-            <th colspan="5"><h1>PTS Summary Report</h1></th>
+            <th colspan="5"><h1>Ecofab PTS Summary Report</h1></th>
         </tr>
         <tr style="background-color: #f7ffb0">
             <th colspan="5">Report: <?php echo $previous_date;?></th>
