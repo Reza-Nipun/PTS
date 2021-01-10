@@ -59,7 +59,7 @@ foreach ($dates as $dt){
         <th class="hidden-phone center">CRD Date</th>
         <th class="hidden-phone center">Order</th>
         <th class="hidden-phone center">Cut</th>
-        <th class="hidden-phone center">Cut Package</th>
+        <th class="hidden-phone center">Package Ready</th>
         <th class="hidden-phone center">Cut Pass</th>
         <th class="hidden-phone center">Line Input</th>
         <th class="hidden-phone center">Sew</th>
@@ -112,7 +112,7 @@ foreach ($dates as $dt){
     $total_balance_qty = 0;
 
     foreach ($po_close_report as $v){
-        $sew_balance_qty = $v['count_end_line_qc_pass'] - $v['total_order_qty'];
+        $sew_balance_qty = $v['count_end_line_qc_pass'] - $v['total_cut_qty'];
         $balance_qty = ($v['count_carton_pass'] + $v['total_wh_qa']) - $v['total_cut_qty'];
         $washing_balance_qty = $v['count_washing_pass'] - $v['count_washing_qty'];
         $packing_balance_qty = $v['count_packing_pass'] - $v['total_order_qty'];
@@ -318,7 +318,7 @@ foreach ($dates as $dt){
         <th class="hidden-phone center">Dates</th>
         <th class="hidden-phone center">Order</th>
         <th class="hidden-phone center">Cut</th>
-        <th class="hidden-phone center">Cut Package</th>
+        <th class="hidden-phone center">Package Ready</th>
         <th class="hidden-phone center">Cut Pass</th>
         <th class="hidden-phone center">Line Input</th>
         <th class="hidden-phone center">Sew</th>

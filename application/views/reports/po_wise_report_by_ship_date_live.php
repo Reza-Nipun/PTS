@@ -2,7 +2,7 @@
     <table class="table table-bordered table-striped" id="" border="1">
         <thead>
         <tr>
-            <th class="hidden-phone center" colspan="30"><h3>Ship Date: <?php echo $ex_factory_date;?></h3></th>
+            <th class="hidden-phone center" colspan="32"><h3>Ship Date: <?php echo $ex_factory_date;?></h3></th>
         </tr>
         <tr>
             <th class="hidden-phone center">SO</th>
@@ -16,7 +16,8 @@
             <th class="hidden-phone center">ExFac</th>
 
             <th class="hidden-phone center">Order</th>
-<!--            <th class="hidden-phone center">Cut</th>-->
+            <th class="hidden-phone center">Cut</th>
+            <th class="hidden-phone center">Package Ready</th>
             <th class="hidden-phone center">Cut Pass</th>
             <th class="hidden-phone center">INPUT</th>
             <th class="hidden-phone center">MID</th>
@@ -54,6 +55,7 @@
 
         $total_order_qty = 0;
         $total_cut_qty = 0;
+        $total_cut_package_ready_qty = 0;
         $total_cut_pass_qty = 0;
         $total_line_output_qty = 0;
         $total_line_input_qty = 0;
@@ -72,14 +74,15 @@
         $total_balance_qty = 0;
 
         foreach ($po_close_report as $v){
-            $sew_balance_qty = $v['count_end_line_qc_pass'] - $v['total_order_qty'];
+            $sew_balance_qty = $v['count_end_line_qc_pass'] - $v['total_cut_qty'];
             $carton_balance_qty = $v['count_carton_pass'] - $v['total_order_qty'];
             $washing_balance_qty = $v['count_wash_send'] - $v['count_washing_pass'];
             $packing_balance_qty = $v['count_packing_pass'] - $v['total_order_qty'];
             $balance_qty = ($v['count_carton_pass'] + $v['total_wh_qa']) - $v['total_cut_qty'];
 
             $total_order_qty += $v['total_order_qty'];
-//            $total_cut_qty += $v['total_cut_qty'];
+            $total_cut_qty += $v['total_cut_qty'];
+            $total_cut_package_ready_qty += $v['count_cut_package_ready_qty'];
             $total_cut_pass_qty += $v['total_cut_input_qty'];
             $total_line_input_qty += $v['count_input_line_qc_pass'];
             $total_line_mid_qty += $v['count_mid_line_qc_pass'];
@@ -115,7 +118,8 @@
                 <td class="center"><?php echo $v['ex_factory_date'];?></td>
 
                 <td class="center"><?php echo $v['total_order_qty'];?></td>
-<!--                <td class="center">--><?php //echo $v['total_cut_qty'];?><!--</td>-->
+                <td class="center"><?php echo $v['total_cut_qty'];?></td>
+                <td class="center"><?php echo $v['count_cut_package_ready_qty'];?></td>
                 <td class="center"><?php echo $v['total_cut_input_qty'];?></td>
                 <td class="center"><?php echo $v['count_input_line_qc_pass'];?></td>
                 <td class="center"><?php echo $v['count_mid_line_qc_pass'];?></td>
@@ -210,7 +214,8 @@
             <tr>
                 <td colspan="9" align="right"><h4><b>Total</b></h4></td>
                 <td class="center"><h4><b><?php echo $total_order_qty;?></b></h4></td>
-    <!--            <td class="center"><h4><b>--><?php //echo $total_cut_qty;?><!--</b></h4></td>-->
+                <td class="center"><h4><b><?php echo $total_cut_qty;?></b></h4></td>
+                <td class="center"><h4><b><?php echo $total_cut_package_ready_qty;?></b></h4></td>
                 <td class="center"><h4><b><?php echo $total_cut_pass_qty;?></b></h4></td>
                 <td class="center"><h4><b><?php echo $total_line_input_qty;?></b></h4></td>
                 <td class="center"><h4><b><?php echo $total_line_mid_qty;?></b></h4></td>

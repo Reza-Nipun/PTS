@@ -2923,7 +2923,7 @@ class Dashboard_model extends CI_Model {
 
         $sql="SELECT t1.line_id,t1.packing_date_time, t1.count_end_line_qc_pass, 
               t1.count_finishing_alter_qty, t1.count_packing_pass, t1.count_carton_pass, 
-              t2.*, t3.responsible_line, t3.total_cut_qty, t3.total_cut_input_qty, 
+              t2.*, t3.responsible_line, t3.total_cut_qty, t3.total_cut_input_qty, t3.count_cut_package_ready_qty, 
               t3.count_input_qty_line AS count_input_line_qc_pass, t3.count_mid_line_qc_pass,
               t3.count_washing_qty AS count_wash_send, t3.count_washing_pass, t3.total_wh_qa,
               t3.count_manually_adjusted_qty, t3.count_manual_close_qty, t3.status, t4.so_fail_count
