@@ -2086,6 +2086,874 @@ class Access extends CI_Controller {
         }
     }
 
+    public function employeeSkills(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Employee Skills';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['employee_skill_list'] = $this->access_model->getEmployeeSkills();
+
+            $data['employee_list'] = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_list', ' AND status=1');
+            $data['operation_list'] = $this->access_model->selectTableDataRowQuery('*', 'tb_operation_list', ' ORDER BY psl ASC');
+
+            $data['maincontent'] = $this->load->view('employee_skills', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function getEmployeeSkills(){
+        $employee_code = $this->input->post('employee_code');
+        $psl = $this->input->post('psl');
+
+        $where = '';
+
+        if($employee_code != ''){
+            $where .= $this->db->where('tb_employee_list.employee_code', $employee_code);
+        }
+
+        if($psl != ''){
+            $where .= $this->db->where('tb_employee_skills.psl', $psl);
+        }
+
+        $employee_skill_list = $this->access_model->getEmployeeSkills($where);
+
+        $newline='';
+
+        $sl=1;
+
+        foreach ($employee_skill_list as $v){
+
+            $newline .= '<tr>';
+            $newline .= '<td class="hidden-phone center">'.$sl.'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['employee_code'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['employee_name'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['designation'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['grade'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['doj'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['floor'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['psl'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.($v['is_mail_psl'] == 1 ? 'Yes' : 'No').'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['operation_title'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['operation_description'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['process_difficulty'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['machine'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['sam'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['standard_capacity'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['category'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['capacity'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.(round($v['capacity']/$v['standard_capacity'], 2) * 100).'</td>';
+            $newline .= '<td class="hidden-phone center">
+                            <table>
+                                <tr>
+                                    <td><a href="'.base_url().'access/editEmployeeSkill/'.$v['emp_skill_id'].'" class="btn btn-warning"><i class="fa fa-pencil"></i></a></td>
+                                    <td><a href="'.base_url().'access/deleteEmployeeSkill/'.$v['emp_skill_id'].'" class="btn btn-danger" onclick="return confirm(\'Are you sure to delete?\')"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                            </table>
+                        </td>';
+            $newline .= '</tr>';
+
+            $sl++;
+        }
+
+        echo $newline;
+    }
+
+    public function editEmployeeSkill($emp_skill_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Edit Operation';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['emp_skill_info'] = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_skills', " AND id=$emp_skill_id");
+
+            $data['maincontent'] = $this->load->view('edit_employee_skill', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function updateEmployeeSkill(){
+        $emp_skill_id = $this->input->post('emp_skill_id');
+
+        $psl = $this->input->post('psl');
+        $pre_psl = $this->input->post('pre_psl');
+        $employee_code = $this->input->post('employee_code');
+        $is_mail_psl = $this->input->post('is_mail_psl');
+        $capacity = $this->input->post('capacity');
+
+        if($psl == $pre_psl){
+            $data['psl'] = $psl;
+            $data['is_mail_psl'] = $is_mail_psl;
+            $data['capacity'] = $capacity;
+
+            $this->access_model->updateTblNew('tb_employee_skills', 'id', $emp_skill_id, $data);
+
+            $data['message'] = 'Successfully Updated!';
+            $this->session->set_userdata($data);
+        }else{
+            $emp_skill_info = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_skills', " AND psl='$psl' AND employee_code='$employee_code'");
+
+            if(sizeof($emp_skill_info) > 0){
+                $data['exception'] = "PSL: $psl is already available for Employee Code: $employee_code !";
+                $this->session->set_userdata($data);
+            }else{
+                $data['psl'] = $psl;
+                $data['is_mail_psl'] = $is_mail_psl;
+                $data['capacity'] = $capacity;
+
+                $this->access_model->updateTblNew('tb_employee_skills', 'id', $emp_skill_id, $data);
+
+                $data['message'] = 'Successfully Updated!';
+                $this->session->set_userdata($data);
+            }
+        }
+
+
+
+        $this->load->library('user_agent');
+        if ($this->agent->is_referral())
+        {
+            $previous_url = $this->agent->referrer();
+
+            redirect("$previous_url");
+        }
+    }
+
+    public function deleteEmployeeSkill($emp_skill_id){
+        $this->access_model->deleteTableData('tb_employee_skills', 'id', $emp_skill_id);
+
+        $data['message'] = 'Successfully Deleted!';
+        $this->session->set_userdata($data);
+
+        return redirect('access/employeeSkills');
+    }
+
+    public function employeeList(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Employee List';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['employee_list'] = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_list', ' AND status=1');
+
+            $data['maincontent'] = $this->load->view('employee_list', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function getEmployeeList(){
+
+        $employee_code = $this->input->post('employee_code');
+        $department = $this->input->post('department');
+        $section = $this->input->post('section');
+        $line = $this->input->post('line');
+        $floor = $this->input->post('floor');
+        $doj_month = $this->input->post('doj_month');
+
+        $where = '';
+
+        if($employee_code != ''){
+            $where .= " AND employee_code='$employee_code'";
+        }
+
+        if($department != ''){
+            $where .= " AND department='$department'";
+        }
+
+        if($section != ''){
+            $where .= " AND section='$section'";
+        }
+
+        if($line != ''){
+            $where .= " AND line='$line'";
+        }
+
+        if($floor != ''){
+            $where .= " AND floor='$floor'";
+        }
+
+        if($doj_month != ''){
+            $where .= " AND DATE_FORMAT(doj, '%Y-%m')='$doj_month'";
+        }
+
+        $employee_list = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_list', " $where");
+
+        $newline='';
+
+        $sl=1;
+
+        foreach ($employee_list as $emp){
+
+            $newline .= '<tr>';
+            $newline .= '<td class="hidden-phone center">'.$sl.'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['employee_code'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['employee_name'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['department'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['designation'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['grade'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['unit'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['section'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['line'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['floor'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['doj'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['gender'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$emp['staff_category'].'</td>';
+            $newline .= '<td class="hidden-phone center">
+                            <table>
+                                <tr>
+                                    <!--<td><a href="'.base_url().'access/editEmployee/'.$emp['id'].'" class="btn btn-warning"><i class="fa fa-pencil"></i></a></td>-->
+                                    <td><a href="'.base_url().'access/deleteEmployee/'.$emp['id'].'" class="btn btn-danger" onclick="return confirm(\'Skill Matrix will be removed as well. Are you sure to delete?\')"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                            </table>
+                        </td>';
+            $newline .= '</tr>';
+
+            $sl++;
+        }
+
+        echo $newline;
+
+    }
+
+    public function deleteEmployee($employee_id){
+        $this->access_model->deleteTableData('tb_employee_list', 'employee_code', $employee_id);
+        $this->access_model->deleteTableData('tb_employee_skills', 'employee_code', $employee_id);
+
+        $data['message'] = 'Successfully Deleted!';
+        $this->session->set_userdata($data);
+
+        return redirect('access/employeeList');
+    }
+
+    public function uploadEmployeeList(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Upload Employee';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['maincontent'] = $this->load->view('upload_employee', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function uploadingEmployeeList(){
+        $filename = $_FILES["employee_file"]["tmp_name"];
+
+
+        if($_FILES["employee_file"]['name'] == 'employee_list.csv'){
+            if ($_FILES["employee_file"]["size"] > 0) {
+                $file = fopen($filename, "r");
+                fgetcsv($file);
+
+                while (!feof($file)) {
+                    $line_of_text[] = fgetcsv($file);
+                }
+                fclose($file);
+
+                foreach ($line_of_text as $k => $v) {
+
+                    if($v[0] != ''){
+
+                        $employee_code = trim($v[0]);
+
+                        $res = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_list', " AND employee_code='$employee_code'");
+
+                        if(sizeof($res) == 0){
+                            $data = array(
+                                'employee_code' => $employee_code,
+                                'employee_name' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[1]))),
+                                'department' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[2]))),
+                                'designation' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[3]))),
+                                'grade' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[4]))),
+                                'unit' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[5]))),
+                                'section' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[6]))),
+                                'line' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[7]))),
+                                'floor' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[8]))),
+                                'doj' => date('Y-m-d', strtotime($v[9])),
+                                'gender' => trim($v[10]),
+                                'staff_category' => trim($v[11]),
+                                'status' => 1,
+                            );
+
+                            $this->access_model->insertingData('tb_employee_list', $data);
+                        }
+
+                    }
+
+                }
+
+                return redirect('access/employeeList');
+
+            }
+        }else{
+            $data['exception'] = 'Wrong file selected! Make sure the File Name: employee_list.csv';
+            $this->session->set_userdata($data);
+
+            return redirect('access/uploadEmployeeList');
+        }
+    }
+
+    public function styleWiseSMVs(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Style Wise SMV';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['style_smv_list'] = $this->access_model->selectTableDataRowQuery('*', 'tb_style_smv', '');
+
+            $data['maincontent'] = $this->load->view('style_smv_list', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function getStyleSmv(){
+        $style_id = $this->input->post('style');
+
+        $where = '';
+
+        if($style_id != ''){
+            $where .= " AND id='$style_id'";
+        }
+
+        $style_smv_list = $this->access_model->selectTableDataRowQuery('*', 'tb_style_smv', " $where");
+
+        $newline='';
+
+        $sl=1;
+
+        foreach ($style_smv_list as $st){
+
+            $newline .= '<tr>';
+            $newline .= '<td class="hidden-phone center">'.$sl.'</td>';
+            $newline .= '<td class="hidden-phone center">'.$st['style_no'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$st['style_name'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$st['brand'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$st['smv'].'</td>';
+            $newline .= '<td class="hidden-phone center">
+                            <table>
+                                <tr>    
+                                    <td><a href="'.base_url().'access/editStyleSmv/'.$st['id'].'" class="btn btn-warning"><i class="fa fa-pencil"></i></a></td>
+                                    <td><a href="'.base_url().'access/deleteStyleSmv/'.$st['id'].'" class="btn btn-danger" onclick="return confirm(\'Are you sure to delete?\')"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                            </table>
+                        </td>';
+            $newline .= '</tr>';
+
+            $sl++;
+        }
+
+        echo $newline;
+    }
+
+    public function editStyleSmv($style_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Edit Style SMV';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['style_info'] = $this->access_model->selectTableDataRowQuery('*', 'tb_style_smv', " AND id=$style_id");
+
+            $data['maincontent'] = $this->load->view('edit_style_smv', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function updateStyleWiseSmv(){
+        $style_id = $this->input->post('style_id');
+
+        $data['style_name'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('style_name'))));
+        $data['brand'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('brand'))));
+        $data['smv'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('smv'))));
+
+        $this->access_model->updateTblNew('tb_style_smv', 'id', $style_id, $data);
+
+        $data['message'] = 'Successfully Updated!';
+        $this->session->set_userdata($data);
+
+        $this->load->library('user_agent');
+        if ($this->agent->is_referral())
+        {
+            $previous_url = $this->agent->referrer();
+
+            redirect("$previous_url");
+        }
+    }
+
+    public function deleteStyleSmv($style_id){
+        $this->access_model->deleteTableData('tb_style_smv', 'id', $style_id);
+
+        $data['message'] = 'Successfully Deleted!';
+        $this->session->set_userdata($data);
+
+        return redirect('access/styleWiseSMVs');
+    }
+
+    public function uploadStyleSmv(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Upload Style SMV';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['maincontent'] = $this->load->view('upload_style_smv', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function uploadingStyleSmv(){
+        $filename = $_FILES["style_smv_file"]["tmp_name"];
+
+        if($_FILES["style_smv_file"]['name'] == 'style_smv.csv') {
+            if ($_FILES["style_smv_file"]["size"] > 0) {
+                $file = fopen($filename, "r");
+                fgetcsv($file);
+
+                while (!feof($file)) {
+                    $line_of_text[] = fgetcsv($file);
+                }
+                fclose($file);
+
+                foreach ($line_of_text as $k => $v) {
+
+                    if ($v[0] != '') {
+                        $style_no = preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[0])));
+                        $style_name = preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[1])));
+                        $brand = preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[2])));
+                        $smv = $v[3];
+
+                        $res = $this->access_model->selectTableDataRowQuery('*', 'tb_style_smv', " AND style_no='$style_no'");
+
+                        if (sizeof($res) == 0) {
+
+                            $data = array(
+                                'brand' => $brand,
+                                'style_no' => $style_no,
+                                'style_name' => $style_name,
+                                'smv' => $smv,
+                            );
+
+                            $this->access_model->insertingData('tb_style_smv', $data);
+                        }
+
+                    }
+
+                }
+
+                return redirect('access/styleWiseSMVs');
+            }
+        }else{
+            $data['exception'] = 'Wrong file selected! Make Sure the File Name: style_smv.csv';
+            $this->session->set_userdata($data);
+
+            return redirect('access/uploadStyleSmv');
+        }
+    }
+
+    public function operationList(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Operation List';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['operation_list'] = $this->access_model->selectTableDataRowQuery('*', 'tb_operation_list', ' ORDER BY psl ASC');
+
+            $data['maincontent'] = $this->load->view('operation_list', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function getOperation(){
+        $psl = $this->input->post('psl');
+        $operation = $this->input->post('operation');
+        $machine = $this->input->post('machine');
+
+        $where = '';
+
+        if($psl != ''){
+            $where .= " AND psl='$psl'";
+        }
+
+        if($operation != ''){
+            $where .= " AND operation_title='$operation'";
+        }
+
+        if($machine != ''){
+            $where .= " AND machine='$machine'";
+        }
+
+        $operation_list = $this->access_model->selectTableDataRowQuery('*', 'tb_operation_list', " $where ORDER BY psl ASC");
+
+        $newline='';
+
+        foreach ($operation_list as $opr){
+
+            $newline .= '<tr>';
+            $newline .= '<td class="hidden-phone center">'.$opr['psl'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['operation_title'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['operation_description'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['category'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['process_difficulty'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['machine'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['st_cm'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['sam'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['standard_capacity'].'</td>';
+            $newline .= '<td class="hidden-phone center">'.$opr['process_point'].'</td>';
+            $newline .= '<td class="hidden-phone center">
+                            <table>
+                                <tr>    
+                                    <td><a href="'.base_url().'access/editOperation/'.$opr['id'].'" class="btn btn-warning"><i class="fa fa-pencil"></i></a></td>
+                                    <td><a href="'.base_url().'access/deleteOperation/'.$opr['id'].'" class="btn btn-danger" onclick="return confirm(\'Are you sure to delete?\')"><i class="fa fa-times"></i></a></td>
+                                </tr>
+                            </table>
+                        </td>';
+            $newline .= '</tr>';
+
+        }
+
+        echo $newline;
+    }
+
+    public function editOperation($operation_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Edit Operation';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['operation_info'] = $this->access_model->selectTableDataRowQuery('*', 'tb_operation_list', " AND id=$operation_id ORDER BY psl ASC");
+
+            $data['maincontent'] = $this->load->view('edit_operation', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function updateOperation(){
+        $operation_id = $this->input->post('operation_id');
+
+        $data['psl'] = $this->input->post('psl');
+        $data['operation_title'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('operation_title'))));
+        $data['operation_description'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('operation_description'))));
+        $data['category'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('category'))));
+        $data['process_difficulty'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('process_difficulty'))));
+        $data['machine'] = preg_replace('!\s+!', ' ', str_replace("'", "", trim($this->input->post('machine'))));
+        $data['st_cm'] = trim($this->input->post('st_cm'));
+        $data['sam'] = trim($this->input->post('sam'));
+        $data['standard_capacity'] = trim($this->input->post('standard_capacity'));
+        $data['process_point'] = trim($this->input->post('process_point'));
+
+        $this->access_model->updateTblNew('tb_operation_list', 'id', $operation_id, $data);
+
+        $data['message'] = 'Successfully Updated!';
+        $this->session->set_userdata($data);
+
+        $this->load->library('user_agent');
+        if ($this->agent->is_referral())
+        {
+            $previous_url = $this->agent->referrer();
+
+            redirect("$previous_url");
+        }
+    }
+
+    public function deleteOperation($operation_id){
+        $this->access_model->deleteTableData('tb_operation_list', 'id', $operation_id);
+
+        $data['message'] = 'Successfully Deleted!';
+        $this->session->set_userdata($data);
+
+        return redirect('access/operationList');
+    }
+
+    public function uploadEmployeeSkills(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Upload Employee Skills';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['maincontent'] = $this->load->view('upload_employee_skills', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function uploadingEmployeeSkills(){
+        $filename = $_FILES["employee_skills_file"]["tmp_name"];
+
+        if($_FILES["employee_skills_file"]['name'] == 'employee_skills.csv') {
+            if ($_FILES["employee_skills_file"]["size"] > 0) {
+                $file = fopen($filename, "r");
+                fgetcsv($file);
+
+                while (!feof($file)) {
+                    $line_of_text[] = fgetcsv($file);
+                }
+                fclose($file);
+
+                foreach ($line_of_text as $k => $v) {
+
+                    if ($v[0] != '') {
+                        $psl = trim($v[0]);
+                        $employee_code = trim($v[1]);
+                        $is_mail_psl = $v[2];
+                        $capacity = $v[3];
+
+                        $emp_info = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_list', " AND employee_code='$employee_code'");
+
+                        if(sizeof($emp_info) > 0){
+                            $res = $this->access_model->selectTableDataRowQuery('*', 'tb_employee_skills', " AND psl='$psl' AND employee_code='$employee_code'");
+
+                            if (sizeof($res) == 0) {
+
+                                $data = array(
+                                    'psl' => $psl,
+                                    'employee_code' => $employee_code,
+                                    'is_mail_psl' => $is_mail_psl,
+                                    'capacity' => $capacity,
+                                );
+
+                                $this->access_model->insertingData('tb_employee_skills', $data);
+                            }
+                        }
+
+                    }
+
+                }
+
+                return redirect('access/employeeSkills');
+            }
+        }else{
+            $data['exception'] = 'Wrong file selected! Make Sure the File Name: employee_skills.csv';
+            $this->session->set_userdata($data);
+
+            return redirect('access/uploadEmployeeSkills');
+        }
+    }
+
+    public function uploadOperation(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Upload Operation';
+
+        $line_id = $this->session->userdata('line_id');
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+        $data['session_out'] = $this->session_out;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['maincontent'] = $this->load->view('upload_operation', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function uploadingOperation(){
+        $filename = $_FILES["operation_file"]["tmp_name"];
+
+        if($_FILES["operation_file"]['name'] == 'operation_list.csv') {
+            if ($_FILES["operation_file"]["size"] > 0) {
+                $file = fopen($filename, "r");
+                fgetcsv($file);
+
+                while (!feof($file)) {
+                    $line_of_text[] = fgetcsv($file);
+                }
+                fclose($file);
+
+                foreach ($line_of_text as $k => $v) {
+
+                    if ($v[0] != '') {
+                        $psl = trim($v[0]);
+
+                        $res = $this->access_model->selectTableDataRowQuery('*', 'tb_operation_list', " AND psl='$psl'");
+
+                        if (sizeof($res) == 0) {
+
+                            $data = array(
+                                'psl' => $psl,
+                                'operation_title' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[1]))),
+                                'operation_description' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[2]))),
+                                'category' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[3]))),
+                                'process_difficulty' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[4]))),
+                                'machine' => preg_replace('!\s+!', ' ', str_replace("'", "", trim($v[5]))),
+                                'st_cm' => $v[6],
+                                'sam' => $v[7],
+                                'standard_capacity' => $v[8],
+                                'process_point' => $v[9],
+                            );
+
+                            $this->access_model->insertingData('tb_operation_list', $data);
+                        }
+                    }
+
+                }
+
+                return redirect('access/operationList');
+            }
+        }else{
+            $data['exception'] = 'Wrong file selected! Make sure the File Name: operation_list.csv';
+            $this->session->set_userdata($data);
+
+            return redirect('access/uploadOperation');
+        }
+
+    }
+
     public function saveNewMachineName(){
         $data['machine_name'] = $this->input->post('new_machine_name');
         $data['machine_description'] = $this->input->post('new_machine_description');
