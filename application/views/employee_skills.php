@@ -100,6 +100,11 @@ $machines = array_unique($mc_array);
                                 <br />
                                 <span><b> PSL - Operation - Description </b></span>
                             </div>
+                            <div class="col-md-2">
+                                <input type="text" value="" size="16" class="form-control form-control-inline input-medium default-date-picker" id="update_date" readonly="readonly">
+                                <span><b> Updated Older Than Date </b></span>
+                            </div>
+                            <div class="col-md-1"></div>
                             <div class="col-md-1">
                                 <button class="btn btn-primary" id="submit_btn" onclick="getEmployeeSkills();">SEARCH</button>
                             </div>
@@ -118,7 +123,7 @@ $machines = array_unique($mc_array);
                     <div class="row">
 
                         <div id="table_content">
-                            <div class="col-md-12" id="tableWrap">
+                            <div class="table-responsive col-md-12" id="tableWrap">
                                 <table class="table table-bordered table-striped" id="table_id" border="1">
                                     <thead>
                                         <tr>
@@ -139,8 +144,9 @@ $machines = array_unique($mc_array);
                                             <th class="hidden-phone center">Standard Capacity</th>
                                             <th class="hidden-phone center">Process Grade</th>
                                             <th class="hidden-phone center">Ob Capacity wt 10% Allow</th>
-                                            <th class="hidden-phone center">Performance(%)</th>
-                                            <th class="hidden-phone center">ACTION</th>
+                                            <th class="hidden-phone center">Performance (%)</th>
+                                            <th class="hidden-phone center">Update Date</th>
+                                            <th class="hidden-phone center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbody_id">
@@ -167,6 +173,7 @@ $machines = array_unique($mc_array);
                                             <td class="hidden-phone center"><?php echo $v['category'];?></td>
                                             <td class="hidden-phone center"><?php echo $v['capacity'];?></td>
                                             <td class="hidden-phone center"><?php echo round($v['capacity']/$v['standard_capacity'], 2) * 100;?></td>
+                                            <td class="hidden-phone center"><?php echo $v['update_date'];?></td>
                                             <td class="hidden-phone center">
                                                 <table>
                                                     <tr>
@@ -192,7 +199,6 @@ $machines = array_unique($mc_array);
 
 <script type="text/javascript">
     $('select').select2();
-
 
     function ExportToExcel(tableid) {
         var tab_text = "<table border='2px'><tr>";
@@ -260,13 +266,18 @@ $machines = array_unique($mc_array);
         var employee_code = $("#employee_code").val();
         var psl = $("#psl").val();
 
+        var update_dt = $("#update_date").val();
+        var update_split_dt = update_dt.split('-');
+
+        var update_date = update_split_dt[2]+'-'+update_split_dt[0]+'-'+update_split_dt[1];
+
         $("#tbody_id").empty();
         $("#loader").css('display', 'block');
 
         $.ajax({
             url: "<?php echo base_url();?>access/getEmployeeSkills/",
             type: "POST",
-            data: {employee_code: employee_code, psl: psl},
+            data: {employee_code: employee_code, psl: psl, update_date: update_date},
             dataType: "html",
             success: function (data) {
 

@@ -2120,6 +2120,7 @@ class Access extends CI_Controller {
     public function getEmployeeSkills(){
         $employee_code = $this->input->post('employee_code');
         $psl = $this->input->post('psl');
+        $update_date = $this->input->post('update_date');
 
         $where = '';
 
@@ -2129,6 +2130,10 @@ class Access extends CI_Controller {
 
         if($psl != ''){
             $where .= $this->db->where('tb_employee_skills.psl', $psl);
+        }
+
+        if($update_date != '' && $update_date != 'undefined--undefined'){
+            $where .= $this->db->where('tb_employee_skills.update_date <', $update_date);
         }
 
         $employee_skill_list = $this->access_model->getEmployeeSkills($where);
@@ -2158,6 +2163,7 @@ class Access extends CI_Controller {
             $newline .= '<td class="hidden-phone center">'.$v['category'].'</td>';
             $newline .= '<td class="hidden-phone center">'.$v['capacity'].'</td>';
             $newline .= '<td class="hidden-phone center">'.(round($v['capacity']/$v['standard_capacity'], 2) * 100).'</td>';
+            $newline .= '<td class="hidden-phone center">'.$v['update_date'].'</td>';
             $newline .= '<td class="hidden-phone center">
                             <table>
                                 <tr>
@@ -2203,6 +2209,10 @@ class Access extends CI_Controller {
     }
 
     public function updateEmployeeSkill(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
         $emp_skill_id = $this->input->post('emp_skill_id');
 
         $psl = $this->input->post('psl');
@@ -2215,6 +2225,7 @@ class Access extends CI_Controller {
             $data['psl'] = $psl;
             $data['is_mail_psl'] = $is_mail_psl;
             $data['capacity'] = $capacity;
+            $data['update_date'] = $date;
 
             $this->access_model->updateTblNew('tb_employee_skills', 'id', $emp_skill_id, $data);
 
@@ -2230,6 +2241,7 @@ class Access extends CI_Controller {
                 $data['psl'] = $psl;
                 $data['is_mail_psl'] = $is_mail_psl;
                 $data['capacity'] = $capacity;
+                $data['update_date'] = $date;
 
                 $this->access_model->updateTblNew('tb_employee_skills', 'id', $emp_skill_id, $data);
 
@@ -2824,6 +2836,10 @@ class Access extends CI_Controller {
     }
 
     public function uploadingEmployeeSkills(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
         $filename = $_FILES["employee_skills_file"]["tmp_name"];
 
         if($_FILES["employee_skills_file"]['name'] == 'employee_skills.csv') {
@@ -2856,6 +2872,7 @@ class Access extends CI_Controller {
                                     'employee_code' => $employee_code,
                                     'is_mail_psl' => $is_mail_psl,
                                     'capacity' => $capacity,
+                                    'update_date' => $date,
                                 );
 
                                 $this->access_model->insertingData('tb_employee_skills', $data);

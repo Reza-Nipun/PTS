@@ -41,7 +41,8 @@ class Access_model extends CI_Model {
     public function getEmployeeSkills($where){
         $this->db->select('tb_employee_list.employee_code, tb_employee_list.employee_name, tb_employee_list.designation, 
                            tb_employee_list.grade, tb_employee_list.doj, tb_employee_list.floor, 
-                           tb_employee_skills.id emp_skill_id, tb_employee_skills.psl, tb_employee_skills.is_mail_psl, tb_employee_skills.capacity, 
+                           tb_employee_skills.id emp_skill_id, tb_employee_skills.psl, tb_employee_skills.is_mail_psl, 
+                           tb_employee_skills.capacity, tb_employee_skills.update_date, 
                            tb_operation_list.*');
 
         $this->db->from('tb_employee_list');
