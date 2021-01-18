@@ -3580,6 +3580,20 @@ class Dashboard extends CI_Controller {
         echo $maincontent;
     }
 
+    public function getQualityReportBySo($so_no){
+        $data['title'] = "Piece By Piece Detail";
+
+        $where = '';
+        if($so_no != ''){
+            $where .= " AND so_no='$so_no'";
+        }
+
+        $data['quality_report'] = $this->dashboard_model->getQualityReportBySo($where);
+
+        $data['maincontent'] = $this->load->view('reports/quality_report_by_so', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
     public function getPieceByPieceDetailBySo($so_no){
         $data['title'] = "Piece By Piece Detail";
 

@@ -152,19 +152,19 @@ if(isset($line_target)){
         <div class="contentpanel">
 
         <div class="pull-left breadcrumb_admin clear_both">
-        <div class="pull-left page_title theme_color">
-<!--          <h1>Dashboard</h1>-->
-<!--          <h2 class="">Dashboard...</h2>-->
-            Line Performance
+                <div class="pull-left page_title theme_color">
+        <!--          <h1>Dashboard</h1>-->
+        <!--          <h2 class="">Dashboard...</h2>-->
+                    Line Performance
+                </div>
+                <div class="pull-right">
+                  <ol class="breadcrumb">
+                      <li><a href="javascript:void(0);" onclick="window.location.reload(1);"> <i class="fa fa-repeat"></i> </a></li>
+                      <li><a href="<?php echo base_url();?>">Home</a></li>
+                      <li class="active">Dashboard</li>
+                  </ol>
+                </div>
         </div>
-        <div class="pull-right">
-          <ol class="breadcrumb">
-              <li><a href="javascript:void(0);" onclick="window.location.reload(1);"> <i class="fa fa-repeat"></i> </a></li>
-              <li><a href="<?php echo base_url();?>">Home</a></li>
-              <li class="active">Dashboard</li>
-          </ol>
-        </div>
-</div>
 <div class="container clear_both padding_fix">
     <!--\\\\\\\ container  start \\\\\\-->
     <div class="header">

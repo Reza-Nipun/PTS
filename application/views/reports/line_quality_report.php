@@ -1,84 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo $title;?></title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--    <meta http-equiv="refresh" content="30">-->
+    <title><?php echo $title ?></title>
+    <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    <script src="<?php echo base_url(); ?>assets/js/jquery-latest.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/css/jquery-1.9.0.js"></script>
+    <link href="<?php echo base_url(); ?>assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/css/animate.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url(); ?>assets/css/admin.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/css/datepicker.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/bootstrap-timepicker/compiled/timepicker.css" />
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link href="<?php echo base_url(); ?>assets/plugins/data-tables/DT_bootstrap.css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>assets/plugins/advanced-datatable/css/demo_table.css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>assets/plugins/advanced-datatable/css/demo_page.css" rel="stylesheet" />
 
-    <script src="https://code.jquery.com/jquery-3.5.1.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-<!--    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <!--Select2 Start-->
+    <script src="<?php echo base_url(); ?>assets/select2/jquery.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/select2/select2.min.js"></script>
+    <link href="<?php echo base_url(); ?>assets/select2/select2.min.css" rel="stylesheet"/>
 
-    <style>
-        table, td, th {
-            border: 1px solid #ddd;
+    <style type="text/css">
+
+        .has-error .select2-selection {
+            /*border: 1px solid #a94442;
+            border-radius: 4px;*/
+            border-color:rgb(185, 74, 72) !important;
         }
 
-        table {
-            border-collapse: collapse;
+        div.scroll {
+            /*background-color: #00FFFF;*/
+            width: 1900px;
+            height: 500px;
+            overflow: scroll;
+        }
+
+        div.scroll2 {
+            /*background-color: #00FFFF;*/
+            width: 1200px;
+            height: 500px;
+            overflow: scroll;
+        }
+
+        div.scroll3 {
+            /*background-color: #00FFFF;*/
+            width: 700px;
+            height: 500px;
+            overflow: scroll;
+        }
+
+        /*table thead fixed*/
+        .table-fixed thead {
             width: 100%;
         }
+        .table-fixed tbody {
+            height: 230px;
+            overflow-y: auto;
+            width: 100%;
+        }
+        .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+            display: block;
+        }
+        .table-fixed tbody td, .table-fixed thead > tr> th {
+            float: left;
+            border-bottom-width: 0;
+        }
+        /*table thead fixed*/
 
-        th, td {
-            padding: 2px;
+        .well1 {
+            background: none;
+            height: 400px;
         }
 
-
-         body {font-family: Arial, Helvetica, sans-serif;}
-
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            padding-top: 100px; /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        .well {
+            background: none;
+            height: 600px;
         }
 
-        /* Modal Content */
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
+        .table-scroll tbody {
+            position: absolute;
+            overflow-y: scroll;
+            height: 450px;
         }
 
-        /* The Close Button */
-        .close {
-            color: #aaaaaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        .table-scroll tr {
+            width: 100%;
+            table-layout: fixed;
+            display: inline-table;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
+        .table-scroll thead > tr > th {
+            /*border: none;*/
         }
 
-        /*Loader Start*/
-         .loader {
-             border: 20px solid #f3f3f3;
-             border-radius: 50%;
-             border-top: 20px solid #3498db;
-             width: 35px;
-             height: 35px;
-             -webkit-animation: spin 2s linear infinite;
-             animation: spin 2s linear infinite;
-         }
+        /* Loader Style Start */
+
+        .loader {
+            border: 20px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 20px solid #3498db;
+            width: 35px;
+            height: 35px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
 
         @-webkit-keyframes spin {
             0% { -webkit-transform: rotate(0deg); }
@@ -89,32 +117,50 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /*Loader End*/
+
+        /* Loader Style End */
     </style>
+    <!--Select2 End-->
+
 </head>
-<body>
-<br />
-<div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            <h4 class="text-right">
-                Select Date:
-            </h4>
-        </div>
-        <div class="col-md-3">
-            <input type="date" class="form-control" name="date_from" id="date_from"/>
-        </div>
-        <div class="col-md-3">
-            <input type="date" class="form-control" name="date_to" id="date_to"/>
-        </div>
-        <div class="col-md-2">
-            <span class="btn btn-success" onclick="getDateRangeQualityReport();">SEARCH</span>
-        </div>
-        <div class="col-md-1" id="loader" style="display: none;">
-            <div class="loader"></div>
-        </div>
-    </div>
-</div>
+<body class="light_theme green_thm left_nav_hide">
+<div class="wrapper">
+    <div class="inner">
+        <div class="contentpanel">
+            <div class="pull-left breadcrumb_admin clear_both">
+                <div class="pull-left page_title theme_color">
+                    <!--          <h1>Dashboard</h1>-->
+                    <!--          <h2 class="">Dashboard...</h2>-->
+                    Line Quality Report
+                </div>
+                <div class="pull-right">
+                    <ol class="breadcrumb">
+                        <li><a href="<?php echo base_url();?>">Home</a></li>
+                        <li class="active">Line Quality Report</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h4 class="text-right">
+                            Select Date:
+                        </h4>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="date_from" id="date_from"/>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="date" class="form-control" name="date_to" id="date_to"/>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success" onclick="getDateRangeQualityReport();">SEARCH</button>
+                    </div>
+                    <div class="col-md-1" id="loader" style="display: none;">
+                        <div class="loader"></div>
+                    </div>
+                </div>
+            </div>
 
 <br />
 <table id="" border="1" width="100%" style="border: 1px solid black;">
@@ -175,6 +221,9 @@
         </tbody>
 
 </table>
+</div>
+</div>
+</div>
 
 <!-- The Modal -->
 
@@ -210,3 +259,23 @@
     }
 
 </script>
+<script src="<?php echo base_url(); ?>assets/js/jquery-2.1.0.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/common-script.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jquery.slimscroll.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/jPushMenu.js"></script>
+<script src="<?php echo base_url(); ?>assets/js/side-chats.js"></script>
+
+
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/form-components.js"></script>
+
+<script src="<?php echo base_url(); ?>assets/js/jquery.slimscroll.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/data-tables/jquery.dataTables.js"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/data-tables/DT_bootstrap.js"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/data-tables/dynamic_table_init.js"></script>
+<script src="<?php echo base_url(); ?>assets/plugins/edit-table/edit-table.js"></script>

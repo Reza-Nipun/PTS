@@ -61,14 +61,15 @@ $count_unscanned_pc = $cut_qty - ($count_total_carton_qty + $total_wh_qty);
             </div>
         </div>
     </div>
-    <br />
-    <button type="button" onclick="printDiv('print_div')" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;">Print</button>
-    <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>
-    <br />
     <div id="print_div">
     <div class="col-lg-8" id="tableWrap">
         <section class="panel default blue_title h2">
 
+            <br />
+            <a class="btn btn-warning" href="<?php echo base_url();?>dashboard/getQualityReportBySo/<?php echo $so_no;?>" style="margin-left: 20px;" target="_blank"><b> Qaulity Report </b></a>
+            <button type="button" onclick="printDiv('print_div')" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;"><b>Print</b></button>
+            <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>
+            <br />
             <div class="panel-body">
 
                 <table class="table" border="1">
