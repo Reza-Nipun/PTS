@@ -246,7 +246,7 @@
                     <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/lineWisePoItemReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Running POs</b> </a> </li>
                     <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/lineHourlyReport" target="_blank"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Hourly Report</b> </a> </li>
                     <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/lineQualityReport" target="_blank"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Quality Report</b> </a> </li>
-                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/allLinePerformanceDashboard"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Summary Cart</b> </a> </li>
+                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/allLinePerformanceDashboard"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Line Summary Chart</b> </a> </li>
                 </ul>
             </li>
 

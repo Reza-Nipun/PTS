@@ -62,7 +62,7 @@
 
                     <br />
                     <button type="button" onclick="printDiv('print_div')" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;">Print</button>
-                    <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>
+                    <button class="btn btn-primary" style="color: #FFF;" id="btnExport" onclick="ExportToExcel('table_id')"><b>Export Excel</b></button>
                     <br />
 
                     <div id="print_div">
@@ -72,7 +72,7 @@
 
                                     <div class="panel-body" id="table_content" style="overflow-x:auto;">
 
-                                        <table class="display table table-bordered table-striped" id="" border="1">
+                                        <table class="display table table-bordered table-striped" id="table_id" border="1">
                                             <thead>
                                                 <tr>
                                                     <th class="hidden-phone center">Piece No</th>
@@ -191,13 +191,13 @@
 <script type="text/javascript">
     $('select').select2();
 
-    $(function(){
-        $('#btnExport').click(function(){
-            var url='data:application/vnd.ms-excel,' + encodeURIComponent($('#table_content').html())
-            location.href=url
-            return false
-        })
-    })
+//    $(function(){
+//        $('#btnExport').click(function(){
+//            var url='data:application/vnd.ms-excel,' + encodeURIComponent($('#table_content').html())
+//            location.href=url
+//            return false
+//        })
+//    })
 
     window.addEventListener('keydown', function(event) {
         if (event.keyCode === 80 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
@@ -260,5 +260,67 @@
         document.body.innerHTML = originalContents;
 
         location.reload();
+    }
+
+    function ExportToExcel(tableid) {
+        var tab_text = "<table border='2px'><tr>";
+        var textRange; var j = 0;
+        tab = document.getElementById(tableid);//.getElementsByTagName('table'); // id of table
+        if (tab==null) {
+            return false;
+        }
+        if (tab.rows.length == 0) {
+            return false;
+        }
+
+        for (j = 0 ; j < tab.rows.length ; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "download.xls");
+        }
+        else                 //other browser not tested on IE 11
+        //sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+            try {
+                var blob = new Blob([tab_text], { type: "application/vnd.ms-excel" });
+                window.URL = window.URL || window.webkitURL;
+                link = window.URL.createObjectURL(blob);
+                a = document.createElement("a");
+                if (document.getElementById("caption")!=null) {
+                    a.download=document.getElementById("caption").innerText;
+                }
+                else
+                {
+                    a.download = 'download';
+                }
+
+                a.href = link;
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                document.body.removeChild(a);
+            } catch (e) {
+            }
+
+
+        return false;
+        //return (sa);
     }
 </script>
