@@ -21,13 +21,13 @@
 </style>
 <div class="pull-left breadcrumb_admin clear_both">
     <div class="pull-left page_title theme_color">
-        <h1>Daily Line Output Report</h1>
-        <h2 class="">Daily Line Output Report...</h2>
+        <h1>Daily Packing Output Report</h1>
+        <h2 class="">Daily Packing Output Report...</h2>
     </div>
     <div class="pull-right">
         <ol class="breadcrumb">
             <li><a href="<?php echo base_url();?>">Home</a></li>
-            <li class="active">Daily Line Output Report</li>
+            <li class="active">Daily Packing Output Report</li>
         </ol>
     </div>
 </div>
@@ -67,21 +67,20 @@
                                             <th class="hidden-phone center">Color</th>
                                             <th class="hidden-phone center">Ex-Factory</th>
                                             <th class="hidden-phone center">Order</th>
-                                            <th class="hidden-phone center">Line</th>
                                             <th class="hidden-phone center">Date</th>
-                                            <th class="hidden-phone center">Line Output</th>
+                                            <th class="hidden-phone center">Packing Output</th>
                                             <th class="hidden-phone center">Closed by Admin</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                    $total_line_output = 0;
-                                    $total_line_manual_output = 0;
+                                    $total_packing_output = 0;
+                                    $total_packing_manual_output = 0;
 
                                     foreach($daily_output AS $v){
 
-                                        $total_line_output += $v['line_output_qty'];
-                                        $total_line_manual_output += $v['line_manual_output_qty'];
+                                        $total_packing_output += $v['packing_output'];
+                                        $total_packing_manual_output += $v['packing_manual_close'];
                                     ?>
                                         <tr>
                                             <td class="hidden-phone center"><?php echo $v['so_no'];?></td>
@@ -94,18 +93,17 @@
                                             <td class="hidden-phone center"><?php echo $v['color'];?></td>
                                             <td class="hidden-phone center"><?php echo $v['ex_factory_date'];?></td>
                                             <td class="hidden-phone center"><?php echo $v['total_order_qty'];?></td>
-                                            <td class="hidden-phone center"><?php echo $v['line_code'];?></td>
-                                            <td class="hidden-phone center"><?php echo $v['line_output_date'];?></td>
-                                            <td class="hidden-phone center"><?php echo $v['line_output_qty'];?></td>
-                                            <td class="hidden-phone center"><?php echo $v['line_manual_output_qty'];?></td>
+                                            <td class="hidden-phone center"><?php echo $v['packing_output_date'];?></td>
+                                            <td class="hidden-phone center"><?php echo $v['packing_output'];?></td>
+                                            <td class="hidden-phone center"><?php echo $v['packing_manual_close'];?></td>
                                         </tr>
                                     <?php } ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td class="hidden-phone center" colspan="12"></td>
-                                            <td class="hidden-phone center"><?php echo $total_line_output;?></td>
-                                            <td class="hidden-phone center"><?php echo $total_line_manual_output;?></td>
+                                            <td class="hidden-phone center" colspan="11"></td>
+                                            <td class="hidden-phone center"><?php echo $total_packing_output;?></td>
+                                            <td class="hidden-phone center"><?php echo $total_packing_manual_output;?></td>
                                         </tr>
                                     </tfoot>
                                 </table>

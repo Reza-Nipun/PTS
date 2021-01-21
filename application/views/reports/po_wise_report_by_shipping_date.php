@@ -170,11 +170,19 @@ foreach ($dates as $dt){
             <td class="center" <?php if($washing_balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>>
                 <?php echo $washing_balance_qty;?>
             </td>
-            <td class="center"><?php echo $v['count_packing_pass'];?></td>
+            <td class="center">
+                <a href="<?php echo base_url();?>dashboard/getDailyPackingOutputReport/<?php echo $v['so_no'];?>" target="_blank">
+                    <?php echo $v['count_packing_pass'];?>
+                </a>
+            </td>
             <td class="center" <?php if($packing_balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>>
                 <?php echo $packing_balance_qty;?>
             </td>
-            <td class="center"><?php echo $v['count_carton_pass'];?></td>
+            <td class="center">
+                <a href="<?php echo base_url();?>dashboard/getDailyCartonOutputReport/<?php echo $v['so_no'];?>" target="_blank">
+                    <?php echo $v['count_carton_pass'];?>
+                </a>
+            </td>
             <td class="center" <?php if($carton_balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>>
                 <?php echo $carton_balance_qty;?>
             </td>

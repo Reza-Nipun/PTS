@@ -4313,6 +4313,70 @@ class Dashboard_model extends CI_Model {
         return $query;
     }
 
+    public function getDailyPackingOutputReport($where){
+        $sql = "SELECT A.*, B.total_order_qty
+                FROM 
+                (SELECT po_no,so_no,item,quality,color,purchase_order,brand,
+                ex_factory_date,style_no,style_name, packing_output_date,
+                    
+                  COUNT(packing_output) as packing_output,
+                  COUNT(packing_admin_manual_close) as packing_manual_close
+                  
+                 
+                FROM (
+                  SELECT so_no,po_no,item,quality,color,purchase_order,brand,ex_factory_date,style_no,style_name,
+                    DATE_FORMAT(packing_date_time, '%Y-%m-%d') AS packing_output_date,                   
+                    
+                   CASE WHEN `packing_status`=1 AND manually_closed=0 THEN id END packing_output,
+                   CASE WHEN `packing_status`=1 AND manually_closed=1 THEN id END packing_admin_manual_close
+                   
+                  FROM tb_care_labels 
+                ) tb_care_labels 
+                WHERE 1 $where 
+                GROUP BY so_no, packing_output_date) AS A
+                
+                LEFT JOIN
+                tb_production_summary AS B
+                ON A.so_no=B.so_no
+                
+                WHERE A.packing_output_date != '0000-00-00'";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function getDailyCartonOutputReport($where){
+        $sql = "SELECT A.*, B.total_order_qty
+                FROM 
+                (SELECT po_no,so_no,item,quality,color,purchase_order,brand,
+                ex_factory_date,style_no,style_name, carton_output_date,
+                    
+                  COUNT(carton_output) as carton_output,
+                  COUNT(carton_admin_manual_close) as carton_manual_close
+                  
+                 
+                FROM (
+                  SELECT so_no,po_no,item,quality,color,purchase_order,brand,ex_factory_date,style_no,style_name,
+                    DATE_FORMAT(carton_date_time, '%Y-%m-%d') AS carton_output_date,                   
+                    
+                   CASE WHEN carton_status=1 AND manually_closed=0 THEN id END carton_output,
+                   CASE WHEN carton_status=1 AND manually_closed=1 THEN id END carton_admin_manual_close
+                   
+                  FROM tb_care_labels 
+                ) tb_care_labels 
+                WHERE 1 $where 
+                GROUP BY so_no, carton_output_date) AS A
+                
+                LEFT JOIN
+                tb_production_summary AS B
+                ON A.so_no=B.so_no
+                
+                WHERE A.carton_output_date != '0000-00-00'";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
     public function getShipDateWiseDailyReport($where)
     {
         $sql = "SELECT A.*, B.line_code, C.total_order_qty

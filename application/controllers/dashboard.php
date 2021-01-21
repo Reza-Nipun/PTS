@@ -4503,6 +4503,36 @@ class Dashboard extends CI_Controller {
         $this->load->view('reports/master', $data);
     }
 
+    public function getDailyPackingOutputReport($so_no){
+        $data['title']='Daily Packing Output Report';
+
+        $where = "";
+
+        if($so_no != ''){
+            $where .= " AND so_no='$so_no'";
+        }
+
+        $data['daily_output'] = $this->dashboard_model->getDailyPackingOutputReport($where);
+
+        $data['maincontent'] = $this->load->view('reports/po_wise_daily_packing_output_report', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
+    public function getDailyCartonOutputReport($so_no){
+        $data['title']='Daily Carton Output Report';
+
+        $where = "";
+
+        if($so_no != ''){
+            $where .= " AND so_no='$so_no'";
+        }
+
+        $data['daily_output'] = $this->dashboard_model->getDailyCartonOutputReport($where);
+
+        $data['maincontent'] = $this->load->view('reports/po_wise_daily_carton_output_report', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
     public function getShipDateWiseReport(){
         $po_type = $this->input->post('po_type');
         $brands_string = $this->input->post('brands');

@@ -106,9 +106,17 @@
             </td>
             <td class="center" <?php if($sew_balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>><?php echo $sew_balance_qty;?></td>
             <td class="center"><?php echo $v['count_washing_pass'];?></td>
-            <td class="center"><?php echo $v['count_packing_pass'];?></td>
+            <td class="center">
+                <a href="<?php echo base_url();?>dashboard/getDailyPackingOutputReport/<?php echo $v['so_no'];?>" target="_blank">
+                    <?php echo $v['count_packing_pass'];?>
+                </a>
+            </td>
             <td class="center" <?php if($packing_balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>><?php echo $packing_balance_qty;?></td>
-            <td class="center"><?php echo $v['count_carton_pass'];?></td>
+            <td class="center">
+                <a href="<?php echo base_url();?>dashboard/getDailyCartonOutputReport/<?php echo $v['so_no'];?>" target="_blank">
+                    <?php echo $v['count_carton_pass'];?>
+                </a>
+            </td>
             <td class="center" <?php if($carton_balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>><?php echo $carton_balance_qty;?></td>
             <td class="center" onclick="getWarehousePcs('<?php echo $v['po_no']; ?>', '<?php echo $v['so_no']; ?>', '<?php echo $v['purchase_order'];?>','<?php echo $v['item'];?>', '<?php echo $v['quality']; ?>', '<?php echo $v['color']; ?>');" data-target="#myModal3" data-toggle="modal" ><span class="btn btn-primary"><?php echo $v['total_wh_qa'];?></span></td>
             <td class="center" <?php if($balance_qty < 0){ ?>style="background-color: #ffbcbf" <?php } ?>>
