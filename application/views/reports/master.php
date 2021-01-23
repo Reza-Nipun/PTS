@@ -225,6 +225,7 @@
               <ul>
 <!--                  <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/dateWiseCuttingReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Date Wise Cutting</b> </a> </li>-->
 <!--                  <li> <a style="margin-bottom: 1px;" target="_blank" href="--><?php //echo base_url();?><!--dashboard/lineWIPReportChart"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>WIP Report Graph</b> </a> </li>-->
+                  <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/cutting_summary"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Cut Summary</b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/print_bundle_summary_page"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Bundle Summary</b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/dailyPackageReport"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Daily Package Report</b> </a> </li>
                   <li> <a style="margin-bottom: 1px;" href="<?php echo base_url();?>dashboard/package_ready_report"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Ready Summary </b> </a> </li>

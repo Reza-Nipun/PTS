@@ -3543,6 +3543,59 @@ class Dashboard extends CI_Controller {
         return $cut_order;
     }
 
+
+    public function cutting_summary(){
+        $data['title'] = 'Cutting Summary';
+
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+        $data['msg'] = '';
+
+        $data['sap_no'] = $this->access_model->getSapPoNo();
+
+        $data['maincontent'] = $this->load->view('reports/cutting_summary', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
+    public function getCuttingSummaryReport(){
+        $sap_no = $this->input->post('sap_no');
+
+        $data['sap_no'] = $sap_no;
+
+        $data['sap_info'] = $this->access_model->getTotalOrderQty($sap_no);
+
+        $data['cut_info'] = $this->access_model->getTotalCutQty($sap_no);
+
+        $data['cut_nos'] = $this->access_model->getCutNosBySo($sap_no);
+
+        echo $maincontent = $this->load->view('reports/cut_summary_report', $data, true);
+    }
+
+    public function getPoItemBySapCut($sap_no, $cut_no){
+
+        return $data['po_items'] = $this->access_model->getPoItemBySapCut($sap_no, $cut_no);
+
+    }
+
+    public function getCutOrderSummary($sap_no, $cut_no){
+
+        return $data['cut_order_summary'] = $this->access_model->getBundleSummary($sap_no, $cut_no);
+
+    }
+
+    public function poItemSizeCutLayerWiseQtyNew($po_no, $so_no, $purchase_order, $item, $size, $cut_no, $cut_layer){
+        $cut_order_qty = $this->access_model->poItemSizeCutLayerWiseQtyNew($po_no, $so_no, $purchase_order, $item, $size, $cut_no, $cut_layer);
+
+        return $cut_order_qty;
+    }
+
+    public function poItemWiseQtyNew($po_no, $so_no, $purchase_order, $item, $cut_no){
+        $cut_order_qty = $this->access_model->poItemWiseQtyNew($po_no, $so_no, $purchase_order, $item, $cut_no);
+
+        return $cut_order_qty;
+    }
+
     public function getPackingReportbyPo(){
         $purchase_order_stuff = $this->input->post('purchase_order_stuff');
 

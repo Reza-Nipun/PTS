@@ -4242,7 +4242,8 @@ class Dashboard_model extends CI_Model {
 
     public function getBundleSummary($where){
         $sql = "SELECT po_no, purchase_order, item, quality, style_no, style_name, 
-                color, brand, cut_no, cut_tracking_no, `size`, cut_qty, cut_layer, bundle, bundle_range 
+                color, brand, cut_no, cut_tracking_no, `size`, cut_qty, cut_layer, 
+                bundle, bundle_range, cutting_complete_date_time, date_time
                 FROM `tb_cut_summary` WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();

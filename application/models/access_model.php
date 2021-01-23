@@ -4361,7 +4361,7 @@ class Access_model extends CI_Model {
     public function getPoItemBySapCut($sap_no, $cut_no){
         $sql = "SELECT cut_tracking_no, po_no, so_no, purchase_order, item, quality, style_no, style_name, 
                 color, brand, cut_no
-                FROM `vt_cut_summary` WHERE `po_no` = '$sap_no' AND `cut_no` = '$cut_no' 
+                FROM `tb_cut_summary` WHERE `po_no` = '$sap_no' AND `cut_no` = '$cut_no' 
                 GROUP BY po_no, so_no, purchase_order, item
                 ORDER BY purchase_order, item";
 
@@ -4371,7 +4371,7 @@ class Access_model extends CI_Model {
 
     public function getCutNosBySo($sap_no){
         $sql = "SELECT cut_no
-                FROM `vt_cut_summary` WHERE `po_no` = '$sap_no'
+                FROM `tb_cut_summary` WHERE `po_no` = '$sap_no'
                 GROUP BY po_no, cut_no
                 ORDER BY (cut_no * 1)";
 
@@ -4737,7 +4737,7 @@ class Access_model extends CI_Model {
     }
 
     public function getBundleSummaryInfo($po_no, $so_no, $cut_tracking_no){
-        $sql = "SELECT * FROM `vt_cut_summary` 
+        $sql = "SELECT * FROM `tb_cut_summary` 
                 WHERE po_no='$po_no' AND so_no='$so_no' 
                 AND cut_tracking_no='$cut_tracking_no' 
                 ORDER BY bundle DESC";

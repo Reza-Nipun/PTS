@@ -13,15 +13,21 @@
 <div class="row">
     <div class="form-group">
         <div class="col-md-12">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
-                    <label class="form-control">SAP No.: <?php echo $cut_order_summary[0]['po_no'];?></label>
+                    <label class="form-control">Group SO: <?php echo $cut_order_summary[0]['po_no'];?></label>
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="form-control">Cut No.: <?php echo $cut_order_summary[0]['cut_no'];?></label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="form-control">Cut Date.: <?php echo $cut_order_summary[0]['cutting_complete_date_time'];?></label>
                 </div>
             </div>
 
@@ -31,13 +37,19 @@
 <div class="row">
     <div class="form-group">
         <div class="col-md-12">
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="form-control">System Input: <?php echo $cut_order_summary[0]['date_time'];?></label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="form-control">Style_Name: <?php echo $cut_order_summary[0]['style_name'];?></label>
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="form-control">Quality_Color: <?php echo $cut_order_summary[0]['quality'].'_'.$cut_order_summary[0]['color'];?></label>
                 </div>
