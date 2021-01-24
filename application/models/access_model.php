@@ -1360,7 +1360,7 @@ class Access_model extends CI_Model {
                 tb_production_summary AS t4
                 ON t1.so_no=t4.so_no
                 
-                $condition";
+                WHERE 1 $condition";
         
 
         $query = $this->db->query($sql)->result_array();

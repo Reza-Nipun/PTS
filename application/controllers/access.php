@@ -5613,11 +5613,17 @@ class Access extends CI_Controller {
         $data['user_name'] = $this->session->userdata('user_name');
         $data['user_description'] = $this->session->userdata('user_description');
         $data['access_points'] = $this->session->userdata('access_points');
+        $buyer_condition = $this->session->userdata('buyer_condition');
         $data['msg'] = '';
 
         $condition = '';
         if($data['access_points'] == 6){
 //            $condition .= " ORDER BY t10.max_washing_date_time DESC";  // Previous Query Condition
+
+            if($buyer_condition != ''){
+                $condition .= " AND t2.brand IN ($buyer_condition)";
+            }
+
             $condition .= " ORDER BY t1.max_washing_date_time DESC";
 //            $data['prod_summary'] = $this->access_model->getProducitonSummaryReportWash($condition); // Previous Query
             $data['prod_summary'] = $this->access_model->getProducitonSummaryReportWashViewTable($condition);
