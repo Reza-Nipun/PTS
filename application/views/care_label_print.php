@@ -17,6 +17,7 @@
 
 <label>Remaining PCs:</label><input type="text" readonly value="<?php echo $count_pcs;?>" name="total_qty" id="total_qty">
 <label>Print Qty:</label><input type="text" name="print_qty" id="print_qty">
+<label>Double Label?:</label><input type="checkbox" name="double_label" id="double_label" value="1" checked="checked">
 
 <button type="button" onclick="getRemainingClList();" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;">Check</button>
 
@@ -85,6 +86,9 @@
     }
 
     function getRemainingClList() {
+        var doubleLabelValue = $('#double_label:checked').val();
+        doubleLabelValue = (doubleLabelValue == 1 ? doubleLabelValue : 0);
+
         var print_qty = $("#print_qty").val();
         var total_qty = $("#print_qty").val();
 
@@ -98,7 +102,7 @@
             $.ajax({
                 url: "<?php echo base_url();?>access/getPrintCareLabels/",
                 type: "POST",
-                data: {so_no: so_no, po_no: po_no, cut_tracking_no: cut_tracking_no, print_qty: print_qty},
+                data: {so_no: so_no, po_no: po_no, cut_tracking_no: cut_tracking_no, print_qty: print_qty, double_label: doubleLabelValue},
                 dataType: "html",
                 success: function (data) {
 

@@ -82,7 +82,8 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>
+        <span class="btn btn-primary" style="color: #FFF;" id="btnExport" onclick="ExportToExcel('table_id')"><b>Export Excel</b></span>
+        <span class="btn btn-danger" style="color: #FFF;" onclick="deleteSO();"><b>DELETE SO</b></span>
         <span class="btn btn-info"><b>Last SO: <?php echo $last_so_no;?></b></span>
         <span class="btn btn-default"><b>Last Upload Date: <?php echo $upload_date;?></b></span>
 
@@ -92,9 +93,12 @@
 
                     <div class="panel-body">
 
-                        <table class="table" border="1">
+                        <table class="table" border="1" id="table_id">
                             <thead>
                             <tr>
+                                <th class="center">
+                                    <input type="checkbox" class="select_all" id="checkAll" name="select_all" />
+                                </th>
                                 <th class="center">SO</th>
                                 <th class="center">PO</th>
                                 <th class="center">Brand</th>
@@ -112,6 +116,9 @@
                             <tbody>
                             <?php foreach ($today_upload AS $v){ ?>
                             <tr>
+                                <td class="center">
+                                    <input class="checkItem" type="checkbox" name="checkItem[]" id="checkItem" value="<?php echo $v['so_no']; ?>" />
+                                </td>
                                 <td class="center"><?php echo $v['so_no'];?></td>
                                 <td class="center"><?php echo $v['po_no'];?></td>
                                 <td class="center"><?php echo $v['brand'];?></td>
@@ -148,13 +155,111 @@
         $("#message").empty();
     });
 
-    $(function(){
-        $('#btnExport').click(function(){
-            var url='data:application/vnd.ms-excel,' + encodeURIComponent($('#tableWrap').html())
-            location.href=url
-            return false
-        })
-    })
+//    $(function(){
+//        $('#btnExport').click(function(){
+//            var url='data:application/vnd.ms-excel,' + encodeURIComponent($('#tableWrap').html())
+//            location.href=url
+//            return false
+//        })
+//    })
+
+    function ExportToExcel(tableid) {
+        var tab_text = "<table border='2px'><tr>";
+        var textRange; var j = 0;
+        tab = document.getElementById(tableid);//.getElementsByTagName('table'); // id of table
+        if (tab==null) {
+            return false;
+        }
+        if (tab.rows.length == 0) {
+            return false;
+        }
+
+        for (j = 0 ; j < tab.rows.length ; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "download.xls");
+        }
+        else                 //other browser not tested on IE 11
+        //sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+            try {
+                var blob = new Blob([tab_text], { type: "application/vnd.ms-excel" });
+                window.URL = window.URL || window.webkitURL;
+                link = window.URL.createObjectURL(blob);
+                a = document.createElement("a");
+                if (document.getElementById("caption")!=null) {
+                    a.download=document.getElementById("caption").innerText;
+                }
+                else
+                {
+                    a.download = 'download';
+                }
+
+                a.href = link;
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                document.body.removeChild(a);
+            } catch (e) {
+            }
+
+
+        return false;
+        //return (sa);
+    }
+
+    $(document).on('click','#checkAll',function () {
+        $('.checkItem').not(this).prop('checked', this.checked);
+    });
+
+    function deleteSO() {
+        if (confirm("Are you sure to delete?")) {
+            var so_nos = [];
+
+            $('input.checkItem:checkbox:checked').each(function () {
+                var sThisVal = $(this).val();
+
+                so_nos.push(sThisVal);
+            });
+
+            if(so_nos.length > 0){
+
+                $.ajax({
+                    url:"<?php echo base_url('access/deleteSOs')?>",
+                    type:"post",
+                    dataType:'html',
+                    data:{so_nos: so_nos},
+                    success:function (data) {
+
+                        if(data == 'done'){
+                            window.location.reload();
+                        }
+
+                    }
+                });
+
+            }else{
+                alert('Please Select SO!');
+            }
+        }
+    }
 
     //    function getPoItemDetail() {
     //        $("#report_content").empty();

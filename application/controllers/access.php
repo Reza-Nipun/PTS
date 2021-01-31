@@ -1209,6 +1209,7 @@ class Access extends CI_Controller {
         $so_no = $this->input->post('so_no');
         $cut_tracking_no = $this->input->post('cut_tracking_no');
         $print_qty = $this->input->post('print_qty');
+        $double_label = $this->input->post('double_label');
 
         $limit = "";
 
@@ -1218,6 +1219,7 @@ class Access extends CI_Controller {
 
         $get_data['po_no'] = $po_no;
         $get_data['so_no'] = $so_no;
+        $get_data['double_label'] = $double_label;
 
         $get_data['cut_tracking_no'] = $cut_tracking_no;
         $get_data['care_label_list'] = $this->access_model->checkCutCareLabelAvailability($po_no, $so_no, $cut_tracking_no, $limit);
@@ -3938,6 +3940,23 @@ class Access extends CI_Controller {
         }else{
             echo $this->load->view('404');
         }
+    }
+
+    public function deleteSOs(){
+        $so_nos = $this->input->post('so_nos');
+
+        foreach ($so_nos AS $so_no){
+
+            $this->access_model->deleteTableData('tb_care_labels', 'so_no', $so_no);
+            $this->access_model->deleteTableData('tb_cut_summary', 'so_no', $so_no);
+            $this->access_model->deleteTableData('tb_po_detail', 'so_no', $so_no);
+
+        }
+
+        $data['message'] = 'Successfully Deleted!';
+        $this->session->set_userdata($data);
+
+        echo 'done';
     }
 
     public function addNewFloor(){
@@ -8198,7 +8217,7 @@ class Access extends CI_Controller {
         if(sizeof($res) > 0) {
         $last_so_no = $this->access_model->getManualUploadLastSoNo();
         $data['last_so_no'] = $last_so_no[0]['so_no'];
-        $data['upload_date'] = $last_so_no[0]['upload_date'];
+        $data['upload_date'] = $last_so_no[0]['update_date_time'];
 
         $data['today_upload'] = $this->access_model->todayManualUploadedList($date);
 

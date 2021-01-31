@@ -54,7 +54,7 @@ $sl++;
             echo $code;
             ?>
         </div>
-        <?php if($brand != "OLYMP" && $brand != "John Lewis" && $brand != "WOOLWORTH" && $brand != "CONBIPEL" && $brand != "TIMBERLAND" && $brand != "M&S T11" && $brand != "M&S T25" && $brand != "M&ST11" && $brand != "M&ST25" && $brand != "M&S"){ ?>
+        <?php if($double_label == 1){ ?>
         <br />
         <span style="float: left;">--|-----------------|--</span>
         <br />
