@@ -495,15 +495,12 @@
     function getPoItemWiseRemainCL(po_no, so_no, purchase_order, item, quality, color) {
         $("#remain_cl_list").empty();
 
-        console.log(po_no+' - '+so_no+' - '+purchase_order+' - '+item+' - '+quality+' - '+color);
-
         $.ajax({
             url: "<?php echo base_url();?>dashboard/getPoItemWiseRemainCL/",
             type: "POST",
             data: {po_no: po_no, so_no: so_no, purchase_order: purchase_order, item: item, quality: quality, color: color},
             dataType: "html",
             success: function (data) {
-                console.log(data);
                 $("#remain_cl_list").append(data);
             }
         });

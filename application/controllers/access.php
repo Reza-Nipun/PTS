@@ -492,6 +492,35 @@ class Access extends CI_Controller {
 
     }
 
+    public function generatePackingList2(){
+        $brands = $this->input->post('brands');
+        $po_type = $this->input->post('po_type');
+        $ship_date = $this->input->post('ship_date');
+
+        $data['brands_string'] = implode(", ", $brands);
+        $brands_string = $data['brands_string'];
+
+        $where = '';
+
+        if($brands_string != ''){
+            $where .= " AND brand in ($brands_string)";
+        }
+
+        if($po_type != ''){
+            $where .= " AND po_type='$po_type'";
+        }
+
+        if($ship_date != ''){
+            $where .= " AND approved_ex_factory_date='$ship_date'";
+        }
+
+        $data['ship_date'] = $ship_date;
+        $data['sizes'] = $this->access_model->getSizesbyShipDate($where);
+        $data['po_list'] = $this->access_model->getPOsbyShipDate($where);
+
+        echo $maincontent = $this->load->view('generate_packing_list_2', $data);
+    }
+
     public function generatePackingList(){
         $brands = $this->input->post('brands');
         $po_type = $this->input->post('po_type');

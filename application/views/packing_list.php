@@ -65,6 +65,15 @@
                     <br />
                     <span><b>* Select Ship Date </b></span>
                 </div>
+                <div class="col-md-2">
+                    <select class="form-control" name="packing_list_type" id="packing_list_type">
+                        <option value="">Packing List Type</option>
+                        <option value="1">Type-1</option>
+                        <option value="2">Type-2</option>
+                    </select>
+                    <br />
+                    <span><b>* Select Packing List Type </b></span>
+                </div>
                 <div class="col-md-1">
                     <button class="btn btn-success" id="generate_btn" onclick="generatePackingList();">Generate</button>
                 </div>
@@ -132,29 +141,50 @@
         var brands = $("#brands").val();
         var po_type = $("#po_type").val();
         var ship_date = $("#ship_date").val();
+        var packing_list_type = $("#packing_list_type").val();
 
         var brands_length = (brands != null ? brands.length : 0);
 
         $("#packing_list").empty();
 
-        if(brands_length > 0 && po_type != '' && ship_date != ''){
+        if(brands_length > 0 && po_type != '' && ship_date != '' && packing_list_type != ''){
 
-            $("#loader").css('display', 'block');
+            if(packing_list_type == 1){
+                $("#loader").css('display', 'block');
 
-            $.ajax({
-                url: "<?php echo base_url();?>access/generatePackingList/",
-                type: "POST",
-                data: {brands: brands, po_type: po_type, ship_date: ship_date},
-                dataType: "html",
-                success: function (data) {
+                $.ajax({
+                    url: "<?php echo base_url();?>access/generatePackingList/",
+                    type: "POST",
+                    data: {brands: brands, po_type: po_type, ship_date: ship_date},
+                    dataType: "html",
+                    success: function (data) {
 
-                    $("#packing_list").append(data);
-                    $("#loader").css('display', 'none');
+                        $("#packing_list").append(data);
+                        $("#loader").css('display', 'none');
 
-                }
-            });
+                    }
+                });
+            }
+
+            if(packing_list_type == 2){
+                $("#loader").css('display', 'block');
+
+                $.ajax({
+                    url: "<?php echo base_url();?>access/generatePackingList2/",
+                    type: "POST",
+                    data: {brands: brands, po_type: po_type, ship_date: ship_date},
+                    dataType: "html",
+                    success: function (data) {
+
+                        $("#packing_list").append(data);
+                        $("#loader").css('display', 'none');
+
+                    }
+                });
+            }
+
         }else{
-            alert("Please Select Brand, PO Type, Ship Date !");
+            alert("Please Select Brand, PO Type, Ship Date, Packing List Type !");
         }
 
     }

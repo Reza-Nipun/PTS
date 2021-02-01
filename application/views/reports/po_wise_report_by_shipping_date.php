@@ -81,7 +81,7 @@ foreach ($dates as $dt){
         <th class="hidden-phone center">Cargo Handover Date</th>
         <th class="hidden-phone center">Status</th>
         <th class="hidden-phone center">Remarks</th>
-        <th class="hidden-phone center">Adjustment(%)</th>
+        <th class="hidden-phone center">Adjustment</th>
     </tr>
     </thead>
     <tbody>
@@ -241,7 +241,7 @@ foreach ($dates as $dt){
             </td>
             <td class="center">
                 <?php
-                    echo round(($v['count_manually_adjusted_qty']/$v['total_cut_input_qty']) * 100, 2);
+                    echo $v['count_manually_adjusted_qty'];
                 ?>
             </td>
         </tr>

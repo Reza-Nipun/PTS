@@ -42,7 +42,7 @@
             <th class="hidden-phone center" title="Remarks">Remarks</th>
             <th class="hidden-phone center" title="AQL Plan Date">AQL Plan</th>
             <th class="hidden-phone center" title="Remarks">AQL</th>
-            <th class="hidden-phone center" title="Adjustment(%)">Adjustment(%)</th>
+            <th class="hidden-phone center" title="Adjustment">Adjustment</th>
         </tr>
         </thead>
         <tbody>
@@ -210,7 +210,7 @@
                 </td>
                 <td class="center">
                     <?php
-                    echo round(($v['count_manually_adjusted_qty']/$v['total_cut_input_qty']) * 100, 2);
+                    echo $v['count_manually_adjusted_qty'];
                     ?>
                 </td>
             </tr>
