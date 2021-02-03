@@ -1964,7 +1964,8 @@ class Access extends CI_Controller {
             'created_on' => $date,
             'u_id' => $user_id,
             'is_manual_upload' => $po_detail[0]['is_manual_upload'],
-            'upload_date' => $date,
+            'upload_date' => $po_detail[0]['upload_date'],
+            'changed_on' => $date,
             'status' => $po_detail[0]['status'],
             'po_type' => $po_detail[0]['po_type'],
             'aql_plan_date' => $po_detail[0]['aql_plan_date'],
@@ -1998,13 +1999,18 @@ class Access extends CI_Controller {
     }
 
     public function updatingPoSizeQty(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
         $so_no = $this->input->post('so_no');
         $ids = $this->input->post('id');
         $qtys = $this->input->post('qty');
 
         foreach ($ids as $k => $id){
             $data = array(
-                'quantity' => $qtys[$k]
+                'quantity' => $qtys[$k],
+                'changed_on' => $date,
             );
 
             $this->access_model->updateTbl('tb_po_detail', $id, $data);
