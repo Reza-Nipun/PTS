@@ -248,7 +248,7 @@ class Dashboard extends CI_Controller {
 
         $object->setActiveSheetIndex(0);
 
-        $table_columns = array("PO", "ITEM", "Plan Line", "Lines", "Brand", "STYLE", "QLTY-CLR", "ORDER", "ExFac", "CUT", "CUT BLNC", "CUT PASS", "INPUT", "Collar", "Cuff", "MID", "END", "WASH", "PACK", "CARTON", "Warehouse", "BALANCE", "PO TYPE");
+        $table_columns = array("PO", "ITEM", "Plan Line", "Lines", "Brand", "STYLE", "QLTY-CLR", "ORDER", "ExFac", "CUT", "CUT BLNC", "CUT PASS", "INPUT", "MID", "END", "WASH", "PACK", "CARTON", "Warehouse", "BALANCE", "PO TYPE");
 
         $column = 0;
 
@@ -272,7 +272,7 @@ class Dashboard extends CI_Controller {
 //            if(($today <= $v['ex_factory_date']) || ($till_date <= $v['ex_factory_date']) || (($v['total_cut_qty'] - $total_finishing_wh_qa) > 0)){
             if((($v['total_cut_qty'] - $total_finishing_wh_qa) > 0)){
 
-                $ship_date = $v['ex_factory_date'];
+                $ship_date = $v['approved_ex_factory_date'];
 
                 if($v['item'] == ''){
                     $item = 'NA';
@@ -313,21 +313,19 @@ class Dashboard extends CI_Controller {
                 $object->getActiveSheet()->setCellValueByColumnAndRow(5, $excel_row, $v["style_no"].'-'.$v["style_name"]);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(6, $excel_row, $v["quality"].'_'.$v["color"]);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(7, $excel_row, $v["total_order_qty"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $v["ex_factory_date"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(8, $excel_row, $v["approved_ex_factory_date"]);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(9, $excel_row, $v["total_cut_qty"]);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(10, $excel_row, $cut_balance_qty);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(11, $excel_row, $v["total_cut_input_qty"]);
                 $object->getActiveSheet()->setCellValueByColumnAndRow(12, $excel_row, $v["count_input_qty_line"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(13, $excel_row, $v["collar_bndl_qty"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(14, $excel_row, $v["cuff_bndl_qty"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(15, $excel_row, $v["count_mid_line_qc_pass"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(16, $excel_row, $v["count_end_line_qc_pass"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(17, $excel_row, $v["count_washing_pass"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(18, $excel_row, $v["count_packing_pass"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(19, $excel_row, $v["count_carton_pass"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(20, $excel_row, $v["total_wh_qa"]);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(21, $excel_row, $total_po_item_balance);
-                $object->getActiveSheet()->setCellValueByColumnAndRow(22, $excel_row, $po_type);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(13, $excel_row, $v["count_mid_line_qc_pass"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(14, $excel_row, $v["count_end_line_qc_pass"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(15, $excel_row, $v["count_washing_pass"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(16, $excel_row, $v["count_packing_pass"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(17, $excel_row, $v["count_carton_pass"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(18, $excel_row, $v["total_wh_qa"]);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(19, $excel_row, $total_po_item_balance);
+                $object->getActiveSheet()->setCellValueByColumnAndRow(20, $excel_row, $po_type);
                 $excel_row++;
 
             }
