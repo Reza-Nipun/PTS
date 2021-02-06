@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a6fdf3a7-84b8-4c03-909e-2a58cce5012a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/dashboard.php" afterPath="$PROJECT_DIR$/application/controllers/dashboard.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report_data.php" afterPath="$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report_data.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,11 +18,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dashboard.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="dashboard.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/controllers/dashboard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="41">
-              <caret line="307" column="16" lean-forward="false" selection-start-line="307" selection-start-column="16" selection-end-line="307" selection-end-column="16" />
+            <state relative-caret-position="421">
+              <caret line="544" column="95" lean-forward="false" selection-start-line="544" selection-start-column="55" selection-end-line="544" selection-end-column="95" />
               <folding>
                 <marker date="1612414360407" expanded="true" signature="47747:48611" ph="..." />
                 <marker date="1612414360407" expanded="true" signature="49337:50347" ph="..." />
@@ -32,11 +32,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="floor_wise_finishing_po_item_report_data.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report_data.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="floor_wise_finishing_po_item_report.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="227">
+              <caret line="166" column="67" lean-forward="false" selection-start-line="166" selection-start-column="67" selection-end-line="166" selection-end-column="67" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="dashboard_model.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/models/dashboard_model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="3610" column="44" lean-forward="false" selection-start-line="3610" selection-start-column="44" selection-end-line="3610" selection-end-column="44" />
+            <state relative-caret-position="183">
+              <caret line="2827" column="39" lean-forward="false" selection-start-line="2827" selection-start-column="20" selection-end-line="2827" selection-end-column="39" />
               <folding>
                 <marker date="1611386225682" expanded="true" signature="541:581" ph="SELECT ${$fi... ${$table_name}" />
                 <marker date="1611386225682" expanded="true" signature="748:1075" ph="SELECT t2.id... *" />
@@ -531,9 +551,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>deleteSO</find>
-      <find>printQRCodes</find>
-      <find>delete</find>
       <find>deletet</find>
       <find>deleteTableData</find>
       <find>deleteso</find>
@@ -561,6 +578,9 @@
       <find>save</find>
       <find>mailAttachmentHBFileDownload</find>
       <find>getProductionSummaryReport</find>
+      <find>finishingRunningPoReportByBrand</find>
+      <find>getProductionReport</find>
+      <find>getFinishingRunningPoReportByBrand</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -569,7 +589,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/application/views/all_line_performance_dashboard.php" />
         <option value="$PROJECT_DIR$/application/views/reports/po_wise_packing_report.php" />
         <option value="$PROJECT_DIR$/application/views/finishing_floor_performance_dashboard_new.php" />
         <option value="$PROJECT_DIR$/application/views/package_ready_by_po.php" />
@@ -620,6 +639,7 @@
         <option value="$PROJECT_DIR$/application/views/reports/po_wise_report_by_ship_date.php" />
         <option value="$PROJECT_DIR$/application/controllers/access.php" />
         <option value="$PROJECT_DIR$/application/controllers/dashboard.php" />
+        <option value="$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report_data.php" />
       </list>
     </option>
   </component>
@@ -651,6 +671,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -709,6 +731,28 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="reports" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pts" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="models" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
@@ -733,8 +777,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1863,15 +1905,16 @@
       <workItem from="1612065919967" duration="6629000" />
       <workItem from="1612155042606" duration="3508000" />
       <workItem from="1612330779928" duration="2153000" />
-      <workItem from="1612413958589" duration="414000" />
+      <workItem from="1612413958589" duration="1005000" />
+      <workItem from="1612600385138" duration="1695000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6617258000" />
+    <option name="totallyTimeSpent" value="6619544000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18008785" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1906,20 +1949,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/application/views/upload_operation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="39" column="71" lean-forward="false" selection-start-line="39" selection-start-column="53" selection-end-line="39" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/edit_operation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="19" column="105" lean-forward="false" selection-start-line="19" selection-start-column="90" selection-end-line="19" selection-end-column="105" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/views/operation_list.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -2965,7 +2994,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="23" column="65" lean-forward="false" selection-start-line="23" selection-start-column="65" selection-end-line="23" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3077,8 +3105,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/models/dashboard_model.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="3610" column="44" lean-forward="false" selection-start-line="3610" selection-start-column="44" selection-end-line="3610" selection-end-column="44" />
+        <state relative-caret-position="183">
+          <caret line="2827" column="39" lean-forward="false" selection-start-line="2827" selection-start-column="20" selection-end-line="2827" selection-end-column="39" />
           <folding>
             <marker date="1611386225682" expanded="true" signature="541:581" ph="SELECT ${$fi... ${$table_name}" />
             <marker date="1611386225682" expanded="true" signature="748:1075" ph="SELECT t2.id... *" />
@@ -3561,15 +3589,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="166" column="67" lean-forward="false" selection-start-line="166" selection-start-column="67" selection-end-line="166" selection-end-column="67" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/dashboard.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="41">
-          <caret line="307" column="16" lean-forward="false" selection-start-line="307" selection-start-column="16" selection-end-line="307" selection-end-column="16" />
+        <state relative-caret-position="421">
+          <caret line="544" column="95" lean-forward="false" selection-start-line="544" selection-start-column="55" selection-end-line="544" selection-end-column="95" />
           <folding>
             <marker date="1612414360407" expanded="true" signature="47747:48611" ph="..." />
             <marker date="1612414360407" expanded="true" signature="49337:50347" ph="..." />
             <marker date="1612414360407" expanded="true" signature="80367:80401" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/reports/floor_wise_finishing_po_item_report_data.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="25" column="0" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
