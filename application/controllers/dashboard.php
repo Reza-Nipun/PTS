@@ -6197,6 +6197,10 @@ class Dashboard extends CI_Controller {
         echo $this->load->view('reports/quality_defect_filter_report', $data);
     }
 
+    public function lineQualityDetailReport($line_id, $date){
+
+    }
+
     public function getDefectCount($line_id, $defect_code, $date){
         return $this->dashboard_model->getDefectCount($line_id, $defect_code, $date);
     }

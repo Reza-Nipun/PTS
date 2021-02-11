@@ -7057,17 +7057,22 @@ class Access extends CI_Controller {
         $last_access_points = $line_check[0]['access_points'];
         $last_access_points_status = $line_check[0]['access_points_status'];
         $manually_closed = $line_check[0]['manually_closed'];
+        $bundle_tracking_no = $line_check[0]['bundle_tracking_no'];
+
+        $bundle_collar_cuff_scan_line_info = $this->access_model->selectTableDataRowQuery('is_bundle_collar_cuff_scanned_line', 'tb_cut_summary', " AND bundle_tracking_no='$bundle_tracking_no'");
+
+        $is_bundle_collar_cuff_scan_line = $bundle_collar_cuff_scan_line_info[0]['is_bundle_collar_cuff_scanned_line'];
 
         if(sizeof($line_check) > 0){
             if($manually_closed == 1){
                 echo 'closed';
             }else{
                 if($line == $line_id){
-                    if(($last_access_points == 2) && ($last_access_points_status == 1)){
+                    if(($last_access_points == 2) && ($last_access_points_status == 1) && ($is_bundle_collar_cuff_scan_line == 1)){
                         $this->access_model->midLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time);
                         echo 'Successfully Passed!';
                     }
-                    elseif (($last_access_points == $access_points) && ($last_access_points_status == 2)){
+                    elseif (($last_access_points == $access_points) && ($last_access_points_status == 2) && ($is_bundle_collar_cuff_scan_line == 1)){
                         $this->access_model->updateDefectStatus($carelabel_tracking_no, $line, $access_points, $access_points_status, $date_time);
 
                         $this->access_model->midLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time);
@@ -7087,6 +7092,9 @@ class Access extends CI_Controller {
                     //            elseif ($last_access_points > $access_points){
                     //                echo 'This Process already passed!';
                     //            }
+                    elseif ($is_bundle_collar_cuff_scan_line == 0){
+                        echo 'Collar/Cuff is not Ready!';
+                    }
                     else{
                         echo 'Previous process in WIP!';
                     }
@@ -8919,12 +8927,15 @@ class Access extends CI_Controller {
         $bundle_type_status = strtolower(substr($bundle_track_no, -4));
         $bundle_tracking_no = substr_replace($bundle_track_no ,"",-4);
         $cc_check = $this->access_model->isCCUpdatedAlready($bundle_tracking_no);
+        $po_no = $cc_check[0]['po_no'];
         $id = $cc_check[0]['line_id'];
         $is_bundle_collar_cuff_scanned_line = $cc_check[0]['is_bundle_collar_cuff_scanned_line'];
         $is_bundle_collar_scanned_line = $cc_check[0]['is_bundle_collar_scanned_line'];
         $is_cutting_collar_bundle_ready = $cc_check[0]['is_cutting_collar_bundle_ready'];
         $is_bundle_cuff_scanned_line = $cc_check[0]['is_bundle_cuff_scanned_line'];
         $is_cutting_cuff_bundle_ready = $cc_check[0]['is_cutting_cuff_bundle_ready'];
+
+        $part_info = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code IN ('collar_outer', 'cuff_outer')");
 
         if(($bundle_type_status != 'cff.') && ($bundle_type_status != 'clr.') && ($bundle_type_status != 'bdy.')){
             echo 'Failed to Track!';
@@ -8934,8 +8945,16 @@ class Access extends CI_Controller {
                 if($is_cutting_collar_bundle_ready == 1){
                     $this->access_model->collarTracking($bundle_tracking_no, $line_id, $date_time);
 
-                    if($is_bundle_cuff_scanned_line == 1){
-                        $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                    foreach ($part_info as $p){
+
+                        if($p['part_code'] == "cuff_outer"){
+                            if($is_bundle_cuff_scanned_line == 1){
+                                $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                            }
+                        }else{
+                            $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                        }
+
                     }
 
                     echo "Collar Tracked!";
@@ -8950,8 +8969,16 @@ class Access extends CI_Controller {
                 if($is_cutting_cuff_bundle_ready == 1){
                     $this->access_model->cuffTracking($bundle_tracking_no, $line_id, $date_time);
 
-                    if($is_bundle_collar_scanned_line == 1){
-                        $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                    foreach ($part_info as $p){
+
+                        if($p['part_code'] == "collar_outer"){
+                            if($is_bundle_collar_scanned_line == 1){
+                                $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                            }
+                        }else{
+                            $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                        }
+
                     }
 
                     echo "Cuff Tracked!";

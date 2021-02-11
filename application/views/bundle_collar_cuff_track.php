@@ -201,6 +201,7 @@
                 data: {bundle_tracking_no: cl_no},
                 dataType: "html",
                 success: function (data) {
+
                     if(data == "Failed to Track!"){
                         $("#er_msg").append(care_label_no+" Failed to Track!");
                     }
