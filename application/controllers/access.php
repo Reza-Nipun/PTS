@@ -3977,6 +3977,97 @@ class Access extends CI_Controller {
         }
     }
 
+    public function sizes(){
+        $data['title']='Sizes';
+
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['sizes'] = $this->access_model->selectTableDataRowQuery("*", "tb_size_serial", " ORDER BY serial ASC");
+
+            $data['maincontent'] = $this->load->view('sizes', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function isSizeExists(){
+        $size = $this->input->post('size');
+
+        $res = $this->access_model->selectTableDataRowQuery('*', 'tb_size_serial', " AND size='$size'");
+
+        if(sizeof($res) > 0){
+            echo 'yes';
+        }else{
+            echo 'no';
+        }
+    }
+
+    public function saveNewSize(){
+        $s = $this->input->post('size');
+        $sz = preg_replace('/[^A-Za-z0-9.;\-]/', '-', str_replace(' ', '', $s));
+        $size = (str_replace(" ", "", $sz));
+
+        $res_last_size_serial = $this->access_model->selectTableDataRowQuery('MAX(serial) AS last_serial', 'tb_size_serial', "");
+        $last_size_serial = $res_last_size_serial[0]['last_serial'];
+
+        $data = array(
+            'size' => $size,
+            'serial' => $last_size_serial+1,
+        );
+
+        $res = $this->access_model->insertingData('tb_size_serial', $data);
+
+        if($res == 1){
+            echo 'done';
+        }else{
+            echo 'failed';
+        }
+    }
+
+    public function getFilteredSizeList(){
+
+        $size_id = $this->input->post('size');
+
+        $size_info = $this->access_model->selectTableDataRowQuery('*', 'tb_size_serial', " AND sl='$size_id'");
+
+        $new_row = '';
+
+        foreach ($size_info as $s){
+            $new_row .= '<tr>';
+            $new_row .= '<td class="center hidden-phone"><input class="checkItem" type="checkbox" name="checkItem[]" id="checkItem" value="'.$s['sl'].'" /></td>';
+            $new_row .= '<td class="center hidden-phone">'.$s['size'].'</td>';
+            $new_row .= '<td class="center hidden-phone">'.$s['serial'].'</td>';
+            $new_row .= '</tr>';
+        }
+
+        echo $new_row;
+    }
+
+    public function deleteSize(){
+        $sizes = $this->input->post('sizes');
+
+        foreach ($sizes AS $size){
+
+            $this->access_model->deleteTableData('tb_size_serial', 'sl', $size);
+
+        }
+
+        echo 'done';
+
+    }
+
     public function deleteSOs(){
         $so_nos = $this->input->post('so_nos');
 

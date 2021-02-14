@@ -5,7 +5,7 @@ class Access_model extends CI_Model {
 
     public function insertingData($tbl, $data)
     {
-	    $this->db->INSERT($tbl, $data);
+	    return $this->db->INSERT($tbl, $data);
         //return $this->db->insert_id();
     }
 

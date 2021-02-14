@@ -374,6 +374,10 @@
                         $("#new_size").val('');
                     }
 
+                    if(data == 'no'){
+                        $("#new_size").css('border-color', '');
+                    }
+
                 }
             });
         }
