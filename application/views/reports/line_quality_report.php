@@ -191,7 +191,7 @@
                 <?php
 //                echo round($line['sum_of_dhu']/$hour, 2);
                 ?>
-                <?php echo $line['dhu']; ?>
+                <a href="<?php echo base_url();?>dashboard/lineQualityDetailReport/<?php echo $line['id'];?>/<?php echo $date;?>" target="_blank"><?php echo $line['dhu']; ?></a>
             </td>
 
             <?php

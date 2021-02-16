@@ -4436,6 +4436,44 @@ class Dashboard_model extends CI_Model {
         return $query;
     }
 
+    public function sameDefectFoundForMultipleTimesPiecesReport($where){
+        $sql = "SELECT t1.pc_tracking_no, t1.defect_code, t3.defect_name, t1.count, t2.line_code
+                FROM
+                (SELECT pc_tracking_no, defect_code, COUNT(pc_tracking_no) AS count, line_id 
+                FROM `tb_defects_tracking` WHERE 1 $where 
+                GROUP BY pc_tracking_no, defect_code, line_id
+                HAVING COUNT(pc_tracking_no) > 1) AS t1
+                
+                LEFT JOIN
+                tb_line AS t2
+                ON t1.line_id=t2.id
+                
+                LEFT JOIN
+                tb_defect_types AS t3
+                ON t1.defect_code=t3.defect_code";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function piecesPassedWithoutAnyDefectReport($where, $where_1){
+        $sql = "SELECT t1.*, t2.line_code FROM 
+                (SELECT * FROM `tb_care_labels` 
+                WHERE pc_tracking_no NOT IN 
+                
+                (SELECT pc_tracking_no FROM tb_defects_tracking 
+                WHERE 1 $where GROUP BY pc_tracking_no)
+                 
+                $where_1 AND access_points=4 AND access_points_status=4) AS t1
+                
+                LEFT JOIN
+                tb_line AS t2
+                ON t1.line_id=t2.id";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
     public function getDateRangeQualityReport($where){
         $sql = "SELECT t1.*, t2.id, t2.line_code 
                 FROM 

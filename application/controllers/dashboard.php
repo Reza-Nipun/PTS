@@ -6198,6 +6198,88 @@ class Dashboard extends CI_Controller {
     }
 
     public function lineQualityDetailReport($line_id, $date){
+        $data['title']='Line Quality Detail';
+
+        $data['line_id'] = $line_id;
+        $data['date'] = $date;
+
+        $data['maincontent'] = $this->load->view('reports/line_quality_detail_report', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
+    public function piecesPassedWithoutAnyDefectReport(){
+        $date = $this->input->post('date');
+        $line_id = $this->input->post('line_id');
+
+        $where = '';
+
+        if($date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d')='$date'";
+        }
+
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id";
+        }
+
+        $where_1 = '';
+
+        if($date != ''){
+            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date'";
+        }
+
+        if($line_id != ''){
+            $where_1 .= " AND line_id=$line_id";
+        }
+
+        $data['defect_report'] = $this->dashboard_model->piecesPassedWithoutAnyDefectReport($where, $where_1);
+
+        echo $this->load->view('reports/pieces_passed_without_any_defect_report', $data);
+
+    }
+
+    public function sameDefectFoundForMultipleTimesPiecesReport(){
+        $date = $this->input->post('date');
+        $line_id = $this->input->post('line_id');
+
+        $where = '';
+
+        if($date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d')='$date'";
+        }
+
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id";
+        }
+
+        $data['date'] = $date;
+        $data['line_id'] = $line_id;
+
+        $data['defect_report'] = $this->dashboard_model->sameDefectFoundForMultipleTimesPiecesReport($where);
+
+        echo $this->load->view('reports/same_defect_found_for_multiple_times_pieces_report', $data);
+
+    }
+
+    public function getPieceDefectScanningDateTime(){
+        $pc_tracking_no = $this->input->post('pc_tracking_no');
+        $defect_code = $this->input->post('defect_code');
+        $line_id = $this->input->post('line_id');
+        $date = $this->input->post('date');
+
+        $res = $this->dashboard_model->selectTableDataRowQuery('*', 'tb_defects_tracking', " AND pc_tracking_no=$pc_tracking_no AND defect_code='$defect_code' AND line_id=$line_id AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d')='$date'");
+
+        $new_row = '';
+
+        foreach ($res as $v){
+
+            $new_row .= '<tr>';
+            $new_row .= '<td class="text-center">'.$v['pc_tracking_no'].'</td>';
+            $new_row .= '<td class="text-center">'.$v['defect_date_time'].'</td>';
+            $new_row .= '</tr>';
+
+        }
+
+        echo $new_row;
 
     }
 
