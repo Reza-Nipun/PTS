@@ -6197,6 +6197,13 @@ class Dashboard extends CI_Controller {
         echo $this->load->view('reports/quality_defect_filter_report', $data);
     }
 
+    public function allLinesQualityDetailReport(){
+        $data['title']='Lines Quality Detail';
+
+        $data['maincontent'] = $this->load->view('reports/all_lines_quality_detail_report', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
     public function lineQualityDetailReport($line_id, $date){
         $data['title']='Line Quality Detail';
 
@@ -6205,6 +6212,29 @@ class Dashboard extends CI_Controller {
 
         $data['maincontent'] = $this->load->view('reports/line_quality_detail_report', $data, true);
         $this->load->view('reports/master', $data);
+    }
+
+    public function piecesPassedWithoutAnyDefectAllLinesReport(){
+        $from_date = $this->input->post('from_date');
+        $to_date = $this->input->post('to_date');
+
+        $where = '';
+
+        if($from_date != '' && $to_date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'";
+        }
+
+        $where_1 = '';
+
+        if($from_date != '' && $to_date != ''){
+            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'";
+        }
+
+
+        $data['defect_report'] = $this->dashboard_model->piecesPassedWithoutAnyDefectReport($where, $where_1);
+
+        echo $this->load->view('reports/pieces_passed_without_any_defect_report', $data);
+
     }
 
     public function piecesPassedWithoutAnyDefectReport(){
@@ -6237,6 +6267,22 @@ class Dashboard extends CI_Controller {
 
     }
 
+    public function sameDefectFoundForMultipleTimesPiecesAllLinesReport(){
+        $from_date = $this->input->post('from_date');
+        $to_date = $this->input->post('to_date');
+
+        $where = '';
+
+        if($from_date != '' && $to_date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d') between '$from_date' AND '$to_date'";
+        }
+
+        $data['defect_report'] = $this->dashboard_model->sameDefectFoundForMultipleTimesPiecesReport($where);
+
+        echo $this->load->view('reports/same_defect_found_for_multiple_times_pieces_report', $data);
+
+    }
+
     public function sameDefectFoundForMultipleTimesPiecesReport(){
         $date = $this->input->post('date');
         $line_id = $this->input->post('line_id');
@@ -6255,6 +6301,45 @@ class Dashboard extends CI_Controller {
         $data['line_id'] = $line_id;
 
         $data['defect_report'] = $this->dashboard_model->sameDefectFoundForMultipleTimesPiecesReport($where);
+
+        echo $this->load->view('reports/same_defect_found_for_multiple_times_pieces_report', $data);
+
+    }
+
+    public function sameDefectFoundForSingleTimesPiecesAllLinesReport(){
+        $from_date = $this->input->post('from_date');
+        $to_date = $this->input->post('to_date');
+
+        $where = '';
+
+        if($from_date != '' && $to_date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d') between '$from_date' AND '$to_date'";
+        }
+
+        $data['defect_report'] = $this->dashboard_model->sameDefectFoundForSingleTimesPiecesReport($where);
+
+        echo $this->load->view('reports/same_defect_found_for_multiple_times_pieces_report', $data);
+
+    }
+
+    public function sameDefectFoundForSingleTimesPiecesReport(){
+        $date = $this->input->post('date');
+        $line_id = $this->input->post('line_id');
+
+        $where = '';
+
+        if($date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d')='$date'";
+        }
+
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id";
+        }
+
+        $data['date'] = $date;
+        $data['line_id'] = $line_id;
+
+        $data['defect_report'] = $this->dashboard_model->sameDefectFoundForSingleTimesPiecesReport($where);
 
         echo $this->load->view('reports/same_defect_found_for_multiple_times_pieces_report', $data);
 

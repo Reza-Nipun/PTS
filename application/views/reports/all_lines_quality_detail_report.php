@@ -21,13 +21,13 @@
 </style>
 <div class="pull-left breadcrumb_admin clear_both">
     <div class="pull-left page_title theme_color">
-        <h1>Line Quality Report</h1>
-        <h2 class="">Line Quality Report...</h2>
+        <h1>All Lines Quality Report</h1>
+        <h2 class="">All Lines Quality Report...</h2>
     </div>
     <div class="pull-right">
         <ol class="breadcrumb">
             <li><a href="<?php echo base_url();?>">Home</a></li>
-            <li class="active">Line Quality Report</li>
+            <li class="active">All Lines Quality Report</li>
         </ol>
     </div>
 </div>
@@ -51,9 +51,20 @@
                                     <option value="1">Duplicate Defects</option>
                                     <option value="2">Single Defects</option>
                                 </select>
-                                <input type="hidden" name="date" id="date" value="<?php echo $date?>" />
-                                <input type="hidden" name="line_id" id="line_id" value="<?php echo $line_id?>" />
                                 <span><b>* Select Report Type </b></span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-inline input-medium default-date-picker" id="from_date" name="from_date" required="required" autocomplete="off" />
+                                    <span><b>* From Date </b></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <input type="text" class="form-control form-control-inline input-medium default-date-picker" id="to_date" name="to_date" required="required" autocomplete="off" />
+                                    <span><b>* To Date </b></span>
+                                </div>
                             </div>
                             <div class="col-md-2">
                                 <button class="btn btn-primary" id="submit_btn" onclick="getDefectDetailReport();">SEARCH</button>
@@ -139,10 +150,17 @@
 
     function getDefectDetailReport() {
         var report_type = $("#report_type").val();
-        var date = $("#date").val();
-        var line_id = $("#line_id").val();
 
-        if(report_type != ''){
+        var from_dt = $("#from_date").val();
+        var to_dt = $("#to_date").val();
+
+        var res1 = from_dt.split("-");
+        var res2 = to_dt.split("-");
+
+        var from_date = res1[2]+'-'+res1[0]+'-'+res1[1];
+        var to_date = res2[2]+'-'+res2[0]+'-'+res2[1];
+
+        if(report_type != '' && from_date != '' && to_date != ''){
 
             if(report_type == 0){
                 $("#loader").css("display", "block");
@@ -150,9 +168,9 @@
                 $("#table_content").empty();
 
                 $.ajax({
-                    url: "<?php echo base_url();?>dashboard/piecesPassedWithoutAnyDefectReport/",
+                    url: "<?php echo base_url();?>dashboard/piecesPassedWithoutAnyDefectAllLinesReport/",
                     type: "POST",
-                    data: {date: date, line_id: line_id},
+                    data: {from_date: from_date, to_date: to_date},
                     dataType: "html",
                     success: function (data) {
                         $("#table_content").empty();
@@ -168,9 +186,9 @@
                 $("#table_content").empty();
 
                 $.ajax({
-                    url: "<?php echo base_url();?>dashboard/sameDefectFoundForMultipleTimesPiecesReport/",
+                    url: "<?php echo base_url();?>dashboard/sameDefectFoundForMultipleTimesPiecesAllLinesReport/",
                     type: "POST",
-                    data: {date: date, line_id: line_id},
+                    data: {from_date: from_date, to_date: to_date},
                     dataType: "html",
                     success: function (data) {
                         $("#table_content").empty();
@@ -186,9 +204,9 @@
                 $("#table_content").empty();
 
                 $.ajax({
-                    url: "<?php echo base_url();?>dashboard/sameDefectFoundForSingleTimesPiecesReport/",
+                    url: "<?php echo base_url();?>dashboard/sameDefectFoundForSingleTimesPiecesAllLinesReport/",
                     type: "POST",
-                    data: {date: date, line_id: line_id},
+                    data: {from_date: from_date, to_date: to_date},
                     dataType: "html",
                     success: function (data) {
                         $("#table_content").empty();

@@ -9026,7 +9026,6 @@ class Access extends CI_Controller {
         $is_bundle_cuff_scanned_line = $cc_check[0]['is_bundle_cuff_scanned_line'];
         $is_cutting_cuff_bundle_ready = $cc_check[0]['is_cutting_cuff_bundle_ready'];
 
-        $part_info = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code IN ('collar_outer', 'cuff_outer')");
 
         if(($bundle_type_status != 'cff.') && ($bundle_type_status != 'clr.') && ($bundle_type_status != 'bdy.')){
             echo 'Failed to Track!';
@@ -9036,16 +9035,15 @@ class Access extends CI_Controller {
                 if($is_cutting_collar_bundle_ready == 1){
                     $this->access_model->collarTracking($bundle_tracking_no, $line_id, $date_time);
 
-                    foreach ($part_info as $p){
+                    $collar_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'collar_outer'");
+                    $cuff_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'cuff_outer'");
 
-                        if($p['part_code'] == "cuff_outer"){
-                            if($is_bundle_cuff_scanned_line == 1){
-                                $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
-                            }
-                        }else{
+                    if(sizeof($cuff_exist) > 0){
+                        if($is_bundle_cuff_scanned_line == 1){
                             $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
                         }
-
+                    }else{
+                        $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
                     }
 
                     echo "Collar Tracked!";
@@ -9060,16 +9058,15 @@ class Access extends CI_Controller {
                 if($is_cutting_cuff_bundle_ready == 1){
                     $this->access_model->cuffTracking($bundle_tracking_no, $line_id, $date_time);
 
-                    foreach ($part_info as $p){
+                    $collar_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'collar_outer'");
+                    $cuff_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'cuff_outer'");
 
-                        if($p['part_code'] == "collar_outer"){
-                            if($is_bundle_collar_scanned_line == 1){
-                                $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
-                            }
-                        }else{
+                    if(sizeof($collar_exist) > 0){
+                        if($is_bundle_collar_scanned_line == 1){
                             $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
                         }
-
+                    }else{
+                        $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
                     }
 
                     echo "Cuff Tracked!";

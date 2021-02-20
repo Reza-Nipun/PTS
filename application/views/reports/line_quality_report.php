@@ -142,7 +142,7 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <h4 class="text-right">
                             Select Date:
                         </h4>
@@ -158,6 +158,9 @@
                     </div>
                     <div class="col-md-1" id="loader" style="display: none;">
                         <div class="loader"></div>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="<?php echo base_url();?>dashboard/allLinesQualityDetailReport" class="btn btn-primary"><i class="fa fa-list"></i> Lines Detail Report</a>
                     </div>
                 </div>
             </div>

@@ -202,6 +202,8 @@
                 dataType: "html",
                 success: function (data) {
 
+                    console.log(data);
+
                     if(data == "Failed to Track!"){
                         $("#er_msg").append(care_label_no+" Failed to Track!");
                     }

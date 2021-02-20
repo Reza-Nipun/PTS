@@ -4437,9 +4437,9 @@ class Dashboard_model extends CI_Model {
     }
 
     public function sameDefectFoundForMultipleTimesPiecesReport($where){
-        $sql = "SELECT t1.pc_tracking_no, t1.defect_code, t3.defect_name, t1.count, t2.line_code
+        $sql = "SELECT t1.pc_tracking_no, t1.defect_code, t1.count, t1.line_id, t1.defect_date, t2.line_code, t3.defect_name
                 FROM
-                (SELECT pc_tracking_no, defect_code, COUNT(pc_tracking_no) AS count, line_id 
+                (SELECT pc_tracking_no, defect_code, COUNT(pc_tracking_no) AS count, line_id, DATE_FORMAT(`defect_date_time`, '%Y-%m-%d') AS defect_date 
                 FROM `tb_defects_tracking` WHERE 1 $where 
                 GROUP BY pc_tracking_no, defect_code, line_id
                 HAVING COUNT(pc_tracking_no) > 1) AS t1
@@ -4450,7 +4450,31 @@ class Dashboard_model extends CI_Model {
                 
                 LEFT JOIN
                 tb_defect_types AS t3
-                ON t1.defect_code=t3.defect_code";
+                ON t1.defect_code=t3.defect_code
+                
+                ORDER BY (t2.line_code * 1) ASC";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function sameDefectFoundForSingleTimesPiecesReport($where){
+        $sql = "SELECT t1.pc_tracking_no, t1.defect_code, t1.count, t1.line_id, t1.defect_date, t2.line_code, t3.defect_name
+                FROM
+                (SELECT pc_tracking_no, defect_code, COUNT(pc_tracking_no) AS count, line_id, DATE_FORMAT(`defect_date_time`, '%Y-%m-%d') AS defect_date 
+                FROM `tb_defects_tracking` WHERE 1 $where 
+                GROUP BY pc_tracking_no, defect_code, line_id
+                HAVING COUNT(pc_tracking_no) = 1) AS t1
+                
+                LEFT JOIN
+                tb_line AS t2
+                ON t1.line_id=t2.id
+                
+                LEFT JOIN
+                tb_defect_types AS t3
+                ON t1.defect_code=t3.defect_code
+                
+                ORDER BY (t2.line_code * 1) ASC";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -4462,13 +4486,15 @@ class Dashboard_model extends CI_Model {
                 WHERE pc_tracking_no NOT IN 
                 
                 (SELECT pc_tracking_no FROM tb_defects_tracking 
-                WHERE 1 $where GROUP BY pc_tracking_no)
+                WHERE 1 $where GROUP BY pc_tracking_no, line_id)
                  
                 $where_1 AND access_points=4 AND access_points_status=4) AS t1
                 
                 LEFT JOIN
                 tb_line AS t2
-                ON t1.line_id=t2.id";
+                ON t1.line_id=t2.id
+                
+                ORDER BY (t2.line_code * 1) ASC";
 
         $query = $this->db->query($sql)->result_array();
         return $query;

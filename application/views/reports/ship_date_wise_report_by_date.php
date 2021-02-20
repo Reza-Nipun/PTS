@@ -209,16 +209,13 @@
         var from_dt = $("#from_date").val();
         var to_dt = $("#to_date").val();
 
-//
         var res1 = from_dt.split("-");
         var res2 = to_dt.split("-");
 
         var from_date = res1[2]+'-'+res1[0]+'-'+res1[1];
         var to_date = res2[2]+'-'+res2[0]+'-'+res2[1];
 
-        var month_year = $("#src_date").val();
-
-        if(month_year != '' && brands != null && po_type != ''){
+        if(from_date != '' && to_date != '' && brands != null && po_type != ''){
             $("#loader").css("display", "block");
 
             $("#table_content").empty();

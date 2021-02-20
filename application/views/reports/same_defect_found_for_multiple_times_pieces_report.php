@@ -19,7 +19,7 @@
             <td class="hidden-phone center"><?php echo $d['pc_tracking_no'];?></td>
             <td class="hidden-phone center"><?php echo $d['defect_code'];?></td>
             <td class="hidden-phone center"><?php echo $d['defect_name'];?></td>
-            <td class="hidden-phone center" data-toggle="modal" data-target="#exampleModal2" onclick="showPieceDefectScanningTimes('<?php echo $d['pc_tracking_no'];?>', '<?php echo $d['defect_code'];?>', '<?php echo $d['defect_name'];?>', '<?php echo $line_id;?>', '<?php echo $date;?>')">
+            <td class="hidden-phone center" data-toggle="modal" data-target="#exampleModal2" onclick="showPieceDefectScanningTimes('<?php echo $d['pc_tracking_no'];?>', '<?php echo $d['defect_code'];?>', '<?php echo $d['defect_name'];?>', '<?php echo $d['line_id'];?>', '<?php echo $d['defect_date'];?>')">
                 <?php echo $d['count'];?>
             </td>
         </tr>
