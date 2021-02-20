@@ -32,12 +32,13 @@ foreach ($po_items as $v_po_count) {
                             </div>
 
                             <span style="font-size: 20px;">
-                                SAP No.: <?php echo $cut_order_summary[0]['po_no'];?> /
-                                Cut No.: <?php echo $cut_order_summary[0]['cut_no'];?> /
-                                Style_Name: <?php echo $cut_order_summary[0]['style_name'];?> /
+                                GROUP SO: <?php echo $cut_order_summary[0]['po_no'];?> /
+                                Cut: <?php echo $cut_order_summary[0]['cut_no'];?> /
+                                PO: <?php echo $cut_order_summary[0]['purchase_order'];?> /
+                                StyleName: <?php echo $cut_order_summary[0]['style_name'];?> /
                                 Quality: <?php echo $cut_order_summary[0]['quality'];?> /
                                 Color: <?php echo $cut_order_summary[0]['color'];?> /
-                                Ex-Fac Date: <?php echo $cut_order_summary[0]['ex_factory_date'];?> /
+                                Ex-Fac: <?php echo $cut_order_summary[0]['ex_factory_date'];?> /
                                 <?php
                                 echo ($cut_order_summary[0]['is_lay_complete'] == 1 ? "Lay Complete /" : "");
                                 echo ($cut_order_summary[0]['is_cutting_complete'] == 1 ? "Cut Complete /" : "");
