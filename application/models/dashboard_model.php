@@ -4509,6 +4509,20 @@ class Dashboard_model extends CI_Model {
         return $query;
     }
 
+    public function getQtyPassedRightAtFirstTime($where, $where_1){
+        $sql = "SELECT COUNT(t1.pc_tracking_no) AS rft_qty, t1.line_id FROM 
+                (SELECT pc_tracking_no, line_id FROM `tb_care_labels` 
+                WHERE pc_tracking_no NOT IN 
+                
+                (SELECT pc_tracking_no FROM tb_defects_tracking 
+                WHERE 1 $where)
+                 
+                $where_1 AND access_points=4 AND access_points_status=4) AS t1";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
     public function getDateRangeQualityReport($where){
         $sql = "SELECT t1.*, t2.id, t2.line_code 
                 FROM 

@@ -320,27 +320,33 @@ if(isset($line_target)){
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-
-                    <div class="col-md-6">
-                        <div class="information green_info">
-                            <div class="information_inner" id="man_power">
-                                <div class="info green_symbols"><i class="fa fa-users icon"></i></div>
-                                <span style="font-size: 25px;">MAN POWER</span>
-                                <h1 class="bolded"><?php echo $man_power;?></h1>
-                            </div>
+                <div class="col-md-2">
+                    <div class="information green_info">
+                        <div class="information_inner" id="rft">
+                            <span style="font-size: 25px;">RFT QTY</span>
+                            <h1 class="bolded"><?php echo $rft_qty;?></h1>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                </div>
+                <div class="col-md-2">
+                    <div class="information green_info">
+                        <div class="information_inner" id="man_power">
+                            <div class="info green_symbols"><i class="fa fa-users icon"></i></div>
+                            <span style="font-size: 25px;">MAN POWER</span>
+                            <h1 class="bolded"><?php echo $man_power;?></h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
 
-                        <div class="information red_info">
-                            <div class="information_inner" id="efficiency">
-                                <div class="info red_symbols"><img width="85" height="85" src="<?php echo base_url();?>assets/images/efficiency_logo.png"></div>
-                                <span style="font-size: 25px;">EFFICIENCY</span>
-                                <h1 class="bolded">
-                                    <?php
-                                        $minutes = ($work_time[0]['working_time_diff_to_sec'] / 60);
-                                        $work_minute = $minutes * $man_power;
+                    <div class="information red_info">
+                        <div class="information_inner" id="efficiency">
+                            <div class="info red_symbols"><img width="85" height="85" src="<?php echo base_url();?>assets/images/efficiency_logo.png"></div>
+                            <span style="font-size: 25px;">EFFICIENCY</span>
+                            <h1 class="bolded">
+                                <?php
+                                    $minutes = ($work_time[0]['working_time_diff_to_sec'] / 60);
+                                    $work_minute = $minutes * $man_power;
 
 //                                    echo '<pre>';
 //                                    print_r($minutes.' '.$man_power);
@@ -350,34 +356,33 @@ if(isset($line_target)){
 //                                    print_r('Work Min: '.$work_minute);
 //                                    echo '</pre>';
 
-                                        $produce_minute = 0;
-                                        $average_produce_min = 0;
-                                        foreach ($get_smv_list as $s){
-                                            $smv = $s['smv'];
-                                            $total_line_output = $s['total_line_output'];
+                                    $produce_minute = 0;
+                                    $average_produce_min = 0;
+                                    foreach ($get_smv_list as $s){
+                                        $smv = $s['smv'];
+                                        $total_line_output = $s['total_line_output'];
 
-                                            $produce_minute += ($total_line_output * $smv);
+                                        $produce_minute += ($total_line_output * $smv);
 
 //                                            echo '<pre>';
 //                                            print_r($smv.' '.$total_line_output);
 //                                            echo '</pre>';
-                                        }
+                                    }
 
 //                                    echo '<pre>';
 //                                    print_r('Prod Min: '.$produce_minute);
 //                                    echo '</pre>';
 
-                                        $eff = ($produce_minute/$work_minute) * 100;
+                                    $eff = ($produce_minute/$work_minute) * 100;
 
-                                        echo $line_efficiency = sprintf('%0.2f', $eff);
-                                    ?>
-                                </h1>
-                            </div>
+                                    echo $line_efficiency = sprintf('%0.2f', $eff);
+                                ?>
+                            </h1>
                         </div>
-
                     </div>
 
                 </div>
+
 
             </div>
 
@@ -409,6 +414,7 @@ if(isset($line_target)){
             $("#running_pos").load('<?php echo base_url();?>dashboard/getRunningPoQtyReload/<?php echo $line_id;?>');
             $("#upcoming_pos").load('<?php echo base_url();?>dashboard/getUpcomingPosReload/<?php echo $line_id;?>');
             $("#quality").load('<?php echo base_url();?>dashboard/getQualityDefectsReload/<?php echo $line_id;?>');
+            $("#rft").load('<?php echo base_url();?>dashboard/getRftReload/<?php echo $line_id;?>');
 
 
             '<?php if($line_id != ""){ ?>'

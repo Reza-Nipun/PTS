@@ -6158,6 +6158,39 @@ class Dashboard extends CI_Controller {
         echo $data['maincontent'] = $this->load->view('line_quality_defects_reload', $data, true);
     }
 
+    public function getRftReload($line_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $time=$datex->format('H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $where = '';
+
+        if($date != ''){
+            $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d')='$date'";
+        }
+
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id";
+        }
+
+        $where_1 = '';
+
+        if($date != ''){
+            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date'";
+        }
+
+        if($line_id != ''){
+            $where_1 .= " AND line_id=$line_id";
+        }
+
+        $rft_info = $this->dashboard_model->getQtyPassedRightAtFirstTime($where, $where_1);
+
+        $data['rft_qty'] = $rft_info[0]['rft_qty'];
+
+        echo $data['maincontent'] = $this->load->view('line_right_at_first_time_qty_reload', $data, true);
+    }
+
     public function lineQualityReport(){
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         $date_time=$datex->format('Y-m-d H:i:s');
