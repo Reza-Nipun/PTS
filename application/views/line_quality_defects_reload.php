@@ -46,7 +46,7 @@
                 <b>DHU(%): </b> <?php echo $dhu_res;?>
             </td>
             <td style="font-size: 25px;">
-                <b>Defect Count: </b> <?php echo $total_no_of_defect;?>
+                <b>Defective Piece: </b> <?php echo $total_no_of_defect;?>
             </td>
         </tr>
     <?php

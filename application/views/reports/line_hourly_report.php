@@ -129,7 +129,9 @@
         $grand_total_line_target_per_hour = 0;
         $grand_total_line_mp = 0;
         $grand_total_eff = 0;
+        $grand_total_dhu = 0;
         $grand_average_eff = 0;
+        $grand_average_dhu = 0;
 
         $count_line = 0;
 
@@ -244,10 +246,12 @@
             $grand_total_line_target_per_hour += $line_target_per_hour;
             $grand_total_line_mp += $man_power;
             $grand_total_eff += $line_rep[0]['efficiency'];
+            $grand_total_dhu += $dhu;
 
         }
 
         $grand_average_eff = round($grand_total_eff/$count_line, 2);
+        $grand_average_dhu = round($grand_total_dhu/$count_line, 2);
         ?>
 
         </tbody>
@@ -256,10 +260,10 @@
                 <th align="center" style="font-size: 20px; font-weight: 900;">Total</th>
                 <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_target?></th>
                 <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($grand_total_line_target_per_hour);?></th>
-                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_line_mp?></th>
-                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_eff?></th>
-                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo ''?></th>
-                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo ''?></th>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_line_mp;?></th>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_eff;?></th>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_dhu;?></th>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo '';?></th>
                 <?php
                 foreach ($hours as $h_2){
                     $hour_summary = $this->method_call->getHourlySummaryReport($h_2['start_time'], $h_2['end_time']);
@@ -284,6 +288,9 @@
                 $floor_total_efficiency = 0;
                 $floor_average_efficiency = 0;
 
+                $floor_total_dhu = 0;
+                $floor_average_dhu = 0;
+
                 $floor_total_line_mp = 0;
 
                 $floor_id = $floor['id'];
@@ -298,10 +305,7 @@
                 foreach ($floor_eff as $fe){
                     if($fe['efficiency'] > 0){
                         $floor_total_efficiency += $fe['efficiency'];
-
-    //                            echo '<pre>';
-    //                            print_r($floor_total_efficiency);
-    //                            echo '</pre>';
+                        $floor_total_dhu += $fe['dhu'];
 
                         $count_lines++;
                     }
@@ -326,6 +330,7 @@
                 }
 
                 $floor_average_efficiency = round($floor_total_efficiency/$count_lines, 2);
+                $floor_average_dhu = round($floor_total_dhu/$count_lines, 2);
 //                        $floor_line_target_per_hour = $floor_total_target / 10;
             ?>
             <tr>
@@ -334,7 +339,7 @@
                 <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($floor_line_target_per_hour);?></th>
                 <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_total_line_mp?></th>
                 <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_average_efficiency?></th>
-                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo ''?></th>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_average_dhu;?></th>
                 <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo ''?></th>
                 <?php
 

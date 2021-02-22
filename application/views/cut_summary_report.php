@@ -19,9 +19,10 @@
                         <tr>
                             <th>SAP No.: <?php echo $sap_info[0]['po_no'];?></th>
                             <th>ExFac: <?php echo $sap_info[0]['ex_factory_date'];?></th>
-                            <th>Style: <?php echo $sap_info[0]['style_no'].' ~ '.$sap_info[0]['style_name'];?></th>
+                            <th colspan="2">PO: <?php echo $sap_info[0]['purchase_order'];?></th>
                         </tr>
                         <tr>
+                            <th>Style: <?php echo $sap_info[0]['style_no'].' ~ '.$sap_info[0]['style_name'];?></th>
                             <th>Quality-Color: <?php echo $sap_info[0]['quality'].' ~ '.$sap_info[0]['color'];?></th>
                             <th>Total Order: <?php echo $sap_info[0]['total_order_qty'];?></th>
                             <th>Cut Qty: <?php echo $cut_info[0]['total_cut_qty'];?></th>

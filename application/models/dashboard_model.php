@@ -975,11 +975,20 @@ class Dashboard_model extends CI_Model {
         $where= '';
         if($defect_code != ''){
             $where .= " AND defect_code='$defect_code'";
+
+            $sql = "SELECT COUNT(id) AS count_defect FROM `tb_defects_tracking` 
+                    WHERE DATE_FORMAT(defect_date_time, '%Y-%m-%d')='$date' 
+                    AND line_id=$line_id $where";
+        }else{
+
+            $sql = "SELECT COUNT(pc_tracking_no) AS count_defect
+                    FROM (SELECT pc_tracking_no FROM `tb_defects_tracking` 
+                    WHERE DATE_FORMAT(defect_date_time, '%Y-%m-%d')='$date' 
+                    AND line_id=$line_id GROUP BY pc_tracking_no, defect_code) AS t1";
+
         }
 
-        $sql = "SELECT COUNT(id) AS count_defect FROM `tb_defects_tracking` 
-                WHERE DATE_FORMAT(defect_date_time, '%Y-%m-%d')='$date' 
-                AND line_id=$line_id $where";
+
 
         $query = $this->db->query($sql)->result_array();
         return $query;
