@@ -3,7 +3,7 @@
 
     <?php if(!empty($qa_major_defects)){ ?>
     <table class="table table-bordered table-responsive">
-        <tr class="row center">
+        <tr class="row">
             <td style="font-size: 25px;">
                 <?php
                 $dhu = 0;
@@ -52,9 +52,9 @@
     <?php
     foreach ($qa_major_defects as $v){ ?>
 
-        <tr class="row center">
+        <tr class="row">
             <td style="font-size: 25px;"><b><?php echo $v['defect_name'];?></b></td>
-            <td style="font-size: 25px;"><b><?php echo $v['defect_count'];?></b></td>
+            <td style="font-size: 25px;" class="text-center"><b><?php echo $v['defect_count'];?></b></td>
         </tr>
 
     <?php } ?>

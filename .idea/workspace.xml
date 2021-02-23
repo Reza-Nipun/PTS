@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a6fdf3a7-84b8-4c03-909e-2a58cce5012a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/dashboard.php" afterPath="$PROJECT_DIR$/application/controllers/dashboard.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/models/dashboard_model.php" afterPath="$PROJECT_DIR$/application/models/dashboard_model.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/reports/line_performance_dashboard.php" afterPath="$PROJECT_DIR$/application/views/reports/line_performance_dashboard.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/line_output_summary_reload.php" afterPath="$PROJECT_DIR$/application/views/line_output_summary_reload.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/line_performance_dashboard.php" afterPath="$PROJECT_DIR$/application/views/line_performance_dashboard.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/line_quality_defects_reload.php" afterPath="$PROJECT_DIR$/application/views/line_quality_defects_reload.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php" afterPath="$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/line_running_po_qty_reload.php" afterPath="$PROJECT_DIR$/application/views/line_running_po_qty_reload.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -20,12 +21,12 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="dashboard.php" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="dashboard.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/controllers/dashboard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="5328" column="86" lean-forward="true" selection-start-line="5328" selection-start-column="86" selection-end-line="5328" selection-end-column="86" />
+            <state relative-caret-position="166">
+              <caret line="6157" column="82" lean-forward="false" selection-start-line="6157" selection-start-column="55" selection-end-line="6157" selection-end-column="82" />
               <folding>
                 <marker date="1613992784740" expanded="true" signature="47747:48611" ph="..." />
                 <marker date="1613992784740" expanded="true" signature="49337:50347" ph="..." />
@@ -37,12 +38,48 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="line_quality_defects_reload.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/application/views/line_quality_defects_reload.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="48" column="74" lean-forward="true" selection-start-line="48" selection-start-column="74" selection-end-line="48" selection-end-column="74" />
+              <folding>
+                <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#1;n#tr#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="line_running_po_qty_reload.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/views/line_running_po_qty_reload.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="49" lean-forward="false" selection-start-line="0" selection-start-column="49" selection-end-line="0" selection-end-column="49" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="line_performance_dashboard.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/views/line_performance_dashboard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="179" column="14" lean-forward="true" selection-start-line="179" selection-start-column="14" selection-end-line="179" selection-end-column="14" />
-              <folding />
+            <state relative-caret-position="319">
+              <caret line="353" column="79" lean-forward="false" selection-start-line="353" selection-start-column="79" selection-end-line="353" selection-end-column="79" />
+              <folding>
+                <element signature="n#style#0;n#center#0;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#center#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#center#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#center#0;n#div#2;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1614060937322" expanded="false" signature="6697:6726" ph="..." />
+                <marker date="1614060937322" expanded="false" signature="6989:7019" ph="..." />
+                <marker date="1614060937322" expanded="false" signature="7199:7217" ph="..." />
+                <marker date="1614060937322" expanded="false" signature="7317:7343" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -51,8 +88,10 @@
         <entry file="file://$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="45" lean-forward="true" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
-              <folding />
+              <caret line="0" column="52" lean-forward="true" selection-start-line="0" selection-start-column="52" selection-end-line="0" selection-end-column="52" />
+              <folding>
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -60,11 +99,9 @@
       <file leaf-file-name="line_performance_dashboard.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/views/reports/line_performance_dashboard.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="325" column="66" lean-forward="false" selection-start-line="325" selection-start-column="66" selection-end-line="325" selection-end-column="66" />
-              <folding>
-                <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#3;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
+            <state relative-caret-position="183">
+              <caret line="416" column="100" lean-forward="true" selection-start-line="416" selection-start-column="100" selection-end-line="416" selection-end-column="100" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -72,8 +109,8 @@
       <file leaf-file-name="dashboard_model.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/models/dashboard_model.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="4519" column="80" lean-forward="true" selection-start-line="4519" selection-start-column="80" selection-end-line="4519" selection-end-column="80" />
+            <state relative-caret-position="76823">
+              <caret line="4519" column="80" lean-forward="false" selection-start-line="4519" selection-start-column="80" selection-end-line="4519" selection-end-column="80" />
               <folding>
                 <marker date="1613992716600" expanded="true" signature="541:581" ph="SELECT ${$fi... ${$table_name}" />
                 <marker date="1613992716600" expanded="true" signature="748:1075" ph="SELECT t2.id... *" />
@@ -588,11 +625,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>piecesPassedWithoutAnyDefect</find>
-      <find>sameDefectFoundForMultipleTimesPieces</find>
-      <find>piecesPassedWithoutAnyDefectAllLinesReport</find>
-      <find>sameDefectFoundForMultipleTimesPiecesAllLinesReport</find>
-      <find>sameDefectFoundForMultipleTimesPiecesReport</find>
       <find>sameDefectFoundForSingleTimesPieces</find>
       <find>sameDefectFoundForSingleTimesPiecesReport</find>
       <find>dailyPerformanceReportNew</find>
@@ -610,14 +642,19 @@
       <find>getFloorSummaryReport</find>
       <find>linePerformanceDashboard</find>
       <find>linePerformanceDashboard(</find>
-      <find>getQualityDefectsReload</find>
       <find>getUpcomingPosReload</find>
       <find>piecesPassedWithoutAnyDefectReport</find>
       <find>getFloorLineOutputReport</find>
-      <find>getRunningPoQtyReload</find>
       <find>same</find>
       <find>getrft</find>
       <find>linePerformanceDashboardNew</find>
+      <find>rft</find>
+      <find>getLineOutputSummaryReload</find>
+      <find>getLineFinishingAlterReload</find>
+      <find>finishing_alter</find>
+      <find>getRunningPoQtyReload</find>
+      <find>running_pos</find>
+      <find>getQualityDefectsReload</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -626,8 +663,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/application/views/upload_employee_skills.php" />
-        <option value="$PROJECT_DIR$/application/views/edit_employee_skill.php" />
         <option value="$PROJECT_DIR$/application/views/operation_list.php" />
         <option value="$PROJECT_DIR$/application/views/upload_style_smv.php" />
         <option value="$PROJECT_DIR$/application/views/style_smv_list.php" />
@@ -669,14 +704,16 @@
         <option value="$PROJECT_DIR$/application/views/bundle_summary_tbl_new.php" />
         <option value="$PROJECT_DIR$/application/views/reports/daily_sewing_performance_report_by_today.php" />
         <option value="$PROJECT_DIR$/application/views/cut_summary_report.php" />
-        <option value="$PROJECT_DIR$/application/views/line_quality_defects_reload.php" />
         <option value="$PROJECT_DIR$/application/models/access_model.php" />
         <option value="$PROJECT_DIR$/application/views/reports/line_hourly_report.php" />
-        <option value="$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php" />
         <option value="$PROJECT_DIR$/application/models/dashboard_model.php" />
         <option value="$PROJECT_DIR$/application/controllers/dashboard.php" />
         <option value="$PROJECT_DIR$/application/views/reports/line_performance_dashboard.php" />
+        <option value="$PROJECT_DIR$/application/views/line_output_summary_reload.php" />
         <option value="$PROJECT_DIR$/application/views/line_performance_dashboard.php" />
+        <option value="$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php" />
+        <option value="$PROJECT_DIR$/application/views/line_running_po_qty_reload.php" />
+        <option value="$PROJECT_DIR$/application/views/line_quality_defects_reload.php" />
       </list>
     </option>
   </component>
@@ -1936,12 +1973,13 @@
       <workItem from="1613619666002" duration="2933000" />
       <workItem from="1613793797202" duration="5604000" />
       <workItem from="1613801722358" duration="2852000" />
-      <workItem from="1613969134228" duration="8517000" />
+      <workItem from="1613969134228" duration="8777000" />
+      <workItem from="1614059752041" duration="1652000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6684817000" />
+    <option name="totallyTimeSpent" value="6686729000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -1979,21 +2017,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/application/views/care_label_washing.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3553">
-          <caret line="209" column="56" lean-forward="false" selection-start-line="209" selection-start-column="56" selection-end-line="209" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/controllers/welcome.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="96" column="29" lean-forward="true" selection-start-line="96" selection-start-column="29" selection-end-line="96" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/views/404.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -2173,7 +2196,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="91">
           <caret line="115" column="0" lean-forward="true" selection-start-line="115" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2195,7 +2217,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="162" column="147" lean-forward="false" selection-start-line="162" selection-start-column="147" selection-end-line="162" selection-end-column="147" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2217,7 +2238,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3536">
           <caret line="208" column="50" lean-forward="false" selection-start-line="208" selection-start-column="50" selection-end-line="208" selection-end-column="50" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2225,7 +2245,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="363">
           <caret line="136" column="92" lean-forward="true" selection-start-line="136" selection-start-column="92" selection-end-line="136" selection-end-column="92" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2248,7 +2267,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1649">
           <caret line="97" column="12" lean-forward="true" selection-start-line="97" selection-start-column="12" selection-end-line="97" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2256,7 +2274,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
           <caret line="17" column="77" lean-forward="false" selection-start-line="17" selection-start-column="77" selection-end-line="17" selection-end-column="77" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2264,7 +2281,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="34" column="88" lean-forward="true" selection-start-line="34" selection-start-column="88" selection-end-line="34" selection-end-column="88" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2272,7 +2288,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="346">
           <caret line="102" column="63" lean-forward="false" selection-start-line="102" selection-start-column="63" selection-end-line="102" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2280,7 +2295,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2387,14 +2401,6 @@
             <marker date="1613471169999" expanded="true" signature="484404:484455" ph="..." />
             <marker date="1613471169999" expanded="true" signature="486504:486574" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/line_quality_defects_reload.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="55" column="65" lean-forward="false" selection-start-line="55" selection-start-column="65" selection-end-line="55" selection-end-column="65" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3133,14 +3139,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="282" column="0" lean-forward="true" selection-start-line="282" selection-start-column="0" selection-end-line="282" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/models/dashboard_model.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="4519" column="80" lean-forward="true" selection-start-line="4519" selection-start-column="80" selection-end-line="4519" selection-end-column="80" />
+        <state relative-caret-position="76823">
+          <caret line="4519" column="80" lean-forward="false" selection-start-line="4519" selection-start-column="80" selection-end-line="4519" selection-end-column="80" />
           <folding>
             <marker date="1613992716600" expanded="true" signature="541:581" ph="SELECT ${$fi... ${$table_name}" />
             <marker date="1613992716600" expanded="true" signature="748:1075" ph="SELECT t2.id... *" />
@@ -3643,42 +3648,82 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php">
+    <entry file="file://$PROJECT_DIR$/application/views/reports/line_performance_dashboard.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="45" lean-forward="true" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
+        <state relative-caret-position="183">
+          <caret line="416" column="100" lean-forward="true" selection-start-line="416" selection-start-column="100" selection-end-line="416" selection-end-column="100" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/reports/line_performance_dashboard.php">
+    <entry file="file://$PROJECT_DIR$/application/views/line_right_at_first_time_qty_reload.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="325" column="66" lean-forward="false" selection-start-line="325" selection-start-column="66" selection-end-line="325" selection-end-column="66" />
+        <state relative-caret-position="0">
+          <caret line="0" column="52" lean-forward="true" selection-start-line="0" selection-start-column="52" selection-end-line="0" selection-end-column="52" />
           <folding>
-            <element signature="n#style#0;n#span#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#3;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/line_output_summary_reload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="43" column="87" lean-forward="false" selection-start-line="43" selection-start-column="87" selection-end-line="43" selection-end-column="87" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/line_running_po_qty_reload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="49" lean-forward="false" selection-start-line="0" selection-start-column="49" selection-end-line="0" selection-end-column="49" />
+          <folding>
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/views/line_performance_dashboard.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="179" column="14" lean-forward="true" selection-start-line="179" selection-start-column="14" selection-end-line="179" selection-end-column="14" />
-          <folding />
+        <state relative-caret-position="319">
+          <caret line="353" column="79" lean-forward="false" selection-start-line="353" selection-start-column="79" selection-end-line="353" selection-end-column="79" />
+          <folding>
+            <element signature="n#style#0;n#center#0;n#div#0;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#center#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#center#0;n#div#1;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#center#0;n#div#2;n#div#0;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1614060937322" expanded="false" signature="6697:6726" ph="..." />
+            <marker date="1614060937322" expanded="false" signature="6989:7019" ph="..." />
+            <marker date="1614060937322" expanded="false" signature="7199:7217" ph="..." />
+            <marker date="1614060937322" expanded="false" signature="7317:7343" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/dashboard.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="5328" column="86" lean-forward="true" selection-start-line="5328" selection-start-column="86" selection-end-line="5328" selection-end-column="86" />
+        <state relative-caret-position="166">
+          <caret line="6157" column="82" lean-forward="false" selection-start-line="6157" selection-start-column="55" selection-end-line="6157" selection-end-column="82" />
           <folding>
             <marker date="1613992784740" expanded="true" signature="47747:48611" ph="..." />
             <marker date="1613992784740" expanded="true" signature="49337:50347" ph="..." />
             <marker date="1613992784740" expanded="true" signature="80367:80401" ph="..." />
             <marker date="1613992784740" expanded="true" signature="259777:259856" ph="..." />
             <marker date="1613992784740" expanded="true" signature="261623:261704" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/line_quality_defects_reload.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="48" column="74" lean-forward="true" selection-start-line="48" selection-start-column="74" selection-end-line="48" selection-end-column="74" />
+          <folding>
+            <element signature="n#style#0;n#td#0;n#tr#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#1;n#tr#0;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

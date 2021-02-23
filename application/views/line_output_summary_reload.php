@@ -40,8 +40,8 @@ $(document).ready(function(){
             theme: "theme2",
             animationEnabled: true,
             title: {
-//                text: "Target: <?php //echo ($line_target != '' ? $line_target : 0);?>// | Output: <?php //echo ($line_output != '' ? $line_output : 0);?>// | Balance: <?php //echo ($balance != '' && $balance > 0 ? $balance : 0);?>//"
-                text: "Target:<?php echo ($line_target != '' ? $line_target : 0);?> | BLNC:<?php echo ($balance != '' && $balance > 0 ? $balance : 0);?> | Rate:<?php echo ($achievement_rate != '' && $achievement_rate > 0 ? $achievement_rate : 0).'%';?>",
+//                text: "Target:<?php //echo ($line_target != '' ? $line_target : 0);?>// | BLNC:<?php //echo ($balance != '' && $balance > 0 ? $balance : 0);?>// | Rate:<?php //echo ($achievement_rate != '' && $achievement_rate > 0 ? $achievement_rate : 0).'%';?>//",
+                text: "TARGET:<?php echo ($line_target != '' ? $line_target : 0);?> | BALANCE:<?php echo ($balance != '' && $balance > 0 ? $balance : 0);?>",
                 fontSize: 28
             },
             data: [{
