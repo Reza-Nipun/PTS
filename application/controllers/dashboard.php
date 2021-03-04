@@ -6177,7 +6177,7 @@ class Dashboard extends CI_Controller {
         $where_1 = '';
 
         if($date != ''){
-            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date'";
+            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date' AND is_manually_adjusted=0";
         }
 
         if($line_id != ''){
@@ -6260,7 +6260,7 @@ class Dashboard extends CI_Controller {
         $where_1 = '';
 
         if($from_date != '' && $to_date != ''){
-            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date'";
+            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d') BETWEEN '$from_date' AND '$to_date' AND is_manually_adjusted=0";
         }
 
 
@@ -6287,7 +6287,7 @@ class Dashboard extends CI_Controller {
         $where_1 = '';
 
         if($date != ''){
-            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date'";
+            $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date' AND is_manually_adjusted=0";
         }
 
         if($line_id != ''){
