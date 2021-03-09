@@ -6476,12 +6476,13 @@ class Access extends CI_Controller {
         $data['user_name'] = $this->session->userdata('user_name');
         $data['user_description'] = $this->session->userdata('user_description');
         $data['access_points'] = $this->session->userdata('access_points');
+        $buyer_condition = $this->session->userdata('buyer_condition');
         $data['msg'] = '';
 
         $where = '';
-        if($line_id != 0 && $line_id != ''){
-//            $where .= " AND t13.line_id=$line_id"; // Previous Query Condition
-            $where .= " AND planned_line_id=$line_id OR line_id=$line_id"; // New Query Condition
+        if($buyer_condition != ''){
+//            $where .= " AND planned_line_id=$line_id OR line_id=$line_id"; // Previous Query Condition
+            $where .= " AND brand IN ($buyer_condition)"; // New Query Condition
         }
 
 //        $data['prod_summary'] = $this->access_model->getProducitonSummaryReportForCC($where); // Previous Query
