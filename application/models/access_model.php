@@ -2877,7 +2877,7 @@ class Access_model extends CI_Model {
 
     public function getLineProductionReport($line_no){
         $sql = "SELECT A.min_line_input_date_time, A.min_line_output_date,
-                B.*, C.line_name, D.collar_bndl_qty, D.cuff_bndl_qty, D.po_type
+                B.*, C.line_name, D.collar_bndl_qty, D.cuff_bndl_qty, D.po_type, D.approved_ex_factory_date
                 
                 FROM (SELECT po_no, so_no, line_id, min_line_input_date_time, min_line_output_date 
                 FROM `tb_line_running_pos` WHERE line_id=$line_no) as A

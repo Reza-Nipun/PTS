@@ -82,7 +82,7 @@
 
                                 ?>
                             </td>
-                            <td class="center"><?php echo $v['ex_factory_date']; ?></td>
+                            <td class="center"><?php echo $v['approved_ex_factory_date']; ?></td>
                             <td class="center"><?php echo $v['total_order_qty']; ?></td>
 <!--                            <td class="center">--><?php //echo $v['total_cut_qty']; ?><!--</td>-->
 <!--                            <td class="center">--><?php //echo $v['total_cut_input_qty']; ?><!--</td>-->
