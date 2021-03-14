@@ -103,6 +103,7 @@
         $total_sum_efficiency=0;
         $count_lines=0;
         $over_time_qty = 0;
+        $total_line_rft_qty=0;
 
         foreach ($lines as $v){
 
@@ -178,6 +179,8 @@
             $total_line_output = ($line_output + $over_time_qty);
 
             $grand_total_output_lines += $total_line_output;
+
+            $total_line_rft_qty = $line_pre_info[0]['rft_qty'];
             ?>
             <tr>
                 <td align="center"><?php echo $v['line_code'];?></td>
@@ -227,8 +230,8 @@
                 'produce_minute_4' => $produce_minute_4,
                 'work_minute_4' => $work_minute_4,
                 'work_hour_4' => $work_hour_4,
-                'remarks' => $remarks
-
+                'remarks' => $remarks,
+                'rft_qty' => $total_line_rft_qty,
             );
 
             if($line_output != 0 && $line_output != ''){

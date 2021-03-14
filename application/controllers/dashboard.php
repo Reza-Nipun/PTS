@@ -639,6 +639,7 @@ class Dashboard extends CI_Controller {
     {
         $po_type = $this->input->post('po_type');
         $brands_string = $this->input->post('brands');
+        $remarks = $this->input->post('remarks');
 //        $data['brands_string'] = implode(", ", $brands);
 //        $brands_string = $data['brands_string'];
 
@@ -660,6 +661,10 @@ class Dashboard extends CI_Controller {
 
         if($ship_date != '' && $ship_date != '1970-01-01'){
             $where .= " AND approved_ex_factory_date='$ship_date'";
+        }
+
+        if($remarks != ''){
+            $where .= " AND remarks LIKE '%$remarks%'";
         }
 
 //        $data['po_close_report'] = $this->dashboard_model->getPoShippingDateWiseReport($where, $where_1);
@@ -1209,6 +1214,8 @@ class Dashboard extends CI_Controller {
         $brands = $this->input->post('brands');
         $data['brands_string'] = implode(", ", $brands);
         $brands_string = $data['brands_string'];
+        $remarks = $this->input->post('remarks');
+        $data['remarks'] = $remarks;
 
         $po_from_date = $this->input->post('from_date');
         $po_to_date = $this->input->post('to_date');
@@ -1951,6 +1958,51 @@ class Dashboard extends CI_Controller {
             echo "window.open('', '_self', ''); window.close();";
             echo "</script>";
         }
+    }
+
+    public function getAndSetLineWiseRightAtFirstTimeQty(){
+
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $time=$datex->format('H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $lines = $this->dashboard_model->getAllLines();
+
+        foreach ($lines as $line){
+
+            $line_id = $line['id'];
+
+            $where = '';
+
+            if($date != ''){
+                $where .= " AND DATE_FORMAT(`defect_date_time`, '%Y-%m-%d')='$date'";
+            }
+
+            if($line_id != ''){
+                $where .= " AND line_id=$line_id";
+            }
+
+            $where_1 = '';
+
+            if($date != ''){
+                $where_1 .= " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date' AND is_manually_adjusted=0";
+            }
+
+            if($line_id != ''){
+                $where_1 .= " AND line_id=$line_id";
+            }
+
+            $rft_info = $this->dashboard_model->getQtyPassedRightAtFirstTime($where, $where_1);
+
+            $rft_qty = $rft_info[0]['rft_qty'];
+
+            $this->access_model->updateTblFields('tb_today_line_output_qty', " SET rft_qty=$rft_qty", " AND line_id=$line_id AND date='$date'");
+        }
+
+        echo  "<script type='text/javascript'>";
+        echo "window.open('', '_self', ''); window.close();";
+        echo "</script>";
     }
 
     public function production_summary_report_mail_new($id)
@@ -4518,6 +4570,8 @@ class Dashboard extends CI_Controller {
         $brands = $this->input->post('brands');
         $data['brands_string'] = implode(", ", $brands);
         $brands_string = $data['brands_string'];
+        $remarks = $this->input->post('remarks');
+        $data['remarks'] = $remarks;
 
 //        $po_from_date = $this->input->post('po_from_date');
 //        $po_to_date = $this->input->post('po_to_date');
@@ -4587,6 +4641,7 @@ class Dashboard extends CI_Controller {
     public function getShipDateWiseReport(){
         $po_type = $this->input->post('po_type');
         $brands_string = $this->input->post('brands');
+        $remarks = $this->input->post('remarks');
 //        $data['brands_string'] = implode(", ", $brands);
 //        $brands_string = $data['brands_string'];
 
@@ -4610,13 +4665,17 @@ class Dashboard extends CI_Controller {
             $where .= " AND approved_ex_factory_date='$ship_date'";
         }
 
+        if($remarks != ''){
+            $where .= " AND remarks LIKE '%$remarks%'";
+        }
+
 //        $data['po_close_report'] = $this->dashboard_model->getPoShippingDateWiseReport($where, $where_1);
         $data['po_close_report'] = $this->dashboard_model->getProductionReport($where);
 
         echo $maincontent = $this->load->view('reports/po_wise_report_by_ship_date', $data);
     }
 
-    public function getShipReportByDate($ship_date, $brands_string, $po_type){
+    public function getShipReportByDate($ship_date, $brands_string, $po_type, $remarks){
         $where = '';
         $where_1 = '';
 
@@ -4631,6 +4690,10 @@ class Dashboard extends CI_Controller {
 
         if($ship_date != '' && $ship_date != '1970-01-01' && $ship_date != '' && $ship_date != '1970-01-01'){
             $where .= " AND approved_ex_factory_date='$ship_date'";
+        }
+
+        if($remarks != ''){
+            $where .= " AND remarks LIKE '%$remarks%'";
         }
 
 //        return $po_close_report = $this->dashboard_model->getPoShippingDateWiseReport($where, $where_1);

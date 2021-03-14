@@ -92,6 +92,10 @@
                                 <span><b>* Select PO Type </b></span>
                             </div>
                             <div class="col-md-2">
+                                <input type="text" class="form-control" name="remarks" id="remarks" autocomplete="off" />
+                                <span><b> Remarks </b></span>
+                            </div>
+                            <div class="col-md-2">
                                 <button class="btn btn-primary" id="submit_btn" onclick="getShipDateWiseReportLive();">SEARCH</button>
                             </div>
                             <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
@@ -224,6 +228,7 @@
     function getShipDateWiseReportLive() {
         var brands = $("#brands").val();
         var po_type = $("#po_type").val();
+        var remarks = $("#remarks").val();
 
         var brands_string = brands.toString();
 
@@ -237,7 +242,7 @@
             $.ajax({
                 url: "<?php echo base_url();?>dashboard/getShipDateWiseReportLive/",
                 type: "POST",
-                data: {brands: brands_string, ship_date: ship_date, po_type: po_type},
+                data: {brands: brands_string, ship_date: ship_date, po_type: po_type, remarks: remarks},
                 dataType: "html",
                 success: function (data) {
                     $("#table_content").empty();

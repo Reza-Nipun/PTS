@@ -74,6 +74,10 @@
 <!--                                <span><b>* Ship Date To</b></span>-->
 <!--                            </div>-->
                             <div class="col-md-2">
+                                <input type="text" class="form-control" name="remarks" id="remarks" autocomplete="off" />
+                                <span><b> Remarks </b></span>
+                            </div>
+                            <div class="col-md-2">
                                 <div class="input-append date dpMonths" data-date="102/2012" data-date-format="yyyy-mm" data-date-viewmode="years" data-date-minviewmode="months">
                                     <input type="text" class="form-control" size="30" id="src_date" name="src_date" value="" readonly="">
                                     <span class="input-group-btn add-on">
@@ -82,10 +86,8 @@
                                 </div>
                                 <span><b>* Select Month/Year</b></span>
                             </div>
+                            <div class="col-md-1"></div>
                             <div class="col-md-1">
-
-                            </div>
-                            <div class="col-md-2">
                                 <button class="btn btn-primary" id="submit_btn" onclick="getShipDateWiseReport();">SEARCH</button>
                             </div>
                             <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
@@ -198,6 +200,7 @@
     function getShipDateWiseReport() {
         var brands = $("#brands").val();
         var po_type = $("#po_type").val();
+        var remarks = $("#remarks").val();
 
 //        var from_dt = $("#from_date").val();
 //        var to_dt = $("#to_date").val();
@@ -218,7 +221,7 @@
             $.ajax({
                 url: "<?php echo base_url();?>dashboard/getShipDateWiseReportMonth/",
                 type: "POST",
-                data: {brands: brands, month_year: month_year, po_type: po_type},
+                data: {brands: brands, month_year: month_year, po_type: po_type, remarks: remarks},
                 dataType: "html",
                 success: function (data) {
                     $("#table_content").empty();

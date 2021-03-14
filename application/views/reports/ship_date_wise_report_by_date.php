@@ -88,11 +88,12 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="remarks" id="remarks" autocomplete="off" />
+                                <span><b> Remarks </b></span>
+                            </div>
 
                             <div class="col-md-1">
-
-                            </div>
-                            <div class="col-md-2">
                                 <button class="btn btn-primary" id="submit_btn" onclick="getShipDateWiseReport();">SEARCH</button>
                             </div>
                             <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
@@ -205,6 +206,7 @@
     function getShipDateWiseReport() {
         var brands = $("#brands").val();
         var po_type = $("#po_type").val();
+        var remarks = $("#remarks").val();
 
         var from_dt = $("#from_date").val();
         var to_dt = $("#to_date").val();
@@ -223,7 +225,7 @@
             $.ajax({
                 url: "<?php echo base_url();?>dashboard/getShipDateWiseReportByDate/",
                 type: "POST",
-                data: {brands: brands, po_type: po_type, from_date: from_date, to_date: to_date},
+                data: {brands: brands, po_type: po_type, from_date: from_date, to_date: to_date, remarks: remarks},
                 dataType: "html",
                 success: function (data) {
                     $("#table_content").empty();

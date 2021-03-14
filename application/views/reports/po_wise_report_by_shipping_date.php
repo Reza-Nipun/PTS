@@ -86,7 +86,7 @@ foreach ($dates as $dt){
     </thead>
     <tbody>
     <?php
-    $po_close_report = $this->method_call->getShipReportByDate($dt['approved_ex_factory_date'], $brands_string, $po_type);
+    $po_close_report = $this->method_call->getShipReportByDate($dt['approved_ex_factory_date'], $brands_string, $po_type, $remarks);
 
     $sew_balance_qty = 0;
     $balance_qty = 0;
