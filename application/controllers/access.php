@@ -7336,7 +7336,7 @@ class Access extends CI_Controller {
             }
 
             if($line_access_points < 4 || $line_id == 0){
-                $this->access_model->updateTblFields('vt_few_days_po_pcs', " SET line_id='$line_id', access_points=3, access_points_status=1, mid_line_qc_date_time='$date_time', is_reprint_allow=1,reprint_allow_date_time='$date_time' ", " AND pc_tracking_no = '$pc_no'");
+                $this->access_model->updateTblFields('vt_few_days_po_pcs', " SET line_id='$line_id', access_points=3, access_points_status=1, line_input_date_time='$date_time', mid_line_qc_date_time='$date_time', is_reprint_allow=1,reprint_allow_date_time='$date_time' ", " AND pc_tracking_no = '$pc_no'");
             }else{
                 $this->access_model->activeCl($pc_no, $date_time);
             }
