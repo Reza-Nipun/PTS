@@ -44,7 +44,7 @@ foreach ($dates as $dt){
 <table class="display table table-bordered table-striped" id="" border="1">
     <thead>
     <tr>
-        <th class="hidden-phone center" colspan="33"><h3>Ship Date: <?php echo $dt['approved_ex_factory_date'];?></h3></th>
+        <th class="hidden-phone center" colspan="34"><h3>Ship Date: <?php echo $dt['approved_ex_factory_date'];?></h3></th>
     </tr>
     <tr>
         <th class="hidden-phone center">SO</th>
@@ -55,7 +55,8 @@ foreach ($dates as $dt){
         <th class="hidden-phone center">Style</th>
         <th class="hidden-phone center">Quality</th>
         <th class="hidden-phone center">Color</th>
-        <th class="hidden-phone center">ExFac Date</th>
+        <th class="hidden-phone center">ExFac</th>
+        <th class="hidden-phone center">Approved ExFac</th>
         <th class="hidden-phone center">CRD Date</th>
         <th class="hidden-phone center">Order</th>
         <th class="hidden-phone center">Cut</th>
@@ -151,6 +152,7 @@ foreach ($dates as $dt){
             <td class="center"><?php echo $v['quality'];?></td>
             <td class="center"><?php echo $v['color'];?></td>
             <td class="center"><?php echo $v['ex_factory_date'];?></td>
+            <td class="center"><?php echo $v['approved_ex_factory_date'];?></td>
             <td class="center"><?php echo $v['crd_date'];?></td>
             <td class="center"><?php echo $v['total_order_qty'];?></td>
             <td class="center"><?php echo $v['total_cut_qty'];?></td>
@@ -251,7 +253,7 @@ foreach ($dates as $dt){
     </tbody>
     <tfoot>
     <tr>
-        <td colspan="10" align="right"><h4><b>Total</b></h4></td>
+        <td colspan="11" align="right"><h4><b>Total</b></h4></td>
         <td class="center"><h4><b><?php echo $total_order_qty;?></b></h4></td>
         <td class="center"><h4><b><?php echo $total_cut_qty;?></b></h4></td>
         <td class="center"><h4><b><?php echo $total_cut_package_qty;?></b></h4></td>
@@ -320,7 +322,7 @@ foreach ($dates as $dt){
 <table class="display table table-bordered table-striped" id="" border="1">
     <thead>
     <tr>
-        <th class="hidden-phone center" colspan="33"><h1><b>Month Summary</b></h1></th>
+        <th class="hidden-phone center" colspan="34"><h1><b>Month Summary</b></h1></th>
     </tr>
     <tr>
         <th class="hidden-phone center">Dates</th>
@@ -342,7 +344,7 @@ foreach ($dates as $dt){
         <!--        <th class="hidden-phone center">Other</th>-->
         <th class="hidden-phone center" title="Balance">BLNC</th>
         <!--        <th class="hidden-phone center">Ex-Fac Date</th>-->
-        <th class="hidden-phone center" colspan="16"></th>
+        <th class="hidden-phone center" colspan="17"></th>
     </tr>
     </thead>
     <tbody>
@@ -367,7 +369,7 @@ foreach ($dates as $dt){
         <td class="hidden-phone center"><?php echo $week_total_carton_balance_qty[$k];?></td>
         <td class="hidden-phone center"><?php echo $week_total_wh_qty[$k];?></td>
         <td class="hidden-phone center"><?php echo $week_total_balance_qty[$k];?></td>
-        <td class="hidden-phone center" colspan="16"></td>
+        <td class="hidden-phone center" colspan="17"></td>
     </tr>
     <?php } ?>
     </tbody>
@@ -391,7 +393,7 @@ foreach ($dates as $dt){
         <td class="center"><h4><b><?php echo $total_month_wh_qty + $total_month_other_qty;?></b></h4></td>
         <!--        <td class="center"><h4><b>--><?php //echo $total_other_qty;?><!--</b></h4></td>-->
         <td class="center"><h4><b><?php echo $total_month_balance_qty;?></b></h4></td>
-        <td class="center" colspan="16"></td>
+        <td class="center" colspan="17"></td>
     </tr>
     </tfoot>
 </table>

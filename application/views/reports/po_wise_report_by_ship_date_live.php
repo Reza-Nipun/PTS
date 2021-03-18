@@ -2,7 +2,7 @@
     <table class="table table-bordered table-striped" id="" border="1">
         <thead>
         <tr>
-            <th class="hidden-phone center" colspan="32"><h3>Ship Date: <?php echo $ex_factory_date;?></h3></th>
+            <th class="hidden-phone center" colspan="33"><h3>Ship Date: <?php echo $ex_factory_date;?></h3></th>
         </tr>
         <tr>
             <th class="hidden-phone center">SO</th>
@@ -14,6 +14,7 @@
             <th class="hidden-phone center">Item</th>
             <th class="hidden-phone center">Quality</th>
             <th class="hidden-phone center">ExFac</th>
+            <th class="hidden-phone center">Approved ExFac</th>
 
             <th class="hidden-phone center">Order</th>
             <th class="hidden-phone center">Cut</th>
@@ -116,6 +117,7 @@
 
                 <td class="center"><?php echo $v['quality'];?></td>
                 <td class="center"><?php echo $v['ex_factory_date'];?></td>
+                <td class="center"><?php echo $v['approved_ex_factory_date'];?></td>
 
                 <td class="center"><?php echo $v['total_order_qty'];?></td>
                 <td class="center"><?php echo $v['total_cut_qty'];?></td>
@@ -220,7 +222,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="9" align="right"><h4><b>Total</b></h4></td>
+                <td colspan="10" align="right"><h4><b>Total</b></h4></td>
                 <td class="center"><h4><b><?php echo $total_order_qty;?></b></h4></td>
                 <td class="center"><h4><b><?php echo $total_cut_qty;?></b></h4></td>
                 <td class="center"><h4><b><?php echo $total_cut_package_ready_qty;?></b></h4></td>
