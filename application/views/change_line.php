@@ -55,7 +55,7 @@
                 <form action="<?php echo base_url();?>access/changingLinePlan" method="post">
 
                     <div id="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <div id="set_form">
                                     <table class="display table table-bordered table-striped" id="sample_2">
@@ -134,10 +134,20 @@
                                                             <option value="<?php echo $v_l['id'];?>"><?php echo $v_l['line_name'];?></option>
                                                         <?php } ?>
                                                     </select>
+                                                    <?php
+                                                    if($access_points == 1000) {
+                                                    ?>
+
+                                                    <br/>
+                                                    <input type="checkbox" name="including_output" id="including_output"> Including Line Output Qty
+
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="center">Total Scanned Qty *</td>
+                                                <td class="center">Total Running Qty *</td>
                                                 <td class="center">
                                                     <input type="text" name="scanned_qty" id="scanned_qty" readonly />
                                                 </td>
@@ -288,4 +298,5 @@
             $("#so_msg").text("Please Select: SO / CUT NO / ASSIGN FROM");
         }
     }
+
 </script>

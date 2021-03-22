@@ -6401,6 +6401,7 @@ class Access extends CI_Controller {
         $line_no_to = $this->input->post('line_no_to');
         $size = $this->input->post('size');
         $group = $this->input->post('group');
+        $including_output = $this->input->post('including_output');
 
         $line_info = $this->access_model->getLineInfo($line_no_to);
         $finishing_floor_id = $line_info[0]['finishing_floor_id'];
@@ -6419,8 +6420,11 @@ class Access extends CI_Controller {
         if($group != ''){
             $where .= " AND layer_group = '$group'";
         }
-        if($line_no_from != ''){
+        if($line_no_from != '' && $including_output == ''){
             $where .= " AND line_id = '$line_no_from' AND access_points != 4 AND access_points_status != 4";
+        }
+        if($line_no_from != '' && $including_output == 'on'){
+            $where .= " AND line_id = '$line_no_from'";
         }
 
         $this->access_model->changingLinePlan( $line_no_to, $finishing_floor_id, $where);
