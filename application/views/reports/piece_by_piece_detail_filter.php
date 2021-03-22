@@ -13,6 +13,9 @@
             <th class="hidden-phone center">Quality</th>
             <th class="hidden-phone center">Color</th>
             <th class="hidden-phone center">ExFac</th>
+            <th class="hidden-phone center">Cut</th>
+            <th class="hidden-phone center">Bundle</th>
+            <th class="hidden-phone center">Cut Piece Scan</th>
             <th class="hidden-phone center">Package Ready?</th>
             <th class="hidden-phone center">Sent to Sew</th>
             <th class="hidden-phone center">Line</th>
@@ -53,6 +56,9 @@
             <td class="center"><?php echo $p['quality'];?></td>
             <td class="center"><?php echo $p['color'];?></td>
             <td class="center"><?php echo $p['ex_factory_date'];?></td>
+            <td class="center"><?php echo $p['cut_no'];?></td>
+            <td class="center"><?php echo $p['bundle_no'];?></td>
+            <td class="center"><?php echo $p['sent_to_production_date_time'];?></td>
             <td class="center"><?php echo ($p['is_package_ready'] == 1 ? 'YES' : 'NO');?></td>
             <td class="center"><?php echo $p['package_sent_to_production_date_time'];?></td>
             <td class="center"><?php echo $p['line_code'];?></td>

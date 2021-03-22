@@ -261,6 +261,7 @@ class Access extends CI_Controller {
 
         if(sizeof($res) > 0) {
         $data['databases'] = $this->access_model->getAllDatabases();
+        $data['remaining_data_from_date'] = $this->access_model->selectTableDataRowQuery('MIN(ex_factory_date) as remaining_data_from_date', 'tb_po_detail', " AND ex_factory_date != '0000-00-00'");
 
         $data['maincontent'] = $this->load->view('backup_db', $data, true);
         $this->load->view('master', $data);

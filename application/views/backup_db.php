@@ -89,6 +89,20 @@
             <div class="loader"></div>
         </div>
     </div>
+    <br />
+    <br />
+    <br />
+    <div class="row text-center">
+        <div class="col-md-12">
+            <h2 class="bg-primary">Data remaining from the Ex-Factory-Date: <?php echo $remaining_data_from_date[0]['remaining_data_from_date'];?></h2>
+        </div>
+    </div>
+    <br />
+    <div class="row text-center">
+        <div class="col-md-12">
+            <h1 class="bg-warning">******** Please make sure to take back-up of all these 4 types for selected month! ********</h1>
+        </div>
+    </div>
 
 </div>
 

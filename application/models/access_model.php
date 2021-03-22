@@ -2375,7 +2375,7 @@ class Access_model extends CI_Model {
 
         $sql = "SELECT TABLE_SCHEMA 
                 FROM `VIEWS` 
-                WHERE TABLE_SCHEMA LIKE '%efl_%' 
+                WHERE TABLE_SCHEMA LIKE '%efl_%' AND TABLE_SCHEMA <> 'efl_db_pts'
                 GROUP BY TABLE_SCHEMA
                 ORDER BY TABLE_SCHEMA DESC";
 
