@@ -64,8 +64,8 @@
     foreach ($po_close_report as $v){
         $sew_balance_qty = $v['count_end_line_qc_pass'] - $v['total_cut_qty'];
         $balance_qty = ($v['count_carton_pass'] + $v['total_wh_qa']) - $v['total_cut_qty'];
-        $packing_balance_qty = $v['count_packing_pass'] - $v['total_order_qty'];
-        $carton_balance_qty = $v['count_carton_pass'] - $v['total_order_qty'];
+        $packing_balance_qty = $v['count_packing_pass'] - $v['total_cut_qty'];
+        $carton_balance_qty = $v['count_carton_pass'] - $v['total_cut_qty'];
 
         $total_order_qty += $v['total_order_qty'];
         $total_cut_qty += $v['total_cut_qty'];
