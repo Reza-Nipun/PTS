@@ -5632,6 +5632,11 @@ class Access extends CI_Controller {
     }
 
     public function deletePieceNo($pc_tracking_no){
+        $pc_info = $this->access_model->selectTableDataRowQuery('bundle_tracking_no', 'tb_care_labels', " AND pc_tracking_no='$pc_tracking_no'");
+        $bundle_tracking_no = $pc_info[0]['bundle_tracking_no'];
+
+        $this->access_model->updateTblFields('tb_cut_summary', "SET cut_qty=cut_qty-1", " AND bundle_tracking_no='$bundle_tracking_no'");
+
         $res = $this->access_model->deleteTableData('tb_care_labels', 'pc_tracking_no', $pc_tracking_no);
 
         if($res == 1){
