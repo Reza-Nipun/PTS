@@ -78,7 +78,7 @@ class Welcome extends CI_Controller {
 
         $result=$this->welcome_model->login_check_new($data);
 
-        if($min_time > $time) {
+        if(($min_time > $time) && ($result->access_points <> 1000)) {
             $data['exception']="Please Try Later on $min_time !";
             $this->session->set_userdata($data);
 
