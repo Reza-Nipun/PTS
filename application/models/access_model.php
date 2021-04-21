@@ -6280,9 +6280,15 @@ class Access_model extends CI_Model {
     }
 
     public function getSizesbyShipDate($where){
-        $sql = "SELECT * FROM `tb_po_detail` 
-                WHERE 1 $where 
-                GROUP BY `size`";
+        $sql = "SELECT t1.size from (SELECT size FROM `tb_po_detail` 
+                WHERE 1 $where
+                GROUP BY `size`) as t1
+                
+                LEFT JOIN
+                tb_size_serial as t2
+                on t1.size=t2.size
+                
+                ORDER BY t2.serial ASC";
 
         $query = $this->db->query($sql)->result_array();
         return $query;

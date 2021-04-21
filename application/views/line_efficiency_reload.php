@@ -7,8 +7,10 @@
     $work_minute=0;
 
     if ($segment_id == 1){
-        if($time > '13:00:00'){
-            $sec_to_minutes = (($work_time-3600) / 60);
+
+//        Ramadan Time Code Start
+        if($time > '13:30:00'){
+            $sec_to_minutes = (($work_time-1800) / 60);
 
             $minutes = round($sec_to_minutes, 2);
         }else{
@@ -17,13 +19,39 @@
             $minutes = round($sec_to_minutes, 2);
         }
 
-        // For the Time Being - 30 Min being deducted for ALL Start
 
-        if($floor == 2){
-            $minutes = $minutes - 30;
+        if($floor == 1 && $time < '13:30:00'){
+            $minutes = $minutes - 15;
         }
 
+        if($floor == 2 && $time > '13:30:00'){
+            $minutes = $minutes - 15;
+        }
+
+
+//        Ramadan Time Code End
+
+
+//        Normal Time Code Start
+//        if($time > '13:00:00'){
+//            $sec_to_minutes = (($work_time-3600) / 60);
+//
+//            $minutes = round($sec_to_minutes, 2);
+//        }else{
+//            $sec_to_minutes = ($work_time / 60);
+//
+//            $minutes = round($sec_to_minutes, 2);
+//        }
+
+        // For the Time Being - 30 Min being deducted for ALL Start
+
+//        if($floor == 2){
+//            $minutes = $minutes - 30;
+//        }
+
         // For the Time Being - 30 Min being deducted for ALL End
+
+//        Normal Time Code End
     }else{
         $sec_to_minutes = ($work_time / 60);
 

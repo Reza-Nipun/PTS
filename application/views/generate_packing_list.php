@@ -7,73 +7,73 @@ $sizes_count = sizeof($sizes);
 <table class="display table table-bordered table-striped" id="table_id">
     <thead>
         <tr style="font-size: 15px; font-weight: 900;">
-            <th style="text-align:left" colspan="5">Final Consignee / Customer:</th>
+            <th style="text-align:left" colspan="3">Final Consignee / Customer:</th>
             <th style="text-align:left" colspan="<?php echo $sizes_count?>">Supplier / factory:</th>
-            <th style="text-align:left" colspan="6">Detail Packing List of ETD : <?php echo $ship_date;?></th>
+            <th style="text-align:left" colspan="5">Detail Packing List of ETD : <?php echo $ship_date;?></th>
         </tr>
         <tr>
-            <th style="text-align:left" colspan="5">
+            <th style="text-align:left" colspan="3">
                 OLYMP Bezner GmbH & Co. KG, 74321 Bietigheim-Bissingen, Germany
             </th>
             <th style="text-align:left" colspan="<?php echo $sizes_count?>">
                 EcoFab Ltd, Gazipur, Bangladesh
             </th>
-            <th style="text-align:left" colspan="6"></th>
-        </tr>
-        <tr>
-            <th style="text-align:left" colspan="5">Description:</th>
-            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Shipping Schedule:</th>
-        </tr>
-        <tr>
-            <th style="text-align:left" colspan="5">Con.No.:</th>
-            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Ex factory:</th>
-        </tr>
-        <tr>
-            <th style="text-align:left" colspan="5">Container No:</th>
-            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">ETD at port:</th>
-        </tr>
-        <tr>
-            <th style="text-align:left" colspan="5">Container Size:</th>
-            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Feeder Vessel:</th>
-        </tr>
-        <tr>
-            <th style="text-align:left" colspan="5">AWB.No:</th>
-            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Mother Vessel:</th>
-        </tr>
-        <tr>
             <th style="text-align:left" colspan="5"></th>
-            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Flight 1st:</th>
         </tr>
         <tr>
-            <th style="text-align:left" colspan="5"></th>
+            <th style="text-align:left" colspan="3">Description:</th>
             <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Flight 2nd:</th>
+            <th style="text-align:left" colspan="5">Shipping Schedule:</th>
         </tr>
         <tr>
-            <th style="text-align:left" colspan="5"></th>
+            <th style="text-align:left" colspan="3">Con.No.:</th>
             <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6">Flight 3rd:</th>
+            <th style="text-align:left" colspan="5">Ex factory:</th>
         </tr>
         <tr>
-            <th style="text-align:left" colspan="5"></th>
+            <th style="text-align:left" colspan="3">Container No:</th>
             <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
-            <th style="text-align:left" colspan="6"><b>ETA at port SEA: ECOFAB</b></th>
+            <th style="text-align:left" colspan="5">ETD at port:</th>
+        </tr>
+        <tr>
+            <th style="text-align:left" colspan="3">Container Size:</th>
+            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
+            <th style="text-align:left" colspan="5">Feeder Vessel:</th>
+        </tr>
+        <tr>
+            <th style="text-align:left" colspan="3">AWB.No:</th>
+            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
+            <th style="text-align:left" colspan="5">Mother Vessel:</th>
+        </tr>
+        <tr>
+            <th style="text-align:left" colspan="3"></th>
+            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
+            <th style="text-align:left" colspan="5">Flight 1st:</th>
+        </tr>
+        <tr>
+            <th style="text-align:left" colspan="3"></th>
+            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
+            <th style="text-align:left" colspan="5">Flight 2nd:</th>
+        </tr>
+        <tr>
+            <th style="text-align:left" colspan="3"></th>
+            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
+            <th style="text-align:left" colspan="5">Flight 3rd:</th>
+        </tr>
+        <tr>
+            <th style="text-align:left" colspan="3"></th>
+            <th style="text-align:left" colspan="<?php echo $sizes_count?>"></th>
+            <th style="text-align:left" colspan="5"><b>ETA at port SEA: ECOFAB</b></th>
         </tr>
 
         <tr style="font-size: 15px; font-weight: 900;">
             <th class="hidden-phone center" rowspan="2">#</th>
             <th class="hidden-phone center" rowspan="2">PO</th>
+<!--            <th class="hidden-phone center" rowspan="2">AL</th>-->
             <th class="hidden-phone center" rowspan="2">ART</th>
-            <th class="hidden-phone center" rowspan="2">AL</th>
-            <th class="hidden-phone center" rowspan="2">COL</th>
+<!--            <th class="hidden-phone center" rowspan="2">COL</th>-->
             <th class="hidden-phone center" colspan="<?php echo $sizes_count?>">SIZE</th>
-            <th class="hidden-phone center" rowspan="2">ASSORTED</th>
+<!--            <th class="hidden-phone center" rowspan="2">ASSORTED</th>-->
             <th class="hidden-phone center" rowspan="2">TOTAL</th>
             <th class="hidden-phone center" rowspan="2">Total Ctns</th>
             <th class="hidden-phone center" rowspan="2">Net Weight</th>
@@ -103,9 +103,9 @@ $sizes_count = sizeof($sizes);
                     <span class="btn btn-danger" class="minus_sign" onclick="removeThisRow(this)"><i class="fa fa-minus"></i></span>
                 </td>
                 <td class="hidden-phone center"><?php echo $p['purchase_order'];?></td>
-                <td class="hidden-phone center"><?php echo $p['item'];?></td>
+<!--                <td class="hidden-phone center">--><?php //echo $p['item'];?><!--</td>-->
                 <td class="hidden-phone center"><?php echo $p['quality'];?></td>
-                <td class="hidden-phone center"><?php echo $p['color'];?></td>
+<!--                <td class="hidden-phone center">--><?php //echo $p['color'];?><!--</td>-->
 
                 <?php foreach ($sizes AS $s){
 
@@ -131,7 +131,7 @@ $sizes_count = sizeof($sizes);
 
                 $total_carton_qty += $po_total_carton_qty;
                 ?>
-                <td class="hidden-phone center"></td>
+<!--                <td class="hidden-phone center"></td>-->
                 <td class="hidden-phone center">
                     <span class="carton_qty"><?php echo $po_total_carton_qty;?></span>
                 </td>
@@ -157,7 +157,7 @@ $sizes_count = sizeof($sizes);
     </tbody>
     <tfoot style="font-size: 15px; font-weight: 900;">
         <tr>
-            <th class="hidden-phone" style="text-align:right" colspan="<?php echo $sizes_count+6 ;?>">TOTAL</th>
+            <th class="hidden-phone" style="text-align:right" colspan="<?php echo $sizes_count+3 ;?>">TOTAL</th>
             <th class="hidden-phone center">
                 <span id="total_carton_qty"><?php echo $total_carton_qty;?></span>
             </th>

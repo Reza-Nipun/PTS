@@ -5596,21 +5596,21 @@ class Access extends CI_Controller {
             $where .= " AND po_no = '$po_no'";
         }
 
-        if($purchase_order != ''){
-            $where .= " AND purchase_order = '$purchase_order'";
-        }
-
-        if($item != ''){
-            $where .= " AND item = '$item'";
-        }
-
-        if($quality != ''){
-            $where .= " AND quality = '$quality'";
-        }
-
-        if($color != ''){
-            $where .= " AND color = '$color'";
-        }
+//        if($purchase_order != ''){
+//            $where .= " AND purchase_order = '$purchase_order'";
+//        }
+//
+//        if($item != ''){
+//            $where .= " AND item = '$item'";
+//        }
+//
+//        if($quality != ''){
+//            $where .= " AND quality = '$quality'";
+//        }
+//
+//        if($color != ''){
+//            $where .= " AND color = '$color'";
+//        }
 
         $data['po_detail'] = $this->access_model->getPoDetail($where);
 
