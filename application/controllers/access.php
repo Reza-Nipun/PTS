@@ -4605,6 +4605,7 @@ class Access extends CI_Controller {
         $data['title'] = 'End Line QC';
 
         $line_id = $this->session->userdata('line_id');
+        $floor_id = $this->session->userdata('floor_id');
         $data['line_id'] = $line_id;
         $data['user_name'] = $this->session->userdata('user_name');
         $data['user_description'] = $this->session->userdata('user_description');
@@ -4658,7 +4659,9 @@ class Access extends CI_Controller {
 
                         $h_data = array(
                             'line_id' => $line_id,
+                            'floor_id' => $floor_id,
                             'date' => $date,
+                            'hour' => $v_h['hour'],
                             'start_time' => $v_h['start_time'],
                             'end_time' => $v_h['end_time'],
                             'qty' => 0
@@ -4707,7 +4710,9 @@ class Access extends CI_Controller {
 
                         $h_data = array(
                             'line_id' => $line_id,
+                            'floor_id' => $floor_id,
                             'date' => $date,
+                            'hour' => $v_h['hour'],
                             'start_time' => $v_h['start_time'],
                             'end_time' => $v_h['end_time'],
                             'qty' => 0
@@ -5960,6 +5965,7 @@ class Access extends CI_Controller {
                 $h_data = array(
                     'floor_id' => $floor_id,
                     'date' => $date,
+                    'hour' => $v_h['hour'],
                     'start_time' => $v_h['start_time'],
                     'end_time' => $v_h['end_time'],
                     'qty' => 0

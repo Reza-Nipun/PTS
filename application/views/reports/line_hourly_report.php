@@ -88,6 +88,9 @@
     </style>
 </head>
 <body>
+
+<?php $hour_count = sizeof($hours);?>
+
 <table id="" border="1" width="100%" style="border: 1px solid black;">
         <thead>
         <tr style="background-color: #f7ffb0;">
@@ -98,25 +101,16 @@
             <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">Effi.</th>
             <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">DHU</th>
             <th align="center" rowspan="2" style="font-size: 18px; font-weight: 900; width: 40px;">BRND</th>
-            <th align="center" colspan="10" style="font-size: 20px; font-weight: 900;">HOURS</th>
+            <th align="center" colspan="<?php echo $hour_count;?>" style="font-size: 20px; font-weight: 900;">HOURS</th>
 <!--            <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">AVG</th>-->
             <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">AVG</th>
             <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">Total</th>
             <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">BLNC</th>
         </tr>
         <tr style="background-color: #f7ffb0;">
-
-            <th align="center" style="font-size: 20px; font-weight: 900;">1</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">2</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">3</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">4</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">5</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">6</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">7</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">8</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">9</th>
-            <th align="center" style="font-size: 20px; font-weight: 900;">10</th>
-
+            <?php foreach ($hours as $h){ ?>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $h['hour']?></th>
+            <?php } ?>
         </tr>
         </thead>
         <tbody>
@@ -373,7 +367,7 @@
     <tr style="background-color: #f7ffb0;">
         <th align="center" colspan="3" style="font-size: 20px; font-weight: 900;">FINISHING</th>
 
-        <th align="center" colspan="10" style="font-size: 20px; font-weight: 900;">HOURS</th>
+        <th align="center" colspan="<?php echo $hour_count;?>" style="font-size: 20px; font-weight: 900;">HOURS</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">Total</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">AVG</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">BLNC</th>
@@ -383,17 +377,9 @@
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 50px;">TAR.</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 60px;">Per/Hr</th>
 
-        <th align="center" style="font-size: 20px; font-weight: 900;">1</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">2</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">3</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">4</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">5</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">6</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">7</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">8</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">9</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;">10</th>
-
+        <?php foreach ($hours as $h){ ?>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $h['hour']?></th>
+        <?php } ?>
     </tr>
     </thead>
     <tbody>
