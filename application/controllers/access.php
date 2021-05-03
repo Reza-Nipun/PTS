@@ -5657,6 +5657,21 @@ class Access extends CI_Controller {
 
     }
 
+    public function deleteMultiplePieceNosAtOnce(){
+        $pc_tracking_nos = $this->input->post('pc_nos');
+
+        foreach ($pc_tracking_nos as $pc_tracking_no){
+            $pc_info = $this->access_model->selectTableDataRowQuery('bundle_tracking_no', 'tb_care_labels', " AND pc_tracking_no='$pc_tracking_no'");
+            $bundle_tracking_no = $pc_info[0]['bundle_tracking_no'];
+
+            $this->access_model->updateTblFields('tb_cut_summary', "SET cut_qty=cut_qty-1", " AND bundle_tracking_no='$bundle_tracking_no'");
+
+            $res = $this->access_model->deleteTableData('tb_care_labels', 'pc_tracking_no', $pc_tracking_no);
+        }
+
+        echo 'done';
+    }
+
     public function washGmtStatus($so_no, $status){
 
         $where = '';
@@ -9095,10 +9110,36 @@ class Access extends CI_Controller {
 //            }
 
             if (($bundle_type_status == 'clr.') && ($is_bundle_collar_scanned_line == 1) && ($is_cutting_collar_bundle_ready == 1)){
+                $this->access_model->collarTracking($bundle_tracking_no, $line_id, $date_time);
+
+                $collar_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'collar_outer'");
+                $cuff_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'cuff_outer'");
+
+                if(sizeof($cuff_exist) > 0){
+                    if($is_bundle_cuff_scanned_line == 1){
+                        $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                    }
+                }else{
+                    $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                }
+
                 echo "Collar Tracked Already!";
             }
 
             if (($bundle_type_status == 'cff.') && ($is_bundle_cuff_scanned_line == 1) && ($is_cutting_cuff_bundle_ready == 1)){
+                $this->access_model->cuffTracking($bundle_tracking_no, $line_id, $date_time);
+
+                $collar_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'collar_outer'");
+                $cuff_exist = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no' AND part_code = 'cuff_outer'");
+
+                if(sizeof($collar_exist) > 0){
+                    if($is_bundle_collar_scanned_line == 1){
+                        $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                    }
+                }else{
+                    $this->access_model->collarCuffTracking($bundle_tracking_no, $line_id, $date_time);
+                }
+                
                 echo "Cuff Tracked Already!";
             }
 

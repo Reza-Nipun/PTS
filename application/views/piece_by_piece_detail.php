@@ -62,6 +62,18 @@
                     </h6>
                 </div>
                 <div class="porlets-content">
+                    <div class="row" style="text-align: left">
+                        <div class="form-group">
+
+                            <div class="col-lg-4">
+                                <button type="submit" id="save_btn" class="btn btn-danger"onclick="deletePieces()"><i class="fa fa-archive"></i> DELETE PIECES</button>
+                            </div>
+                            <div class="col-lg-4">
+                                <h3>Total Selected:  <span id="count_select">0</span></h3>
+                            </div>
+
+                        </div>
+                    </div>
                     <div class="row">
                         <sec class="table-responsive">
                             <section class="panel default blue_title h2">
@@ -71,7 +83,7 @@
                                     <table class="display table table-bordered table-striped" id="" border="1">
                                         <thead>
                                             <tr>
-                                                <th class="hidden-phone center">Action</th>
+                                                <th class="hidden-phone center"><input type="checkbox" id="checkAll"/></th>
                                                 <th class="hidden-phone center">Piece No</th>
                                                 <th class="hidden-phone center">Size</th>
                                                 <th class="hidden-phone center">SO</th>
@@ -101,7 +113,8 @@
                                         <?php foreach ($pieces as $p){ ?>
                                             <tr>
                                                 <td class="center">
-                                                    <a href="<?php echo base_url();?>access/deletePieceNo/<?php echo $p['pc_tracking_no'];?>" class="btn btn-danger" onclick="return confirm('Are you sure to delete?')">X</a>
+                                                    <input class="checkItem" type="checkbox" name="checkItem[]" id="checkItem" value="<?php echo $p['pc_tracking_no']?>">
+<!--                                                    <a href="--><?php //echo base_url();?><!--access/deletePieceNo/--><?php //echo $p['pc_tracking_no'];?><!--" class="btn btn-danger" onclick="return confirm('Are you sure to delete?')">X</a>-->
                                                 </td>
                                                 <td class="center"><?php echo $p['pc_tracking_no'];?></td>
                                                 <td class="center"><?php echo $p['size'];?></td>
@@ -190,54 +203,54 @@
 <script type="text/javascript">
     $('select').select2();
 
-    function getPieceReport() {
-        var piece_no = $("#piece_no").val();
+    $(document).on('click','#checkAll',function () {
+        $('.checkItem').not(this).prop('checked', this.checked);
 
-        if(piece_no != ''){
-            $("#loader").css("display", "block");
+        var numberNotChecked = $('input[name="checkItem[]"]:checked').length;
+        $("#count_select").text(numberNotChecked);
+    });
 
-            $("#table_content").empty();
+    $(document).on('click','.checkItem',function () {
+        var numberNotChecked = $('input[name="checkItem[]"]:checked').length;
+        $("#count_select").text(numberNotChecked);
+    });
 
-            $.ajax({
-                url: "<?php echo base_url();?>dashboard/getPieceByPieceDetailFilter/",
-                type: "POST",
-                data: {piece_no: piece_no},
-                dataType: "html",
-                success: function (data) {
-                    $("#table_content").empty();
-                    $("#table_content").append(data);
-                    $("#loader").css("display", "none");
-                }
-            });
-        }else{
-            alert("Please Select Required Fields!");
-        }
-    }
 
-    function getWarehousePcs(po_no, so_no, purchase_order,item, quality, color) {
-        $("#wh_cl_list").empty();
+    function deletePieces()
+    {
 
-        $.ajax({
-            url: "<?php echo base_url();?>dashboard/getWarehouseSizePcs/",
-            type: "POST",
-            data: {po_no: po_no, so_no: so_no, purchase_order: purchase_order, item: item, quality: quality, color: color},
-            dataType: "html",
-            success: function (data) {
-                $("#wh_cl_list").append(data);
-            }
+        var pc_nos = [];
+
+        $('input.checkItem:checkbox:checked').each(function () {
+            var sThisVal = $(this).val();
+
+            pc_nos.push(sThisVal);
+
         });
+
+        console.log(pc_nos);
+
+        var r = confirm('Are you sure to delete the pieces!');
+        if(r == true){
+            if(pc_nos !='')
+            {
+                $.ajax({
+                    url:"<?php echo base_url('access/deleteMultiplePieceNosAtOnce')?>",
+                    type:"post",
+                    dataType:"html",
+                    data:{pc_nos:pc_nos},
+                    success:function (data) {
+                        if(data == 'done'){
+                            alert('Successfully Deleted!');
+                            location.reload(true);
+                        }
+                    }
+                });
+            }else{
+                alert('No Pieces seleceted!');
+            }
+        }
+
     }
 
-    function printDiv(divName) {
-        var printContents = document.getElementById(divName).innerHTML;
-        var originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
-
-        window.print();
-
-        document.body.innerHTML = originalContents;
-
-        location.reload();
-    }
 </script>
