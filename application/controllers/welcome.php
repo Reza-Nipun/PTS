@@ -70,13 +70,19 @@ class Welcome extends CI_Controller {
         $date = $datex->format('Y-m-d');
         $time = $datex->format('H:i:s');
 
-        $min_max_time=$this->access_model->getMinMaxHours();
-        $min_time = $min_max_time[0]['min_start_time'];
-
         $data['username'] = $this->input->post('username');
 //        $data['password'] = $this->input->post('password');
 
         $result=$this->welcome_model->login_check_new($data);
+        $floor_id = $result->floor_id;
+
+        $where = '';
+        if($floor_id != ''){
+            $where .= " AND floor_id=$floor_id";
+        }
+
+        $min_max_time=$this->access_model->getMinMaxHours($where);
+        $min_time = $min_max_time[0]['min_start_time'];
 
         if(($min_time > $time) && ($result->access_points <> 1000)) {
             $data['exception']="Please Try Later on $min_time !";

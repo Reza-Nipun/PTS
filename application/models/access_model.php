@@ -25,14 +25,14 @@ class Access_model extends CI_Model {
         return $this->db->delete($tbl);
     }
 
-    public function getSegments($time)
+    public function getSegments($time, $floor_id)
     {
         $sql = "SELECT *,
                 (TIME_TO_SEC(end_time) - TIME_TO_SEC(start_time)) as working_time_diff_to_sec, 
                 SEC_TO_TIME((TIME_TO_SEC(end_time) - TIME_TO_SEC(start_time))) as working_hours_min_sec,
                 TIME_TO_SEC(start_time) AS min_time_to_sec
                 FROM `tb_segment` 
-                WHERE '$time' BETWEEN start_time AND end_time";
+                WHERE floor_id=$floor_id AND '$time' BETWEEN start_time AND end_time";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -88,9 +88,14 @@ class Access_model extends CI_Model {
 
     public function getSegmentList($where)
     {
-        $sql = "SELECT *
+        $sql = "SELECT t1.*, t2.floor_name, t2.floor_code FROM 
+                (SELECT *
                 FROM `tb_segment` 
-                WHERE 1 $where";
+                WHERE 1 $where) AS t1
+                
+                LEFT JOIN
+                tb_floor AS t2
+                ON t1.floor_id=t2.id";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -164,7 +169,7 @@ class Access_model extends CI_Model {
 
     public function getTodayLineOutputReport($line_id){
         $sql = "SELECT * FROM tb_today_line_output_qty 
-                WHERE line_id=$line_id 
+                WHERE line_id=$line_id AND date=CURDATE()
                 ORDER BY start_time DESC";
 
         $query = $this->db->query($sql)->result_array();
@@ -207,14 +212,16 @@ class Access_model extends CI_Model {
         return $query;
     }
 
-    public function getFloorLineOutputReport($floor_id){
+    public function getFloorLineOutputReport($where){
         $sql = "SELECT t1.*, t2.*
-                FROM (SELECT * FROM `tb_line` WHERE floor=$floor_id) AS t1
+                FROM (SELECT * FROM `tb_line` WHERE status=1) AS t1
                 LEFT JOIN
-                (SELECT line_id, efficiency, dhu, (work_hour_1+work_hour_2+work_hour_3+work_hour_4) AS work_hour
+                (SELECT line_id, date, efficiency, dhu, (work_hour_1+work_hour_2+work_hour_3+work_hour_4) AS work_hour
                  FROM `tb_today_line_output_qty`
                  GROUP BY line_id) AS t2
-                ON t1.id=t2.line_id";
+                ON t1.id=t2.line_id
+                
+                WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -318,22 +325,23 @@ class Access_model extends CI_Model {
         return $query;
     }
 
-    public function getFloorLineOutputHourlyReport($start_time, $end_time, $floor_id){
+    public function getFloorLineOutputHourlyReport($where){
         $sql = "SELECT t1.*, t2.*
-                FROM (SELECT * FROM `tb_line` WHERE floor=$floor_id) AS t1
+                FROM (SELECT * FROM `tb_floor` WHERE status=1) AS t1
                 LEFT JOIN
-                (SELECT line_id,SUM(qty) AS line_qty, efficiency 
+                (SELECT line_id, floor_id, date, hour, SUM(qty) AS line_qty, efficiency 
                  FROM `tb_today_line_output_qty` 
-                 WHERE start_time='$start_time' AND end_time='$end_time'
-                 GROUP BY line_id) AS t2
-                ON t1.id=t2.line_id";
+                 GROUP BY floor_id, hour, date) AS t2
+                ON t1.id=t2.floor_id
+                
+                WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
     }
 
-    public function getTodayLineOutputSummaryReport($line_id){
-        $sql = "SELECT SUM(qty) as count_end_line_qc_pass FROM tb_today_line_output_qty WHERE line_id=$line_id";
+    public function getTodayLineOutputSummaryReport($where){
+        $sql = "SELECT SUM(qty) as count_end_line_qc_pass FROM tb_today_line_output_qty WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -2216,10 +2224,11 @@ class Access_model extends CI_Model {
 
     public function getQualityDefectsReport($where){
         $sql = "SELECT t1.*, t2.defect_name 
-                FROM (SELECT defect_code, line_id, DATE_FORMAT(defect_date_time, '%Y-%m-%d') AS defect_date, 
-                COUNT(pc_tracking_no) AS defect_count FROM `tb_defects_tracking`  
-                WHERE 1 $where 
-                GROUP BY defect_code) AS t1
+                FROM (SELECT A.defect_code, A.defect_date, A.line_id, COUNT(A.pc_tracking_no) AS defect_count FROM (SELECT pc_tracking_no, defect_code, line_id, DATE_FORMAT(defect_date_time, '%Y-%m-%d') AS defect_date
+                FROM `tb_defects_tracking`  
+                WHERE 1 $where
+                GROUP BY pc_tracking_no, defect_code) as A
+                GROUP BY A.defect_code) AS t1
                 LEFT JOIN
                 tb_defect_types AS t2
                 ON t1.defect_code=t2.defect_code
@@ -2257,14 +2266,11 @@ class Access_model extends CI_Model {
         return $query;
     }
 
-    public function getLineDHUSummary($line_id){
-        $sql = "SELECT t1.line_id, t1.dhu, t1.total_output_qty, t1.brand,
-                t1.work_hour_1, t1.work_hour_2, t1.work_hour_3, t1.work_hour_4
-                FROM
-                (SELECT line_id, dhu, SUM(qty) as total_output_qty, brand,
+    public function getLineDHUSummary($where){
+        $sql = "SELECT line_id, dhu, SUM(qty) as total_output_qty, brand,
                 work_hour_1, work_hour_2, work_hour_3, work_hour_4
                 FROM `tb_today_line_output_qty` 
-                WHERE 1 AND line_id=$line_id) AS t1";
+                WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -4418,7 +4424,15 @@ class Access_model extends CI_Model {
     }
 
     public function getHours($where){
-        $sql = "SELECT * FROM `tb_hours` WHERE 1 $where";
+        $sql = "SELECT t1.*, t2.floor_name, t2.floor_code 
+
+                FROM 
+                `tb_hours` AS t1
+                LEFT JOIN
+                tb_floor as t2
+                ON t1.floor_id=t2.id
+                
+                WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
@@ -4433,10 +4447,10 @@ class Access_model extends CI_Model {
         return $query;
     }
 
-    public function getMinMaxHours(){
+    public function getMinMaxHours($where){
         $sql = "SELECT MIN(start_time) as min_start_time, TIME_TO_SEC(MIN(start_time)) AS min_time_to_sec, 
-                MAX(end_time) as max_end_time, TIME_TO_SEC(MIN(end_time)) AS max_time_to_sec 
-                FROM `tb_hours`";
+                MAX(end_time) as max_end_time, TIME_TO_SEC(MIN(end_time)) AS max_time_to_sec, break_time_ends, break_time_in_minute 
+                FROM `tb_hours` WHERE 1 $where";
 
         $query = $this->db->query($sql)->result_array();
         return $query;

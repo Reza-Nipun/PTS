@@ -4382,13 +4382,76 @@ class Access extends CI_Controller {
         $res = $this->checkAuthorization($data['access_points'], $cur_url);
 
         if(sizeof($res) > 0) {
-            $data['hours'] = $this->access_model->selectTableDataRowQuery("*", 'tb_hours', '');
+            $data['hours'] = $this->access_model->getHours();
+            $data['floors'] = $this->access_model->selectTableDataRowQuery("*", "tb_floor", "");
 
             $data['maincontent'] = $this->load->view('hours', $data, true);
             $this->load->view('master', $data);
         }else{
             echo $this->load->view('404');
         }
+    }
+
+    public function getFilteredFloorWiseHoursToEdit(){
+        $floor_id = $this->input->post('floor_id');
+
+        $where = '';
+        if($floor_id != ''){
+            $where .= " AND t1.floor_id=$floor_id";
+        }
+
+        $hours = $this->access_model->getHours($where);
+
+        $new_row='';
+
+        $new_row .= '<tr>';
+        $new_row .= '<th class="center hidden-phone"><h5>FLOOR</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>HOUR</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>START TIME</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>END TIME</h5></th>';
+        $new_row .= '</tr>';
+
+
+        if(sizeof($hours) > 0){
+            foreach ($hours as $h){
+                $new_row .= '<tr>';
+                $new_row .= '<td class="center hidden-phone">'.$h['floor_name'].'<input type="hidden" name="floor_id[]" value="'.$h['floor_id'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="number" name="hour[]" value="'.$h['hour'].'" readonly="readonly" /><input type="hidden" name="hour_id[]" value="'.$h['id'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="start_time[]" step="1" value="'.$h['start_time'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="end_time[]" step="1" value="'.$h['end_time'].'" /></td>';
+                $new_row .= '</tr>';
+            }
+
+            $new_row .= '<tr>';
+            $new_row .= '<td class="text-right hidden-phone"><h5>Break Time Ends</h5></td>';
+            $new_row .= '<td class="center hidden-phone"><input type="time" name="break_time_ends" step="1" value="'.$h['break_time_ends'].'" /></td>';
+            $new_row .= '<td class="text-right hidden-phone"><h5>Break Time Mintues</h5></td>';
+            $new_row .= '<td class="center hidden-phone"><input type="text" name="break_time_in_minute" value="'.$h['break_time_in_minute'].'" autocomplete="off" /></td>';
+            $new_row .= '</tr>';
+        }else{
+
+            $floor_info = $this->access_model->getFloors(" AND id=$floor_id");
+            $floor_name = $floor_info[0]['floor_name'];
+
+            for($i=1; $i<=11; $i++){
+                $new_row .= '<tr>';
+                $new_row .= '<td class="center hidden-phone">'.$floor_name.'<input type="hidden" name="floor_id[]" value="'.$floor_id.'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="number" name="hour[]" value="'.$i.'" readonly="readonly" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="start_time[]" step="1" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="end_time[]" step="1" /></td>';
+                $new_row .= '</tr>';
+            }
+
+            $new_row .= '<tr>';
+            $new_row .= '<td class="text-right hidden-phone"><h5>Break Time Ends</h5></td>';
+            $new_row .= '<td class="center hidden-phone"><input type="time" name="break_time_ends" step="1" /></td>';
+            $new_row .= '<td class="text-right hidden-phone"><h5>Break Time Mintues</h5></td>';
+            $new_row .= '<td class="center hidden-phone"><input type="text" name="break_time_in_minute" autocomplete="off" /></td>';
+            $new_row .= '</tr>';
+        }
+
+
+        echo $new_row;
     }
 
     public function editFloorInfo($floor_id){
@@ -4456,15 +4519,46 @@ class Access extends CI_Controller {
     }
 
     public function updateHourInfo(){
-        $hour_id = $this->input->post('hour_id');
+        $floor_ids = $this->input->post('floor_id');
+        $hour_ids = $this->input->post('hour_id');
 
-        $data['hour'] = $this->input->post('hour');
-        $data['start_time'] = $this->input->post('start_time');
-        $data['end_time'] = $this->input->post('end_time');
+        $hours = $this->input->post('hour');
+        $start_times = $this->input->post('start_time');
+        $end_times = $this->input->post('end_time');
+        $break_time_end = $this->input->post('break_time_ends');
+        $break_time_in_minute = $this->input->post('break_time_in_minute');
 
-        $this->access_model->updateTbl('tb_hours', $hour_id, $data);
+        $floor_id = $floor_ids[0];
+        $where = "";
+        if($floor_id != ''){
+            $where .= " AND t1.floor_id=$floor_id";
+        }
+        $is_hours_exist = $this->access_model->getHours($where);
 
-        $data_s['message'] = "HOUR: ".$data['hour']." is Successfully Updated!";
+        if(sizeof($is_hours_exist) > 0){
+            foreach ($hour_ids as $k => $hour_id){
+                $data['hour'] = $hours[$k];
+                $data['start_time'] = $start_times[$k];
+                $data['end_time'] = $end_times[$k];
+                $data['break_time_ends'] = $break_time_end;
+                $data['break_time_in_minute'] = $break_time_in_minute;
+
+                $this->access_model->updateTbl('tb_hours', $hour_id, $data);
+            }
+        }else{
+            foreach ($hours as $k => $hour){
+                $data['floor_id'] = $floor_id;
+                $data['hour'] = $hour;
+                $data['start_time'] = $start_times[$k];
+                $data['end_time'] = $end_times[$k];
+                $data['break_time_ends'] = $break_time_end;
+                $data['break_time_in_minute'] = $break_time_in_minute;
+
+                $this->access_model->insertingData('tb_hours', $data);
+            }
+        }
+
+        $data_s['message'] = "Hours Successfully Updated!";
         $this->session->set_userdata($data_s);
         redirect('access/getHours');
     }
@@ -4494,17 +4588,49 @@ class Access extends CI_Controller {
     }
 
     public function updateSegmentInfo(){
-        $segment_id = $this->input->post('segment_id');
+        $ids = $this->input->post('id');
+        $floor_ids = $this->input->post('floor_id');
+        $segment_ids = $this->input->post('segment_id');
+        $start_times = $this->input->post('start_time');
+        $end_times = $this->input->post('end_time');
+        $names = $this->input->post('name');
+        $descriptions = $this->input->post('description');
+        $status = $this->input->post('status');
 
-        $data['start_time'] = $this->input->post('start_time');
-        $data['end_time'] = $this->input->post('end_time');
-        $data['name'] = $this->input->post('name');
-        $data['description'] = $this->input->post('description');
-        $data['status'] = $this->input->post('status');
+        $floor_id = $floor_ids[0];
+        $where = "";
+        if($floor_id != ''){
+            $where .= " AND floor_id=$floor_id";
+        }
+        $is_segments_exist = $this->access_model->getSegmentList($where);
 
-        $this->access_model->updateTbl('tb_segment', $segment_id, $data);
+        if(sizeof($is_segments_exist) > 0) {
+            foreach ($ids as $k => $id) {
+                $data['segment_id'] = $segment_ids[$k];
+                $data['start_time'] = $start_times[$k];
+                $data['end_time'] = $end_times[$k];
+                $data['name'] = $names[$k];
+                $data['description'] = $descriptions[$k];
+                $data['floor_id'] = $floor_ids[$k];
+                $data['status'] = $status[$k];
 
-        $data_s['message'] = $data['name']." is Successfully Updated!";
+                $this->access_model->updateTbl('tb_segment', $id, $data);
+            }
+        }else{
+            foreach ($segment_ids as $k => $segment_id){
+                $data['segment_id'] = $segment_id;
+                $data['start_time'] = $start_times[$k];
+                $data['end_time'] = $end_times[$k];
+                $data['name'] = $names[$k];
+                $data['description'] = $descriptions[$k];
+                $data['floor_id'] = $floor_ids[$k];
+                $data['status'] = $status[$k];
+
+                $this->access_model->insertingData('tb_segment', $data);
+            }
+        }
+
+        $data_s['message'] = "Successfully Updated!";
         $this->session->set_userdata($data_s);
         redirect('access/getSegments');
     }
@@ -4525,12 +4651,67 @@ class Access extends CI_Controller {
 
         if(sizeof($res) > 0) {
             $data['segments'] = $this->access_model->getSegmentList();
+            $data['floors'] = $this->access_model->selectTableDataRowQuery("*", "tb_floor", "");
 
             $data['maincontent'] = $this->load->view('segments', $data, true);
             $this->load->view('master', $data);
         }else{
             echo $this->load->view('404');
         }
+    }
+
+    public function getFilteredFloorWiseSegmentsToEdit(){
+        $floor_id = $this->input->post('floor_id');
+
+        $where = '';
+        if($floor_id != ''){
+            $where .= " AND floor_id=$floor_id";
+        }
+
+        $segments = $this->access_model->getSegmentList($where);
+
+        $new_row='';
+
+        $new_row .= '<tr>';
+        $new_row .= '<th class="center hidden-phone"><h5>FLOOR</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>SEGMENT</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>START TIME</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>END TIME</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>NAME</h5></th>';
+        $new_row .= '<th class="center hidden-phone"><h5>DESCRIPTION</h5></th>';
+        $new_row .= '</tr>';
+
+        if(sizeof($segments) > 0){
+            foreach ($segments as $s){
+                $new_row .= '<tr>';
+                $new_row .= '<td class="center hidden-phone">'.$s['floor_name'].'<input type="hidden" name="floor_id[]" value="'.$s['floor_id'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="number" name="segment_id[]" value="'.$s['segment_id'].'" readonly="readonly" /><input type="hidden" name="id[]" value="'.$s['id'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="start_time[]" step="1" value="'.$s['start_time'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="end_time[]" step="1" value="'.$s['end_time'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="text" name="name[]" value="'.$s['name'].'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="text" name="description[]" value="'.$s['description'].'" /><input type="hidden" name="status[]" value="1" /></td>';
+                $new_row .= '</tr>';
+            }
+
+        }else{
+
+            $floor_info = $this->access_model->getFloors(" AND id=$floor_id");
+            $floor_name = $floor_info[0]['floor_name'];
+
+            for($i=1; $i<=4; $i++){
+                $new_row .= '<tr>';
+                $new_row .= '<td class="center hidden-phone">'.$floor_name.'<input type="hidden" name="floor_id[]" value="'.$floor_id.'" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="number" name="segment_id[]" value="'.$i.'" readonly="readonly" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="start_time[]" step="1" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="time" name="end_time[]" step="1" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="text" name="name[]" /></td>';
+                $new_row .= '<td class="center hidden-phone"><input type="text" name="description[]" /><input type="hidden" name="status[]" value="1" /></td>';
+                $new_row .= '</tr>';
+            }
+
+        }
+
+        echo $new_row;
     }
 
     public function checkUserAvailability(){
@@ -4639,21 +4820,21 @@ class Access extends CI_Controller {
                 if(sizeof($res) == 0){
                     $this->access_model->deleteTodayLineOutputTable($line_id);
 
-                    $hours = $this->access_model->getHours();
+                    $hours = $this->access_model->selectTableDataRowQuery("*", "tb_hours", " AND floor_id=$floor_id");
 
-                    $last_segment = $this->access_model->getSegmentList(" AND id=4");
-                    $last_segment_start_time = $last_segment[0]['start_time'];
-                    $last_segment_end_time = $last_segment[0]['end_time'];
-
-                    $h_data = array(
-                        'id' => 11,
-                        'hour' => 11,
-                        'start_time' => "$last_segment_start_time",
-                        'end_time' => "$last_segment_end_time",
-                        'u_id' => 0
-                    );
-
-                    array_push($hours, $h_data);
+//                    $last_segment = $this->access_model->getSegmentList(" AND id=4");
+//                    $last_segment_start_time = $last_segment[0]['start_time'];
+//                    $last_segment_end_time = $last_segment[0]['end_time'];
+//
+//                    $h_data = array(
+//                        'id' => 11,
+//                        'hour' => 11,
+//                        'start_time' => "$last_segment_start_time",
+//                        'end_time' => "$last_segment_end_time",
+//                        'u_id' => 0
+//                    );
+//
+//                    array_push($hours, $h_data);
 
                     foreach ($hours as $v_h){
 
@@ -4690,21 +4871,21 @@ class Access extends CI_Controller {
                 if(sizeof($res) == 0){
                     $this->access_model->deleteTodayLineOutputTable($line_id);
 
-                    $hours = $this->access_model->getHours();
+                    $hours = $this->access_model->selectTableDataRowQuery("*", "tb_hours", " AND floor_id=$floor_id");
 
-                    $last_segment = $this->access_model->getSegmentList(" AND id=4");
-                    $last_segment_start_time = $last_segment[0]['start_time'];
-                    $last_segment_end_time = $last_segment[0]['end_time'];
-
-                    $h_data = array(
-                        'id' => 11,
-                        'hour' => 11,
-                        'start_time' => "$last_segment_start_time",
-                        'end_time' => "$last_segment_end_time",
-                        'u_id' => 0
-                    );
-
-                    array_push($hours, $h_data);
+//                    $last_segment = $this->access_model->getSegmentList(" AND id=4");
+//                    $last_segment_start_time = $last_segment[0]['start_time'];
+//                    $last_segment_end_time = $last_segment[0]['end_time'];
+//
+//                    $h_data = array(
+//                        'id' => 11,
+//                        'hour' => 11,
+//                        'start_time' => "$last_segment_start_time",
+//                        'end_time' => "$last_segment_end_time",
+//                        'u_id' => 0
+//                    );
+//
+//                    array_push($hours, $h_data);
 
                     foreach ($hours as $v_h){
 
@@ -5939,21 +6120,21 @@ class Access extends CI_Controller {
 //            $this->access_model->deleteTodayLineOutputTable($floor_id);
             $this->access_model->deleteTodayFinishingOutputTable($floor_id);
 
-            $hours = $this->access_model->getHours();
+            $hours = $this->access_model->selectTableDataRowQuery('*', 'tb_hours', " AND floor_id=$floor_id");
 
-            $last_segment = $this->access_model->getSegmentList(" AND id=4");
-            $last_segment_start_time = $last_segment[0]['start_time'];
-            $last_segment_end_time = $last_segment[0]['end_time'];
+//            $last_segment = $this->access_model->getSegmentList(" AND segment_id=4");
+//            $last_segment_start_time = $last_segment[0]['start_time'];
+//            $last_segment_end_time = $last_segment[0]['end_time'];
 
-            $h_data = array(
-                'id' => 11,
-                'hour' => 11,
-                'start_time' => "$last_segment_start_time",
-                'end_time' => "$last_segment_end_time",
-                'u_id' => 0
-            );
-
-            array_push($hours, $h_data);
+//            $h_data = array(
+//                'id' => 11,
+//                'hour' => 11,
+//                'start_time' => "$last_segment_start_time",
+//                'end_time' => "$last_segment_end_time",
+//                'u_id' => 0
+//            );
+//
+//            array_push($hours, $h_data);
 
 //            echo '<pre>';
 //            print_r($hours);
@@ -10387,17 +10568,17 @@ class Access extends CI_Controller {
 
         if(sizeof($res) > 0) {
         $where = '';
+        $where_1 = '';
         if($floor_id != '' && $floor_id != 0){
             $where .= " AND floor = $floor_id";
+            $where_1 .= " AND floor_id = $floor_id";
         }
 
         $data['time']=$datex;
         $data['lines'] = $this->access_model->getLines($where);
 
-        $where_1 = '';
-
-        $data['segment'] = $this->access_model->getSegments($time);
-        $data['segments'] = $this->access_model->getSegmentList();
+        $data['segment'] = $this->access_model->getSegments($time, $floor_id);
+        $data['segments'] = $this->access_model->getSegmentList($where_1);
 
 //        echo '<pre>';
 //        print_r($data['segments']);
@@ -10477,7 +10658,7 @@ class Access extends CI_Controller {
 
                 if($segment_id == 4){
 
-                    $res = $this->access_model->getSegmentList(' AND id=4');
+                    $res = $this->access_model->getSegmentList(' AND segment_id=4');
                     $last_segment_start_time = $res[0]['start_time'];
 
 

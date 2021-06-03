@@ -1,6 +1,7 @@
 <?php
 
-$segment_id = $segment_info[0]['id'];
+$id = $segment_info[0]['id'];
+$segment_id = $segment_info[0]['segment_id'];
 $start_time = $segment_info[0]['start_time'];
 $end_time = $segment_info[0]['end_time'];
 $name = $segment_info[0]['name'];
@@ -59,8 +60,15 @@ $status = $segment_info[0]['status'];
 
                     <div class="col-md-3">
                         <div class="form-group">
+                            <input required="required" class="form-control" type="number" name="segment_id" id="segment_id" step="2" value="<?php echo $segment_id;?>" />
+                            <input required="required" class="form-control" type="hidden" name="id" id="id" value="<?php echo $id;?>" />
+                            <span style="font-size: 11px;">* Segment</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <input required="required" class="form-control" type="time" name="start_time" id="start_time" step="2" value="<?php echo $start_time;?>" />
-                            <input required="required" class="form-control" type="hidden" name="segment_id" id="segment_id" value="<?php echo $segment_id;?>" />
                             <span style="font-size: 11px;">* Start Time</span>
                         </div>
                     </div>
@@ -79,17 +87,13 @@ $status = $segment_info[0]['status'];
                         </div>
                     </div>
 
-
                     <div class="col-md-3">
                         <div class="form-group">
                             <input required="required" class="form-control" type="text" name="description" id="description" value="<?php echo $description;?>" />
                             <span style="font-size: 11px;">* Description</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group">
+
                     <div class="col-md-3">
                         <select  required="required" class="form-control" id="status" name="status">
                             <option value="">Select Status...</option>
@@ -98,10 +102,10 @@ $status = $segment_info[0]['status'];
                         </select>
                         <span style="font-size: 11px;">* Status</span>
                     </div>
+
                     <div class="col-md-3">
                         <button class="btn btn-success">UPDATE</button>
                     </div>
-
                 </div>
             </div>
 

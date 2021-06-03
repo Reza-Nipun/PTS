@@ -1869,27 +1869,10 @@ class Dashboard extends CI_Controller {
 //        $previous_date = "2020-03-16";
         $data['previous_date'] = $previous_date;
 
-//        echo '<pre>';
-//        print_r($previous_date);
-//        echo '</pre>';
-//
-//        die();
-
-        $time_range = $this->dashboard_model->getWorkingTimeRange();
-
-        $starting_time = $time_range[0]['starting_time'];
-        $ending_time = $time_range[0]['ending_time'];
-
-        $where_seg = "";
-        if($starting_time != '' && $ending_time != ''){
-            $where_seg .= "  ORDER BY id DESC LIMIT 1";
-        }
-
-        $data['segments'] = $this->dashboard_model->getSegments($where_seg);
-
-        $data['hour_ranges'] = $this->access_model->getHours();
 
         $data['lines'] = $this->dashboard_model->getAllLines();
+
+        $data['floors'] = $this->dashboard_model->selectTableDataRowQuery(' * ', 'tb_floor', " AND is_finishing_floor=1 AND status=1");
 
         $data['cutting_target'] = $this->dashboard_model->getCuttingTarget($previous_date);
         $data['cutting_prod'] = $this->dashboard_model->getCuttingTotalPackageReport($previous_date);
@@ -1899,8 +1882,8 @@ class Dashboard extends CI_Controller {
 //        $data['line_prod'] = $this->dashboard_model->getLineProductionSummaryReportNew($previous_date, $starting_time, $ending_time);
 
 //        $data['finishing_prod'] = $this->dashboard_model->getFinishingProductionSummaryReport($previous_date, $starting_time, $ending_time);
-        $data['finishing_prod'] = $this->dashboard_model->getFinishingFloorWiseProductionReport($previous_date, $starting_time, $ending_time);
 
+//        $data['finishing_prod'] = $this->dashboard_model->getFinishingFloorWiseProductionReport($previous_date, $starting_time, $ending_time);
 
         echo $mail_content = $this->load->view('reports/production_summary_report_mail_body_new', $data, true);
 
@@ -1958,6 +1941,37 @@ class Dashboard extends CI_Controller {
             echo "window.open('', '_self', ''); window.close();";
             echo "</script>";
         }
+    }
+
+    public function getHourRanges($floor){
+        return $data['hour_ranges'] = $this->access_model->selectTableDataRowQuery(' * ', 'tb_today_line_output_qty', " AND floor_id=$floor GROUP BY floor_id, hour");
+    }
+
+    public function getLastSegment($floor){
+        $where_seg = "";
+        if($floor != ''){
+            $where_seg .= " AND floor_id=$floor ORDER BY id DESC LIMIT 1";
+        }
+
+        return $data['segments'] = $this->dashboard_model->selectTableDataRowQuery(' * ', 'tb_segment', $where_seg);
+    }
+
+    public function finishingSummaryReport($floor_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $previous_date = date( "Y-m-d", strtotime( $date . "-0 day"));
+//        $previous_date = "2020-03-16";
+        $data['previous_date'] = $previous_date;
+
+        $time_range = $this->dashboard_model->selectTableDataRowQuery(" min(start_time) as starting_time, max(end_time) as ending_time ", 'tb_hours', " AND floor_id=$floor_id");
+
+        $starting_time = $time_range[0]['starting_time'];
+        $ending_time = $time_range[0]['ending_time'];
+
+        return $data['finishing_prod'] = $this->dashboard_model->getFinishingProductionReportByFloor($floor_id, $previous_date, $starting_time, $ending_time);
     }
 
     public function getAndSetLineWiseRightAtFirstTimeQty(){
@@ -2818,6 +2832,7 @@ class Dashboard extends CI_Controller {
         $data['search_date'] = $search_date;
 
         $data['performance_detail'] = $this->dashboard_model->getDailyPerformanceDetail($line_id, $search_date);
+        $data['manual_adjustment'] = $this->dashboard_model->getDailyManualAdjustmentDetail($line_id, $search_date);
 
         $data['maincontent'] = $this->load->view('reports/line_daily_performance_report_detail', $data, true);
         $this->load->view('reports/master', $data);
@@ -3898,22 +3913,17 @@ class Dashboard extends CI_Controller {
         $data['min_to_hour']=round($min / 60, 2);
         $data['time']=$time;
 
-        $segments = $this->access_model->getSegments($time);
-
-        $segment_id=$segments[0]['id'];
-        $data['segment_id']=$segment_id;
-
         $data['title'] = 'Today Line Hourly Report';
         $data['user_name'] = $this->session->userdata('user_name');
         $data['access_points'] = $this->session->userdata('access_points');
 
-        $data['hours'] = $this->access_model->getHours();
+        $data['hours'] = $this->access_model->selectTableDataRowQuery("*", "tb_today_line_output_qty", " Group By hour");
         $data['lines'] = $this->access_model->getLines();
         $data['floors'] = $this->access_model->getFloors();
 
         $where = '';
         if($time != ''){
-            $where .= " AND '$time' between start_time AND end_time";
+            $where .= " AND '$time' between t1.start_time AND t1.end_time";
         }
 
         $present_hour_to_second = round($min / 60, 2);
@@ -3923,6 +3933,12 @@ class Dashboard extends CI_Controller {
 
         $data['maincontent'] = $this->load->view('reports/line_hourly_report', $data);
 //        $this->load->view('reports/master', $data);
+    }
+
+    public function getSegments($time, $floor_id){
+        $segments = $this->access_model->getSegments($time, $floor_id);
+
+        return $segment_id=$segments[0]['segment_id'];
     }
 
     public function lineHourlyReportAutoMail($id){
@@ -3956,30 +3972,25 @@ class Dashboard extends CI_Controller {
             }
 
             $res = $this->access_model->getLineOutputHourlyReport($select_fields, $where);
-
             $total_hour_output_qty = $res[0]['total_hour_output_qty'];
 
-            if($time <= '20:00:00'){
+            if($time <= '21:00:00'){
                 if($total_hour_output_qty > 0){
                     $data['min_to_hour']=round($min / 60, 2);
                     $data['time']=$time;
 
-                    $segments = $this->access_model->getSegments($time);
-
-                    $segment_id=$segments[0]['id'];
-                    $data['segment_id']=$segment_id;
 
                     $data['title'] = 'Today Line Hourly Report';
                     $data['user_name'] = $this->session->userdata('user_name');
                     $data['access_points'] = $this->session->userdata('access_points');
 
-                    $data['hours'] = $this->access_model->getHours();
+                    $data['hours'] = $this->access_model->selectTableDataRowQuery("*", "tb_today_line_output_qty", " Group By hour");
                     $data['lines'] = $this->access_model->getLines();
                     $data['floors'] = $this->access_model->getFloors();
 
                     $where = '';
                     if($time != ''){
-                        $where .= " AND '$time' between start_time AND end_time";
+                        $where .= " AND '$time' between t1.start_time AND t1.end_time";
                     }
 
                     $present_hour_to_second = round($min / 60, 2);
@@ -4183,21 +4194,23 @@ class Dashboard extends CI_Controller {
         
         $date_time=$datex->format('Y-m-d H:i:s');
         $date=$datex->format('Y-m-d');
-        $data['hours'] = $this->access_model->getHours();
+
 
         $where = '';
         $where1 = '';
         $where2 = '';
+        $where4 = '';
 
-        if($floor_id != '' && $floor_id != 0){
+        if($floor_id != ''){
             $data['floor_id'] = $floor_id;
 
             $where .= " AND id=$floor_id";
             $where1 .= " AND floor_id=$floor_id AND date='$date'";
             $where2 .= " AND DATE_FORMAT(packing_date_time, '%Y-%m-%d')='$date' AND packing_status=1 AND is_manually_adjusted=0";
+            $where4 .= " AND t1.floor_id=$floor_id";
 
             $finishing_trgt = $this->access_model->getFinishingTarget($where1);
-            $data['hours'] = $this->access_model->getHours();
+            $data['hours'] = $this->access_model->getHours($where4);
 
             $data['finishing_target'] = $finishing_trgt[0]['target'];
 
@@ -5503,7 +5516,10 @@ class Dashboard extends CI_Controller {
         echo $data['maincontent'] = $this->load->view('finishing_hourly_output_reload', $data, true);
     }
 
-    public function getLineHourlyReport($line_id, $start_time, $end_time){
+    public function getLineHourlyReport($line_id, $hour){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
 
         $select_fields = '';
         $select_fields .= " * ";
@@ -5514,14 +5530,21 @@ class Dashboard extends CI_Controller {
             $where .= " AND line_id=$line_id";
         }
 
-        if($start_time != '' && $end_time != ''){
-            $where .= " AND start_time='$start_time' AND end_time='$end_time'";
+        if($hour != ''){
+            $where .= " AND hour='$hour'";
+        }
+
+        if($date != ''){
+            $where .= " AND date='$date'";
         }
 
         return $this->access_model->getLineOutputHourlyReport($select_fields, $where);
     }
 
-    public function getFinishingHourlyReport($floor_id, $start_time, $end_time){
+    public function getFinishingHourlyReport($floor_id, $hour){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
 
         $where = '';
 
@@ -5529,33 +5552,58 @@ class Dashboard extends CI_Controller {
             $where .= " AND floor_id=$floor_id";
         }
 
-        if($start_time != '' && $end_time != ''){
-            $where .= " AND start_time='$start_time' AND end_time='$end_time'";
+        if($hour != ''){
+            $where .= " AND hour='$hour'";
+        }
+
+        if($date != ''){
+            $where .= " AND date='$date'";
         }
 
         return $this->access_model->selectTableDataRowQuery('*', 'tb_today_finishing_output_qty', $where);
     }
 
-    public function getHourlySummaryReport($start_time, $end_time){
+    public function getHourlySummaryReport($hour){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
 
         $select_fields = '';
-        $select_fields .= " `date`, start_time, end_time, SUM(qty) AS total_hour_qty ";
+        $select_fields .= " `date`, hour, SUM(qty) AS total_hour_qty ";
 
         $where = '';
 
-        if($start_time != '' && $end_time != ''){
-            $where .= " AND start_time='$start_time' AND end_time='$end_time'";
+        if($hour != ''){
+            $where .= " AND hour='$hour'";
+        }
+
+        if($date != ''){
+            $where .= " AND date='$date'";
         }
 
         return $this->access_model->getLineOutputHourlyReport($select_fields, $where);
     }
 
-    public function getHourlyFloorSummaryReport($start_time, $end_time, $floor_id){
-        return $this->access_model->getFloorLineOutputHourlyReport($start_time, $end_time, $floor_id);
+    public function getHourlyFloorSummaryReport($hour, $floor_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $where = '';
+        if($floor_id != '' && $hour != ''){
+            $where .= " AND t1.id=$floor_id AND t2.hour='$hour' AND t2.date='$date'";
+        }
+
+        return $this->access_model->getFloorLineOutputHourlyReport($where);
     }
 
-    public function getHourlyFloorFinishingSummaryReport($start_time, $end_time){
-        return $this->access_model->selectTableDataRowQuery('SUM(qty) AS finishing_qty', 'tb_today_finishing_output_qty', " AND start_time='$start_time' AND end_time='$end_time'");
+    public function getHourlyFloorFinishingSummaryReport($hour){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        return $this->access_model->selectTableDataRowQuery('SUM(qty) AS finishing_qty, SUM(manual_qty) AS finishing_manual_qty', 'tb_today_finishing_output_qty', " AND hour='$hour' AND date='$date'");
     }
 
     public function getFloorSummaryReport($floor_id){
@@ -5564,7 +5612,13 @@ class Dashboard extends CI_Controller {
         $date_time=$datex->format('Y-m-d H:i:s');
         $date=$datex->format('Y-m-d');
 
-        return $this->access_model->getFloorLineOutputReport($floor_id);
+        $where = '';
+
+        if($floor_id != ''){
+            $where .= " AND t1.floor=$floor_id AND t2.date='$date'";
+        }
+
+        return $this->access_model->getFloorLineOutputReport($where);
     }
 
     public function getFinishingOutputSummaryReload($floor_id){
@@ -5647,8 +5701,13 @@ class Dashboard extends CI_Controller {
 
         $line_target = $line_trgt[0]['target'];
 
+        $where = '';
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id AND date='$date'";
+        }
+
 //        $line_report = $this->access_model->getLineOutputReportViewTable($line_id); //Previous Query
-        $line_report = $this->access_model->getTodayLineOutputSummaryReport($line_id); //Latest Query
+        $line_report = $this->access_model->getTodayLineOutputSummaryReport($where); //Latest Query
 
         $line_output = $line_report[0]['count_end_line_qc_pass'];
 
@@ -5716,114 +5775,11 @@ class Dashboard extends CI_Controller {
 //        $time="19:00:00";
         $data['time'] = $time;
 
+        $line_performance = $this->access_model->selectTableDataRowQuery('*', 'tb_today_line_output_qty', " AND line_id=$line_id");
 
-        $min_max_hours = $this->access_model->getSegments($time);
-//        $min_max_hours = $this->access_model->getTime();
-        $segment_id = $min_max_hours[0]['id'];
-        $min_start_time = $min_max_hours[0]['start_time'];
-        $max_end_time = $min_max_hours[0]['end_time'];
+        $data['efficiency'] = $line_performance[0]['efficiency'];
 
-        $data['get_smv_list'] = $this->access_model->getSegmentWiseSMVs($line_id, $date, $min_start_time, $max_end_time);
-
-
-//        $line_trgt = $this->access_model->getLineTargetViewTable($line_id,$date);
-
-//        echo '<pre>';
-//        print_r( $data['work_time']);
-//        print_r( $data['get_smv_list']);
-//        print_r( $line_trgt);
-//        echo '</pre>';
-
-
-
-//        $segment_id=4;
-
-
-
-        $select_fields = '';
-
-        $data['segment_id'] = $segment_id;
-
-        if($segment_id == 1)
-        {
-            $minhours = $this->access_model->getMinMaxHours();
-            $min_time_to_sec = $minhours[0]['min_time_to_sec'];
-
-//            $data['work_time'] = $this->access_model->getSegments($time);
-            $maxhours = $this->access_model->getHoursByTimeRange($time);
-            $max_time_to_sec = $maxhours[0]['max_time_to_sec'];
-
-            $data['work_time'] = ($max_time_to_sec - $min_time_to_sec);
-
-            $select_fields .= "  id, line_id, target, man_power_1, date, remarks ";
-
-            $line_trgt = $this->access_model->getLineTargetinfo($date, $line_id, $select_fields);
-
-            $line_target = $line_trgt[0]['target'];
-            $man_power = $line_trgt[0]['man_power_1'];
-//            $man_power =60;
-            $data['man_power'] = $man_power;
-            $data['line_id'] = $line_id;
-
-
-            echo $data['maincontent'] = $this->load->view('line_efficiency_reload_1', $data, true);
-        }
-
-        if($segment_id == 2)
-        {
-            $work_time = $this->access_model->getSegments($time);
-            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
-
-            $select_fields .= "  id, line_id, target, man_power_2, date, remarks ";
-
-            $line_trgt = $this->access_model->getLineTargetinfo($date, $line_id, $select_fields);
-
-            $line_target = $line_trgt[0]['target'];
-
-            $man_power = $line_trgt[0]['man_power_2'];
-            $data['man_power'] = $man_power;
-            $data['line_id'] = $line_id;
-
-
-            echo $data['maincontent'] = $this->load->view('line_efficiency_reload_1', $data, true);
-        }
-
-        if($segment_id == 3)
-        {
-            $work_time = $this->access_model->getSegments($time);
-            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
-
-            $select_fields .= "  id, line_id, target, man_power_3, date, remarks ";
-
-            $line_trgt = $this->access_model->getLineTargetinfo($date, $line_id, $select_fields);
-
-            $line_target = $line_trgt[0]['target'];
-
-            $man_power = $line_trgt[0]['man_power_3'];
-            $data['man_power'] = $man_power;
-            $data['line_id'] = $line_id;
-
-
-            echo $data['maincontent'] = $this->load->view('line_efficiency_reload_1', $data, true);
-        }
-
-        if($segment_id == 4)
-        {
-            $work_time = $this->access_model->getWorkingHoursViewTable($line_id, $date, $min_start_time, $max_end_time);
-            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
-
-            $select_fields .= "  id, line_id, target, man_power_4, date, remarks ";
-
-            $line_trgt = $this->access_model->getLineTargetinfo($date, $line_id, $select_fields);
-
-            $line_target = $line_trgt[0]['target'];
-
-            $man_power = $line_trgt[0]['man_power_4'];
-            $data['man_power'] = $man_power;
-            $data['line_id'] = $line_id;
-
-            echo $data['maincontent'] = $this->load->view('line_efficiency_reload_1', $data, true);
-        }
+        echo $data['maincontent'] = $this->load->view('line_efficiency_reload_1', $data, true);
 
     }
 
@@ -5839,15 +5795,6 @@ class Dashboard extends CI_Controller {
 //        $time="19:05:00";
         $data['time'] = $time;
 
-
-        $min_max_hours = $this->access_model->getSegments($time);
-//        $min_max_hours = $this->access_model->getTime();
-        $segment_id = $min_max_hours[0]['id'];
-        $min_start_time = $min_max_hours[0]['start_time'];
-        $max_end_time = $min_max_hours[0]['end_time'];
-
-        $data['get_smv_list'] = $this->access_model->getSegmentWiseSMVs($line_id, $date, $min_start_time, $max_end_time);
-
         $condition = '';
 
         if($line_id != ''){
@@ -5855,7 +5802,16 @@ class Dashboard extends CI_Controller {
         }
 
         $line_info = $this->dashboard_model->getAllLinesByCondition($condition);
-        $data['floor'] = $line_info[0]['floor'];
+        $floor_id = $line_info[0]['floor'];
+        $data['floor'] = $floor_id;
+
+        $min_max_hours = $this->access_model->getSegments($time, $floor_id);
+//        $min_max_hours = $this->access_model->getTime();
+        $segment_id = $min_max_hours[0]['segment_id'];
+        $min_start_time = $min_max_hours[0]['start_time'];
+        $max_end_time = $min_max_hours[0]['end_time'];
+
+        $data['get_smv_list'] = $this->access_model->getSegmentWiseSMVs($line_id, $date, $min_start_time, $max_end_time);
 
 //        $line_trgt = $this->access_model->getLineTargetViewTable($line_id,$date);
 
@@ -5880,8 +5836,15 @@ class Dashboard extends CI_Controller {
 
         if($segment_id == 1)
         {
-            $minhours = $this->access_model->getMinMaxHours();
+            $where = '';
+            if($floor_id != ''){
+                $where .= " AND floor_id=$floor_id";
+            }
+
+            $minhours = $this->access_model->getMinMaxHours($where);
             $min_time_to_sec = $minhours[0]['min_time_to_sec'];
+            $data['break_time_ends'] = $minhours[0]['break_time_ends'];
+            $data['break_time_in_minute'] = $minhours[0]['break_time_in_minute'];
 
 //            $data['work_time'] = $this->access_model->getSegments($time);
 //            $maxhours = $this->access_model->getHoursByTimeRange($time);
@@ -5905,7 +5868,7 @@ class Dashboard extends CI_Controller {
 
         if($segment_id == 2)
         {
-            $work_time = $this->access_model->getSegments($time);
+            $work_time = $this->access_model->getSegments($time, $floor_id);
 //            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
             $min_time_to_sec = $work_time[0]['min_time_to_sec'];
 
@@ -5927,7 +5890,7 @@ class Dashboard extends CI_Controller {
 
         if($segment_id == 3)
         {
-            $work_time = $this->access_model->getSegments($time);
+            $work_time = $this->access_model->getSegments($time, $floor_id);
 //            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
             $min_time_to_sec = $work_time[0]['min_time_to_sec'];
 
@@ -5952,7 +5915,7 @@ class Dashboard extends CI_Controller {
 //            $work_time = $this->access_model->getWorkingHoursViewTable($line_id, $date, $min_start_time, $max_end_time);
 //            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
 
-            $work_time = $this->access_model->getSegments($time);
+            $work_time = $this->access_model->getSegments($time, $floor_id);
 //            $segment_start_time = $work_time[0]['start_time'];
             $min_time_to_sec = $work_time[0]['min_time_to_sec'];
 
@@ -6077,7 +6040,7 @@ class Dashboard extends CI_Controller {
     public function getManPowerReload($line_id){
 
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
-        
+
         $date_time=$datex->format('Y-m-d H:i:s');
         $time=$datex->format('H:i:s');
         $date=$datex->format('Y-m-d');
@@ -6089,10 +6052,11 @@ class Dashboard extends CI_Controller {
 //        $time = "17:30:00";
         $data['time']=$time;
 
-//        $data['lines'] = $this->access_model->getLines($where);
-        $segments = $this->access_model->getSegments($time);
+        $line_info = $this->access_model->selectTableDataRowQuery("*", "tb_line", " AND id=$line_id");
+        $floor_id = $line_info[0]['floor'];
+        $segments = $this->access_model->getSegments($time, $floor_id);
 
-        $segment_id=$segments[0]['id'];
+        $segment_id=$segments[0]['segment_id'];
 
 
 
@@ -6193,9 +6157,10 @@ class Dashboard extends CI_Controller {
         $where_1 = '';
         $where_2 = '';
 
-        $where_3 = " AND '$time'  BETWEEN start_time AND end_time";
+        $where_3 = " AND '$time'  BETWEEN t1.start_time AND t1.end_time";
 
         $where_4 = '';
+        $where_5 = '';
 
         $this_hour = $this->access_model->getHours($where_3);
         $start_time = $this_hour[0]['start_time'];
@@ -6210,11 +6175,12 @@ class Dashboard extends CI_Controller {
             $where_1 .= " AND line_id=$line_id AND DATE_FORMAT(defect_date_time, '%Y-%m-%d')='$date' AND DATE_FORMAT(defect_date_time, '%H:%i:%s') BETWEEN '$start_time' AND '$end_time'";
             $where_2 .= " AND line_id=$line_id AND '$time' BETWEEN start_time AND end_time";
             $where_4 .= " AND DATE_FORMAT(defect_date_time, '%Y-%m-%d')='$date' AND line_id=$line_id";
+            $where_5 .= " AND line_id=$line_id AND date='$date'";
         }
 
         $data['qa_major_defects'] = $this->access_model->getQualityDefectsReport($where_4);
         $data['dhu_report'] = $this->access_model->getDHUReport($where, $where_2, $where_1);
-        $data['dhu_summary'] = $this->access_model->getLineDHUSummary($line_id);
+        $data['dhu_summary'] = $this->access_model->getLineDHUSummary($where_5);
 
         $data['dhu_count'] = $this->getDefectCount($line_id, '', $date);
 
@@ -6263,7 +6229,7 @@ class Dashboard extends CI_Controller {
         $data['date'] = $date;
         $data['title'] = 'Line Quality Report';
 
-        $where = " AND '$time'  BETWEEN start_time AND end_time";
+        $where = " AND '$time'  BETWEEN t1.start_time AND t1.end_time";
 
         $this_hour = $this->access_model->getHours($where);
         $data['hour'] = $this_hour[0]['hour'];
@@ -6481,7 +6447,16 @@ class Dashboard extends CI_Controller {
 
         $data['line_id'] = $line_id;
 
-        return $dhu_summary = $this->access_model->getLineDHUSummary($line_id);
+        $where = '';
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id";
+        }
+
+        if($date != ''){
+            $where .= " AND date='$date'";
+        }
+
+        return $dhu_summary = $this->access_model->getLineDHUSummary($where);
     }
 
     public function lineQualityDefectSave($line_id, $dhu){

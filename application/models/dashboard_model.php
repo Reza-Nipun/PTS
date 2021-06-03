@@ -1829,7 +1829,33 @@ class Dashboard_model extends CI_Model {
                 WHERE 
                 access_points=4 AND access_points_status=4
                 AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d') = '$date'
-                AND line_id=$line_id AND manually_closed=0
+                AND line_id=$line_id AND manually_closed=0 AND is_manually_adjusted=0
+                GROUP BY so_no, line_id) AS t1
+                
+                LEFT JOIN 
+                (SELECT so_no, po_no, smv, purchase_order, style_no, style_name, item, quality, color,
+                 SUM(quantity) as order_qty
+                FROM `tb_po_detail` GROUP BY so_no) AS t2
+                ON t1.so_no=t2.so_no
+                
+                LEFT JOIN 
+                tb_production_summary as t3
+                ON t1.so_no=t3.so_no";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function getDailyManualAdjustmentDetail($line_id, $date){
+        $sql = "SELECT t1.*, t2.smv, t2.order_qty, t3.count_end_line_qc_pass
+                From
+                (SELECT so_no, po_no, brand, purchase_order, style_no, style_name, item, quality, color, ex_factory_date, 
+                COUNT(pc_tracking_no) as line_output_po_qty
+                FROM `tb_care_labels` 
+                WHERE 
+                access_points=4 AND access_points_status=4
+                AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d') = '$date'
+                AND line_id=$line_id AND manually_closed=0 AND is_manually_adjusted=1
                 GROUP BY so_no, line_id) AS t1
                 
                 LEFT JOIN 
@@ -1918,6 +1944,40 @@ class Dashboard_model extends CI_Model {
                 tb_floor as J ON A.finishing_floor_id=J.id
                                 
 				ORDER BY J.id";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function getFinishingProductionReportByFloor($floor_id, $date, $starting_time, $ending_time){
+        $sql = "SELECT A.id AS finishing_floor_id, A.floor_name, B.target, C.sum_normal_qty, C.sum_manual_qty, 
+                (C.sum_normal_qty+C.sum_manual_qty+D.finishing_extra_hours_output) AS total_finishing_output, 
+                D.finishing_extra_hours_output
+                
+                FROM (SELECT * FROM `tb_floor` WHERE id=$floor_id) AS A
+                
+                LEFT JOIN
+                (SELECT floor_id, target, `date`
+                FROM `finishing_daily_target` 
+                WHERE floor_id !=0 AND `date` = '$date'
+                GROUP BY floor_id) as B
+                ON A.id=B.floor_id
+                
+                LEFT JOIN
+                (SELECT floor_id, SUM(qty) AS sum_normal_qty, SUM(manual_qty) AS sum_manual_qty
+                FROM tb_today_finishing_output_qty
+                WHERE `date`='$date'
+                GROUP BY floor_id) AS C
+                ON A.id=C.floor_id
+                
+                LEFT JOIN
+                (SELECT floor_id, SUM(qty) as finishing_extra_hours_output
+                FROM `tb_today_finishing_output_qty` WHERE `date` = '$date' 
+                AND end_time > '$ending_time'
+                GROUP BY `date`, floor_id) as D
+                ON A.id=D.floor_id
+                                          
+				ORDER BY A.id";
 
         $query = $this->db->query($sql)->result_array();
         return $query;

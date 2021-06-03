@@ -4,6 +4,8 @@ $hour_id = $hour_info[0]['id'];
 $hour = $hour_info[0]['hour'];
 $start_time = $hour_info[0]['start_time'];
 $end_time = $hour_info[0]['end_time'];
+$break_time_ends = $hour_info[0]['break_time_ends'];
+$break_time_in_minute = $hour_info[0]['break_time_in_minute'];
 
 ?>
 
@@ -74,6 +76,20 @@ $end_time = $hour_info[0]['end_time'];
                         <div class="form-group">
                             <input required="required" class="form-control" type="time" name="end_time" id="end_time" step="2" value="<?php echo $end_time;?>" />
                             <span style="font-size: 11px;">* End Time</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input required="required" class="form-control" type="time" name="break_time_ends" id="break_time_ends" step="2" value="<?php echo $break_time_ends;?>" />
+                            <span style="font-size: 11px;">* Break Time Ends</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input required="required" class="form-control" type="text" name="break_time_in_minute" id="break_time_in_minute" value="<?php echo $break_time_in_minute;?>" />
+                            <span style="font-size: 11px;">* Break Time Minute</span>
                         </div>
                     </div>
 

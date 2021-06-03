@@ -68,6 +68,72 @@
 
         </tfoot>
     </table>
+
+    <table class="display table table-bordered table-striped" id="" border="1">
+        <thead>
+        <tr>
+            <th class="hidden-phone center" colspan="7"><h3><?php echo $line_name;?> - Manual Adjustment</h3></th>
+            <th class="hidden-phone center" colspan="7"><h3><?php echo $search_date;?></h3></th>
+        </tr>
+        <tr>
+            <th class="hidden-phone center">SO</th>
+            <th class="hidden-phone center">Brand</th>
+            <th class="hidden-phone center">PO</th>
+            <th class="hidden-phone center">Item</th>
+            <th class="hidden-phone center">Quality</th>
+            <th class="hidden-phone center">Color</th>
+            <th class="hidden-phone center">Style</th>
+            <th class="hidden-phone center">Style Name</th>
+            <th class="hidden-phone center">SMV</th>
+            <th class="hidden-phone center">Ex-Fac-Date</th>
+            <th class="hidden-phone center">Order Qty</th>
+            <th class="hidden-phone center">Total Output</th>
+            <th class="hidden-phone center">Today Output</th>
+            <th class="hidden-phone center">Total Order BLNC</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <?php
+
+        $total_line_output_po_qty_1 = 0;
+        $order_qty_balance_1 = 0;
+
+        foreach ($manual_adjustment as $v_1){
+
+            $total_line_output_po_qty_1 += $v_1['line_output_po_qty'];
+
+            $order_qty_balance_1 =  $v_1['count_end_line_qc_pass'] - $v_1['order_qty'];
+            ?>
+            <tr>
+                <th class="hidden-phone center"><?php echo $v_1['so_no']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['brand']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['purchase_order']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['item']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['quality']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['color']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['style_no']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['style_name']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['smv']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['ex_factory_date']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['order_qty']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['count_end_line_qc_pass']?></th>
+                <th class="hidden-phone center"><?php echo $v_1['line_output_po_qty']?></th>
+                <th class="hidden-phone center"><?php echo $order_qty_balance_1;?></th>
+            </tr>
+        <?php } ?>
+
+        </tbody>
+        <tfoot>
+
+        <tr>
+            <th class="hidden-phone" style="text-align: right;" colspan="12"><h5>TOTAL</h5></th>
+            <th class="hidden-phone center"><h5><?php echo $total_line_output_po_qty_1;?></h5></th>
+            <th class="hidden-phone center"><h5></h5></th>
+        </tr>
+
+        </tfoot>
+    </table>
 </div>
 
 <script type="text/javascript">

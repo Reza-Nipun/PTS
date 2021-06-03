@@ -8,9 +8,9 @@
 
     if ($segment_id == 1){
 
-//        Ramadan Time Code Start
-        if($time > '13:30:00'){
-            $sec_to_minutes = (($work_time-1800) / 60);
+//        Dynamic Time Code Start
+        if($time > $break_time_ends){
+            $sec_to_minutes = (($work_time-($break_time_in_minute*60)) / 60);
 
             $minutes = round($sec_to_minutes, 2);
         }else{
@@ -18,17 +18,27 @@
 
             $minutes = round($sec_to_minutes, 2);
         }
+//        Dynamic Time Code End
 
-
-        if($floor == 1 && $time < '13:30:00'){
-            $minutes = $minutes - 15;
-        }
-
-        if($floor == 2 && $time > '13:30:00'){
-            $minutes = $minutes - 15;
-        }
-
-
+//        Ramadan Time Code Start
+//        if($time > '13:30:00'){
+//            $sec_to_minutes = (($work_time-1800) / 60);
+//
+//            $minutes = round($sec_to_minutes, 2);
+//        }else{
+//            $sec_to_minutes = ($work_time / 60);
+//
+//            $minutes = round($sec_to_minutes, 2);
+//        }
+//
+//
+//        if($floor == 1 && $time < '13:30:00'){
+//            $minutes = $minutes - 15;
+//        }
+//
+//        if($floor == 2 && $time > '13:30:00'){
+//            $minutes = $minutes - 15;
+//        }
 //        Ramadan Time Code End
 
 

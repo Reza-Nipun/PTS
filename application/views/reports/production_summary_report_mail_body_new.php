@@ -64,7 +64,7 @@
         'date' => $previous_date
 
     );
-    $this->method_call->deleteTblData('tb_daily_cut_summary', $previous_date);
+//    $this->method_call->deleteTblData('tb_daily_cut_summary', $previous_date);
 
     if($cutting_prod[0]['package_ready_qty'] != 0 && $cutting_prod[0]['package_ready_qty'] != ''){
         $this->method_call->insertTblData('tb_daily_cut_summary', $data_c);
@@ -93,7 +93,7 @@
         <tbody>
         <?php
 
-        $this->method_call->deleteTblData('tb_daily_line_summary', $previous_date);
+//        $this->method_call->deleteTblData('tb_daily_line_summary', $previous_date);
 
         $total_line_target=0;
         $total_line_normal_output=0;
@@ -119,6 +119,8 @@
             $man_power_2 = ($line_target_info[0]['man_power_2'] > 0 ? $line_target_info[0]['man_power_2'] : 0);
             $man_power_3 = ($line_target_info[0]['man_power_3'] > 0 ? $line_target_info[0]['man_power_3'] : 0);
             $man_power_4 = ($line_target_info[0]['man_power_4'] > 0 ? $line_target_info[0]['man_power_4'] : 0);
+
+            $hour_ranges = $this->method_call->getHourRanges($v['floor']);
 
             foreach ($hour_ranges as $h){
                 $line_pre_info = $this->method_call->getLinePerformanceSummary($v['id'], $previous_date, $h['start_time'], $h['end_time']);
@@ -150,6 +152,7 @@
             $line_remarks = $line_pre_info[0]['remarks'];
             $line_efficiency = $line_pre_info[0]['efficiency'];
 
+            $segments = $this->method_call->getLastSegment($v['floor']);
             $extra_line_qty = $this->method_call->getLinePerformanceSummary($v['id'], $previous_date, $segments[0]['start_time'], $segments[0]['end_time']);
             $over_time_qty = $extra_line_qty[0]['qty'];
 
@@ -278,41 +281,46 @@
         </thead>
         <tbody>
         <?php
-        $this->method_call->deleteTblData('tb_daily_finish_summary', $previous_date);
+//        $this->method_call->deleteTblData('tb_daily_finish_summary', $previous_date);
 
-        foreach ($finishing_prod as $f){
+        foreach ($floors as $floor){
 
-            ?>
-            <tr>
-                <td class="center"><?php echo $f['floor_name'];?></td>
-                <td class="center"><?php echo $f['target'];?></td>
-                <td class="center"><?php echo $f['sum_normal_qty'];?></td>
-                <td class="center"><?php echo $f['finishing_extra_hours_output'];?></td>
-                <td class="center"><?php echo $f['sum_manual_qty'];?></td>
-                <td class="center">
-                    <a target="_blank" class="btn btn-warning" href="<?php echo base_url();?>dashboard/getDailyPackingReportDetail/<?php echo $search_date;?>/<?php echo $floor_name;?>/<?php echo $finishing_floor_id;?>">
-                        <?php echo $f['total_finishing_output'];?>
-                    </a>
-                </td>
-            </tr>
+        $finishing_prod = $this->method_call->finishingSummaryReport($floor['id']);
 
-            <?php
-            $data_f = array(
+            foreach ($finishing_prod as $f){
 
-                'floor_id' => ($f['finishing_floor_id'] != '' ? $f['finishing_floor_id'] : 0),
-                'target' => ($f['target'] != '' ? $f['target'] : 0),
-                'normal_output' => ($f['sum_normal_qty'] != 0 ? $f['sum_normal_qty'] : 0),
-                'eot_output' => ($f['finishing_extra_hours_output'] != '' ? $f['finishing_extra_hours_output'] : 0),
-                'manual_qty' => ($f['sum_manual_qty'] != '' ? $f['sum_manual_qty'] : 0),
-                'output' => ($f['total_finishing_output'] != '' ? $f['total_finishing_output'] : 0),
-                'date' => $previous_date
+                ?>
+                <tr>
+                    <td class="center"><?php echo $f['floor_name'];?></td>
+                    <td class="center"><?php echo $f['target'];?></td>
+                    <td class="center"><?php echo $f['sum_normal_qty'];?></td>
+                    <td class="center"><?php echo $f['finishing_extra_hours_output'];?></td>
+                    <td class="center"><?php echo $f['sum_manual_qty'];?></td>
+                    <td class="center">
+                        <a target="_blank" class="btn btn-warning" href="<?php echo base_url();?>dashboard/getDailyPackingReportDetail/<?php echo $search_date;?>/<?php echo $floor_name;?>/<?php echo $finishing_floor_id;?>">
+                            <?php echo $f['total_finishing_output'];?>
+                        </a>
+                    </td>
+                </tr>
 
-            );
+                <?php
+                $data_f = array(
 
-            if($f['total_finishing_output'] != 0 && $f['total_finishing_output'] != ''){
-                $this->method_call->insertTblData('tb_daily_finish_summary', $data_f);
+                    'floor_id' => ($f['finishing_floor_id'] != '' ? $f['finishing_floor_id'] : 0),
+                    'target' => ($f['target'] != '' ? $f['target'] : 0),
+                    'normal_output' => ($f['sum_normal_qty'] != 0 ? $f['sum_normal_qty'] : 0),
+                    'eot_output' => ($f['finishing_extra_hours_output'] != '' ? $f['finishing_extra_hours_output'] : 0),
+                    'manual_qty' => ($f['sum_manual_qty'] != '' ? $f['sum_manual_qty'] : 0),
+                    'output' => ($f['total_finishing_output'] != '' ? $f['total_finishing_output'] : 0),
+                    'date' => $previous_date
+
+                );
+
+                if($f['total_finishing_output'] != 0 && $f['total_finishing_output'] != ''){
+                    $this->method_call->insertTblData('tb_daily_finish_summary', $data_f);
+                }
+
             }
-
         }
         ?>
         </tbody>

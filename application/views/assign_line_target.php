@@ -69,7 +69,7 @@
 
             <?php
 
-            $cur_segment = $segment[0]['id'];
+            $cur_segment = $segment[0]['segment_id'];
 
             ?>
 
@@ -81,9 +81,9 @@
 
                         <?php foreach($segments as $v_segments){
 
-                            if($v_segments['id'] >= $cur_segment){
+                            if($v_segments['segment_id'] >= $cur_segment){
                             ?>
-                            <option value="<?php echo $v_segments['id']; ?>" <?php if($cur_segment == $v_segments['id']){ ?> selected="selected" <?php } ?>><?php echo $v_segments['name']; ?></option>
+                            <option value="<?php echo $v_segments['segment_id']; ?>" <?php if($cur_segment == $v_segments['segment_id']){ ?> selected="selected" <?php } ?>><?php echo $v_segments['name']; ?></option>
 <!--                            <input type="hidden" name="segment_id" value="--><?php //echo $v_segments['id']; ?><!--">-->
                         <?php
                             }

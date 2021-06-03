@@ -35,7 +35,29 @@
             </div>
         </div><!--/block-web-->
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-2">
+                <div class="form-group">
+                    <select class="form-control" id="floor_id" name="floor_id">
+                        <option value="">Select Floor</option>
 
+                        <?php foreach ($floors AS $f){ ?>
+                            <option value="<?php echo $f['id'];?>"><?php echo $f['floor_name'];?></option>
+                        <?php } ?>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <span class="btn btn-primary" onclick="getFilteredFloorWiseSegmentsToEdit();">SEARCH</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form action="<?php echo base_url();?>access/updateSegmentInfo" method="POST">
     <!--\\\\\\\ container  start \\\\\\-->
     <div class="row">
         <div class="col-md-12">
@@ -44,16 +66,17 @@
                 <div class="porlets-content">
 
                     <div class="table-responsive">
-                        <table class="display table table-bordered table-striped" id="">
+                        <table class="display table table-bordered table-striped" id="edit_floor_segments">
                             <thead>
                                 <tr>
-                                    <th class="center hidden-phone">#</th>
-                                    <th class="center hidden-phone">START TIME</th>
-                                    <th class="center hidden-phone">END TIME</th>
-                                    <th class="center hidden-phone">NAME</th>
-                                    <th class="center hidden-phone">DESCRIPTION</th>
-                                    <th class="center hidden-phone">STATUS</th>
-                                    <th class="center hidden-phone">ACTION</th>
+                                    <th class="center hidden-phone"><h5>FLOOR</h5></th>
+                                    <th class="center hidden-phone"><h5>SEGMENT</h5></th>
+                                    <th class="center hidden-phone"><h5>START TIME</h5></th>
+                                    <th class="center hidden-phone"><h5>END TIME</h5></th>
+                                    <th class="center hidden-phone"><h5>NAME</h5></th>
+                                    <th class="center hidden-phone"><h5>DESCRIPTION</h5></th>
+<!--                                    <th class="center hidden-phone">STATUS</th>-->
+<!--                                    <th class="center hidden-phone">ACTION</th>-->
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,27 +84,28 @@
                             $sl=1;
                             foreach($segments AS $s){ ?>
                                 <tr>
-                                    <td class="center hidden-phone">
-                                        <?php echo $sl; $sl++;?>
-                                    </td>
+                                    <td class="center hidden-phone"><?php echo $s['floor_name'];?></td>
+                                    <td class="center hidden-phone"><?php echo $s['segment_id'];?></td>
                                     <td class="center hidden-phone"><?php echo $s['start_time'];?></td>
                                     <td class="center hidden-phone"><?php echo $s['end_time'];?></td>
                                     <td class="center hidden-phone"><?php echo $s['name'];?></td>
                                     <td class="center hidden-phone"><?php echo $s['description'];?></td>
-                                    <td class="center hidden-phone"><?php echo ($s['status'] == 1 ? 'Active' : 'Inactive') ;?></td>
-                                    <td class="center hidden-phone">
-                                        <a href="<?php echo base_url()?>access/editSegmentInfo/<?php echo $s['id'];?>" class="btn btn-warning" title="EDIT"><i class="fa fa-pencil"></i></a>
-                                    </td>
+<!--                                    <td class="center hidden-phone">--><?php //echo ($s['status'] == 1 ? 'Active' : 'Inactive') ;?><!--</td>-->
+<!--                                    <td class="center hidden-phone">-->
+<!--                                        <a href="--><?php //echo base_url()?><!--access/editSegmentInfo/--><?php //echo $s['id'];?><!--" class="btn btn-warning" title="EDIT"><i class="fa fa-pencil"></i></a>-->
+<!--                                    </td>-->
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
                     </div><!--/table-responsive-->
+                    <button class="btn btn-success" disabled="disabled" style="display: none;" id="submit_btn">SAVE</button>
                 </div>
 
             </div><!--/porlets-content-->
         </div><!--/block-web-->
     </div><!--/col-md-12-->
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -107,6 +131,31 @@
 
         }else{
             alert('Nothing selected to print!');
+        }
+    }
+    
+    function getFilteredFloorWiseSegmentsToEdit() {
+        var floor_id = $("#floor_id").val();
+
+        if(floor_id != ''){
+            $("#edit_floor_segments").empty();
+
+            $.ajax({
+                url:"<?php echo base_url('access/getFilteredFloorWiseSegmentsToEdit')?>",
+                type:"post",
+                dataType:'html',
+                data:{floor_id: floor_id},
+                success:function (data) {
+
+                    $("#edit_floor_segments").append(data);
+
+                    $("#submit_btn").attr('disabled', false);
+                    $("#submit_btn").css('display', 'block');
+
+                }
+            });
+        }else{
+            alert("No Floor is Selected!");
         }
     }
 </script>
