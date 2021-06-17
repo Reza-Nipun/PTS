@@ -6295,7 +6295,7 @@ class Access_model extends CI_Model {
 
     public function getSizesbyShipDate($where){
         $sql = "SELECT t1.size from (SELECT size FROM `tb_po_detail` 
-                WHERE 1 $where
+                WHERE 1 AND `size` <> '' $where
                 GROUP BY `size`) as t1
                 
                 LEFT JOIN

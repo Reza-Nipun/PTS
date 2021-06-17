@@ -643,12 +643,14 @@ class Access extends CI_Controller {
     public function saveToWarehouse(){
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         $date_time=$datex->format('Y-m-d H:i:s');
+        $time=$datex->format('H:i:s');
         $date=$datex->format('Y-m-d');
 
         $warehouse_type = $this->input->post('warehouse_type');
         $pcs_nos = $this->input->post('pcs_nos');
 
         $user_description = $this->session->userdata('user_description');
+        $finishing_floor_id = $this->session->userdata('finishing_floor_id');
 
         $data = array();
 
@@ -684,6 +686,7 @@ class Access extends CI_Controller {
                 }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
 
             } elseif($sent_to_production == 1){
                 $data['access_points'] = 4;
@@ -703,6 +706,7 @@ class Access extends CI_Controller {
                 }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
 
             } elseif(($access_points == 2) && ($access_points_status == 1)){
                 $data['access_points'] = 4;
@@ -712,14 +716,15 @@ class Access extends CI_Controller {
                 $data['packing_date_time'] = $date_time;
                 $data['warehouse_qa_type'] = $warehouse_type;
 
-                if($line_id == 0){
-
-                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
-
-                    $line_id = $res_1[0]['line_id'];
-                }
+//                if($line_id == 0){
+//
+//                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
+//
+//                    $line_id = $res_1[0]['line_id'];
+//                }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
 
             } elseif(($access_points == 3) && ($access_points_status == 1)){
                 $data['access_points'] = 4;
@@ -729,14 +734,15 @@ class Access extends CI_Controller {
                 $data['packing_date_time'] = $date_time;
                 $data['warehouse_qa_type'] = $warehouse_type;
 
-                if($line_id == 0){
-
-                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
-
-                    $line_id = $res_1[0]['line_id'];
-                }
+//                if($line_id == 0){
+//
+//                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
+//
+//                    $line_id = $res_1[0]['line_id'];
+//                }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
 
             } elseif(($access_points == 4) && ($access_points_status == 2)){
                 $data['access_points'] = 4;
@@ -746,23 +752,28 @@ class Access extends CI_Controller {
                 $data['packing_date_time'] = $date_time;
                 $data['warehouse_qa_type'] = $warehouse_type;
 
-                if($line_id == 0){
-
-                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
-
-                    $line_id = $res_1[0]['line_id'];
-                }
+//                if($line_id == 0){
+//
+//                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
+//
+//                    $line_id = $res_1[0]['line_id'];
+//                }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
 
             } elseif(($access_points == 4) && ($access_points_status == 4)){
                 $data['packing_status'] = 1;
                 $data['packing_date_time'] = $date_time;
                 $data['warehouse_qa_type'] = $warehouse_type;
+
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
             } elseif($packing_status == 0){
                 $data['packing_status'] = 1;
                 $data['packing_date_time'] = $date_time;
                 $data['warehouse_qa_type'] = $warehouse_type;
+
+                $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
             } elseif($carton_status == 0){
                 $data['warehouse_qa_type'] = $warehouse_type;
             } elseif($warehouse_qa_type != 0){
@@ -857,12 +868,12 @@ class Access extends CI_Controller {
                 $data['carton_status'] = 1;
                 $data['carton_date_time'] = $date_time;
 
-                if($line_id == 0){
-
-                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
-
-                    $line_id = $res_1[0]['line_id'];
-                }
+//                if($line_id == 0){
+//
+//                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
+//
+//                    $line_id = $res_1[0]['line_id'];
+//                }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
                 $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
@@ -875,12 +886,12 @@ class Access extends CI_Controller {
                 $data['carton_status'] = 1;
                 $data['carton_date_time'] = $date_time;
 
-                if($line_id == 0){
-
-                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
-
-                    $line_id = $res_1[0]['line_id'];
-                }
+//                if($line_id == 0){
+//
+//                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
+//
+//                    $line_id = $res_1[0]['line_id'];
+//                }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
                 $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
@@ -893,12 +904,12 @@ class Access extends CI_Controller {
                 $data['carton_status'] = 1;
                 $data['carton_date_time'] = $date_time;
 
-                if($line_id == 0){
-
-                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
-
-                    $line_id = $res_1[0]['line_id'];
-                }
+//                if($line_id == 0){
+//
+//                    $res_1 = $this->access_model->selectTableDataRowQuery("line_id", "tb_care_labels", " AND so_no = (SELECT so_no FROM `tb_care_labels` WHERE 1 AND pc_tracking_no='$pcs_no') AND line_id != 0 GROUP BY line_id LIMIT 1");
+//
+//                    $line_id = $res_1[0]['line_id'];
+//                }
 
                 $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=manual_qty+1 ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
                 $this->access_model->updateTblFields('tb_today_finishing_output_qty', " SET manual_qty=manual_qty+1 ", " AND floor_id=$finishing_floor_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
