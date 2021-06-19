@@ -7400,7 +7400,9 @@ class Access extends CI_Controller {
                     elseif (($last_access_points >= $access_points) && ($last_access_points_status == 1)){
                         echo 'Already Passed!';
                     }
-
+                    elseif (($last_access_points > $access_points) && ($last_access_points_status == 2)){
+                        echo 'Already Passed!';
+                    }
                     elseif (($last_access_points >= $access_points) && ($last_access_points_status == 4)){
                         echo 'Already Passed!';
                     }
