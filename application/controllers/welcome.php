@@ -84,7 +84,7 @@ class Welcome extends CI_Controller {
         $min_max_time=$this->access_model->getMinMaxHours($where);
         $min_time = $min_max_time[0]['min_start_time'];
 
-        if(($min_time > $time) && ($result->access_points <> 1000)) {
+        if(($min_time > $time) && ($result->access_points <> 1000) && ($result->access_points <> 300)) {
             $data['exception']="Please Try Later on $min_time !";
             $this->session->set_userdata($data);
 

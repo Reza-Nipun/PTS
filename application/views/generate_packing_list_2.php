@@ -49,14 +49,17 @@ $sizes_count = sizeof($sizes);
                 <?php foreach ($sizes AS $s){
 
                     $size_qty = $this->method_call->getPoSizeWiseCartonReport($p['so_no'], $s['size']);
-
                     $count_size_carton_qty = ($size_qty[0]['count_size_carton_qty'] != '' ? $size_qty[0]['count_size_carton_qty'] : 0);
+                    $count_size_wh_qty = ($size_qty[0]['count_size_wh_qty'] != '' ? $size_qty[0]['count_size_wh_qty'] : 0);
                     $size_order_qty = ($size_qty[0]['size_order_qty'] != '' ? $size_qty[0]['size_order_qty'] : 0);
+                    $count_cut_qty = ($size_qty[0]['count_cut_qty'] != '' ? $size_qty[0]['count_cut_qty'] : 0);
+
+                    $min_value_order_cut = min($size_order_qty, $count_cut_qty);
                 ?>
 
                 <td class="hidden-phone center size_carton_quantity"
-                    <?php if($count_size_carton_qty < $size_order_qty){ ?> style="background-color: rgba(255,145,135,0.88); color: white;" <?php } ?>
-                    <?php if($count_size_carton_qty == $size_order_qty){ ?> style="background-color: rgba(112,255,86,0.88); color: white;" <?php } ?>
+                    <?php if($count_size_carton_qty+$count_size_wh_qty < $min_value_order_cut){ ?> style="background-color: rgba(255,145,135,0.88); color: white;" <?php } ?>
+                    <?php if($count_size_carton_qty+$count_size_wh_qty >= $min_value_order_cut){ ?> style="background-color: rgba(112,255,86,0.88); color: white;" <?php } ?>
                     <?php if($count_size_carton_qty > $size_order_qty){ ?> style="background-color: rgba(241,255,84,0.88); color: white;" <?php } ?>
                 >
                     <a class="qty" target="_blank" href="<?php echo base_url();?>access/manualCartonPieceByPiece/<?php echo $p['so_no']?>/<?php echo $s['size']?>" style="color: #000000;">

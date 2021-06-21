@@ -6318,19 +6318,43 @@ class Access_model extends CI_Model {
     }
 
     public function getPoSizeWiseCartonReport($where){
-        $sql = "SELECT t1.*, t2.quantity AS size_order_qty
-                FROM (SELECT so_no, size, count(id) AS count_size_carton_qty 
-                FROM `tb_care_labels` 
-                WHERE carton_status=1 $where 
-                GROUP BY so_no) AS  t1
+        $sql = "SELECT t1.so_no, t1.size, t1.quantity AS size_order_qty, 
+                t2.count_size_carton_qty, t3.count_size_not_completed_qty, 
+                t4.count_size_wh_qty, t5.count_cut_qty
                 
-                LEFT JOIN
+                FROM 
                 (SELECT so_no, size, quantity 
                 FROM `tb_po_detail` 
-                WHERE 1 $where 
-                GROUP BY so_no) AS t2
+                WHERE 1 $where
+                GROUP BY so_no) AS t1
                 
-                ON t1.so_no=t2.so_no AND t1.size=t2.size";
+                LEFT JOIN
+                (SELECT so_no, size, count(id) AS count_size_carton_qty 
+                FROM `tb_care_labels` 
+                WHERE carton_status=1 $where
+                GROUP BY so_no) AS  t2
+                ON t1.so_no=t2.so_no AND t1.size=t2.size                
+                
+                LEFT JOIN 
+                (SELECT so_no, size, count(id) AS count_size_not_completed_qty 
+                FROM `tb_care_labels` 
+                WHERE carton_status=0 AND warehouse_qa_type = 0 $where
+                GROUP BY so_no) AS  t3
+                ON t1.so_no=t3.so_no AND t1.size=t3.size
+                
+                LEFT JOIN 
+                (SELECT so_no, size, count(id) AS count_size_wh_qty 
+                FROM `tb_care_labels` 
+                WHERE warehouse_qa_type > 0 $where
+                GROUP BY so_no) AS  t4
+                ON t1.so_no=t4.so_no AND t1.size=t4.size
+                
+                LEFT JOIN 
+                (SELECT so_no, size, count(id) AS count_cut_qty
+                FROM `tb_care_labels` 
+                WHERE 1 $where
+                GROUP BY so_no) AS  t5
+                ON t1.so_no=t5.so_no AND t1.size=t5.size";
 
         $query = $this->db->query($sql)->result_array();
         return $query;
