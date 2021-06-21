@@ -156,7 +156,7 @@
                                                     <input type="text" placeholder="Remarks" id="remarks<?php echo $k_1;?>" name="remarks[]">
                                                 </td>
                                                 <td class="center">
-                                                    <input type="time" class="last_segment_time" placeholder="Last Segment Time" id="last_segment_time<?php echo $k_1;?>" name="last_segment_time[]" min="<?php echo $segments[3]['start_time'];?>" max="<?php echo $segments[3]['end_time'];?>" required="required" <?php if($cur_segment != 4){ ?> readonly="readonly" disabled="disabled" <?php } ?>>
+                                                    <input type="time" class="last_segment_time" placeholder="Last Segment Time" id="last_segment_time<?php echo $k_1;?>" name="last_segment_time[]" required="required" <?php if($cur_segment != 4){ ?> readonly="readonly" disabled="disabled" <?php } ?>>
                                                 </td>
                                             </tr>
                                         <?php } ?>
