@@ -100,7 +100,7 @@
                                     <input type="checkbox" class="select_all" id="checkAll" name="select_all" />
                                 </th>
                                 <th class="center">SO</th>
-                                <th class="center">PO</th>
+                                <th class="center">GROUP SO</th>
                                 <th class="center">Brand</th>
                                 <th class="center">Purchase Order</th>
                                 <th class="center">Item</th>

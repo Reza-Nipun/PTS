@@ -487,6 +487,10 @@
                                 $("#er_msg").text(carelabel_tracking_no+' is Closed!');
                             }
 
+                            if((data == 'Collar/Cuff is not Ready!')){
+                                $("#er_msg").text('Collar/Cuff is not Ready!');
+                            }
+
                             $('#defect_code_tbl tbody tr').remove();
 
                             $("#carelabel_tracking_no_defect").val('');
@@ -528,6 +532,10 @@
 
                             if(data == 'closed'){
                                 $("#er_msg").text(carelabel_tracking_no+' is Closed!');
+                            }
+
+                            if((data == 'Collar/Cuff is not Ready!')){
+                                $("#er_msg").text('Collar/Cuff is not Ready!');
                             }
 
                             $('#defect_code_tbl tbody tr').remove();

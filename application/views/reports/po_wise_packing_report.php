@@ -38,10 +38,10 @@
         <div class="row">
             <div class="form-group">
                 <div class="col-md-12">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <select required class="form-control" id="po_no" name="po_no" onchange="getReportByPo(id);">
-                                <option value="">SO_PO_Item_Quality_Color_StyleNo_ExFacDate_Type</option>
+                        <select required class="form-control" id="po_no" name="po_no" multiple="multiple" data-placeholder="SO_GroupSO_ExFacDate_Type">
+
                             <?php
                                 foreach ($purchase_order_nos as $pos){
 
@@ -57,20 +57,36 @@
                                         $po_type='SAMPLE';
                                     }
                                     ?>
-                                    <option value="<?php echo $pos['so_no'].'_'.$pos['po_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['color'];?>"><?php echo $pos['so_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['quality'].'_'.$pos['color'].'_'.$pos['style_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?></option>
+<!--                                    <option value="--><?php //echo $pos['so_no'].'_'.$pos['po_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['color'];?><!--">--><?php //echo $pos['so_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['quality'].'_'.$pos['color'].'_'.$pos['style_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?><!--</option>-->
+
+                                    <option value="<?php echo $pos['so_no'];?>"><?php echo $pos['so_no'].'_'.$pos['po_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?></option>
                             <?php
                                 }
 //                          ?>
                         </select>
-                        <p style="font-size: 11px; padding: 5px;">* SO_PO_Item_Quality_Color_StyleNo_ExFacDate_Type</p>
+                        <p style="font-size: 11px; padding: 5px;">* SO_GroupSO_ExFacDate_Type</p>
                     </div>
+                </div>
+                <div class="col-md-2">
+                    <span class="btn btn-success" onclick="getReportByPo()">SEARCH</span>
                 </div>
                 <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
 
                 </div>
             </div>
         </div>
-        <br />
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        <!--        <a class="btn btn-warning" href="--><?php //echo base_url();?><!--dashboard/getQualityReportBySo/--><?php //echo $so_no;?><!--" style="margin-left: 20px;" target="_blank"><b> Qaulity Report </b></a>-->
+                        <!--        <button type="button" onclick="printDiv('print_div')" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;"><b>Print</b></button>-->
+                        <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row" id="report_content">
 
@@ -88,15 +104,18 @@
 //        window.location.reload(1);
 //    }, 5000);
 
-    function getReportByPo(id) {
-        var purchase_order_stuff = $("#"+id).val();
+    function getReportByPo() {
+        var so_no = $("#po_no").val();
+
+//        var purchase_order_stuff = $("#"+id).val();
+
         $("#loader").css("display", "block");
         $("#report_content").empty();
 
         $.ajax({
             url: "<?php echo base_url();?>dashboard/getPackingReportbyPo/",
             type: "POST",
-            data: {purchase_order_stuff: purchase_order_stuff},
+            data: {so_no: so_no},
             dataType: "html",
             success: function (data) {
                 $("#report_content").append(data);
@@ -120,4 +139,26 @@
         });
 
     }
+
+    $(function(){
+        $('#btnExport').click(function(){
+            var url='data:application/vnd.ms-excel,' + encodeURIComponent($('#report_content').html())
+            location.href=url
+            return false
+        })
+    })
+
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+
+        document.body.innerHTML = printContents;
+
+        window.print();
+
+        document.body.innerHTML = originalContents;
+
+        location.reload();
+    }
+
 </script>

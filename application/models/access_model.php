@@ -2138,7 +2138,7 @@ class Access_model extends CI_Model {
     public function getAllPurchaseOrdersForOlymp()
     {
         $sql = "SELECT * FROM `tb_po_detail`
-                GROUP BY so_no, po_no, purchase_order, item, quality, color";
+                GROUP BY so_no, po_no";
 
         $query = $this->db->query($sql)->result_array();
         return $query;

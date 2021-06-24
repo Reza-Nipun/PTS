@@ -3662,40 +3662,44 @@ class Dashboard extends CI_Controller {
     }
 
     public function getPackingReportbyPo(){
-        $purchase_order_stuff = $this->input->post('purchase_order_stuff');
+        $so_nos = $this->input->post('so_no');
 
-        $purchase_order_stuff_array = explode('_', $purchase_order_stuff);
+//        $purchase_order_stuff = $this->input->post('purchase_order_stuff');
 
-        $so_no = $purchase_order_stuff_array[0];
-        $po_no = $purchase_order_stuff_array[1];
-        $purchase_order = $purchase_order_stuff_array[2];
-        $item_week = $purchase_order_stuff_array[3];
-        $color = $purchase_order_stuff_array[4];
+//        $purchase_order_stuff_array = explode('_', $purchase_order_stuff);
 
-        $where = '';
-        if($so_no != ''){
-//            $where .= " AND A.so_no = '$so_no'";
-            $where .= " AND so_no = '$so_no'";
+//        $so_no = $purchase_order_stuff_array[0];
+//        $po_no = $purchase_order_stuff_array[1];
+//        $purchase_order = $purchase_order_stuff_array[2];
+//        $item_week = $purchase_order_stuff_array[3];
+//        $color = $purchase_order_stuff_array[4];
+
+        foreach ($so_nos as $so_no){
+            $where = '';
+            if($so_no != ''){
+    //            $where .= " AND A.so_no = '$so_no'";
+                $where .= " AND so_no = '$so_no'";
+            }
+    //        if($po_no != ''){
+    //            $where .= " AND po_no = '$po_no'";
+    //        }
+    //        if($purchase_order != ''){
+    //            $where .= " AND purchase_order = '$purchase_order'";
+    //        }
+    //        if($item_week != ''){
+    //            $where .= " AND item = '$item_week'";
+    //        }
+    //        if($color != ''){
+    //            $where .= " AND color = '$color'";
+    //        }
+
+            $get_data['order_info'] = $this->dashboard_model->getPoOrderPackingInfobyPo($where);
+
+
+            $maincontent = $this->load->view('po_wise_size_cutting_report', $get_data, true);
+
+            echo $maincontent;
         }
-        if($po_no != ''){
-            $where .= " AND po_no = '$po_no'";
-        }
-        if($purchase_order != ''){
-            $where .= " AND purchase_order = '$purchase_order'";
-        }
-        if($item_week != ''){
-            $where .= " AND item = '$item_week'";
-        }
-        if($color != ''){
-            $where .= " AND color = '$color'";
-        }
-
-        $get_data['order_info'] = $this->dashboard_model->getPoOrderPackingInfobyPo($where);
-
-
-        $maincontent = $this->load->view('po_wise_size_cutting_report', $get_data, true);
-
-        echo $maincontent;
     }
 
     public function getQualityReportBySo($so_no){

@@ -21,6 +21,20 @@ $style_name = $order_info[0]['style_name'];
 $quality = $order_info[0]['quality'];
 $color = $order_info[0]['color'];
 $status = $order_info[0]['status'];
+$type = $order_info[0]['po_type'];
+
+$po_type='';
+
+if($type==0){
+    $po_type='BULK';
+}
+if($type==1){
+    $po_type='SizeSet';
+}
+if($type==2){
+    $po_type='SAMPLE';
+}
+
 $ex_factory_date = $order_info[0]['ex_factory_date'];
 $approved_ex_factory_date = $order_info[0]['approved_ex_factory_date'];
 $order_quality = $order_info[0]['order_quantity'];
@@ -62,13 +76,13 @@ $count_unscanned_pc = $cut_qty - ($count_total_carton_qty + $total_wh_qty);
         </div>
     </div>
     <div id="print_div">
-    <div class="col-lg-8" id="tableWrap">
+    <div class="col-lg-12" id="tableWrap">
         <section class="panel default blue_title h2">
 
             <br />
             <a class="btn btn-warning" href="<?php echo base_url();?>dashboard/getQualityReportBySo/<?php echo $so_no;?>" style="margin-left: 20px;" target="_blank"><b> Qaulity Report </b></a>
-            <button type="button" onclick="printDiv('print_div')" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;"><b>Print</b></button>
-            <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>
+<!--            <button type="button" onclick="printDiv('print_div')" class="print_cl_btn" style="border-style: none; width: 80px; height: 30px; background-color: green; color: white; border-radius: 5px;"><b>Print</b></button>-->
+<!--            <button class="btn btn-primary" style="color: #FFF;" id="btnExport"><b>Export Excel</b></button>-->
             <br />
             <div class="panel-body">
 
@@ -84,6 +98,7 @@ $count_unscanned_pc = $cut_qty - ($count_total_carton_qty + $total_wh_qty);
                         <th class="center">Ex-Fac Date</th>
                         <th class="center">App. Ex-Fac</th>
                         <th class="center">Status</th>
+                        <th class="center">Type</th>
 <!--                        <th class="center">ORDERED</th>-->
                         <!--                        <th class="center">Cut</th>-->
                         <!--                        <th class="center">Packed</th>-->
@@ -105,6 +120,7 @@ $count_unscanned_pc = $cut_qty - ($count_total_carton_qty + $total_wh_qty);
                         <td class="center"><?php echo $ex_factory_date;?></td>
                         <td class="center"><?php echo $approved_ex_factory_date;?></td>
                         <td class="center"><?php echo $status;?></td>
+                        <td class="center"><?php echo $po_type;?></td>
 <!--                        <td class="center">--><?php //echo $order_quality;?><!--</td>-->
                         <!--                        <td class="center">--><?php //echo $cut_qty;?><!--</td>-->
                         <!--                        <td class="center">--><?php //echo $count_total_packing_qty;?><!--</td>-->
@@ -257,28 +273,3 @@ $count_unscanned_pc = $cut_qty - ($count_total_carton_qty + $total_wh_qty);
 <?php
 //}
 ?>
-<script type="text/javascript">
-
-    $(function(){
-        $('#btnExport').click(function(){
-            var url='data:application/vnd.ms-excel,' + encodeURIComponent($('#tableWrap').html())
-            location.href=url
-            return false
-        })
-    })
-
-
-    function printDiv(divName) {
-        var printContents = document.getElementById(divName).innerHTML;
-        var originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
-
-        window.print();
-
-        document.body.innerHTML = originalContents;
-
-        location.reload();
-    }
-
-</script>
