@@ -78,6 +78,9 @@
                     <button class="btn btn-success" id="generate_btn" onclick="generatePackingList();">Generate</button>
                 </div>
                 <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
+                <div class="col-md-2">
+                    <button class="btn btn-warning" onclick="refreshManualQtyAsPerformance();"><i class="fa fa-refresh" aria-hidden="true"></i> Performance-Qty</button>
+                </div>
             </div>
           <br />
           <div class="row">
@@ -189,6 +192,27 @@
 
     }
 
+    function refreshManualQtyAsPerformance() {
+        $("#loader").css('display', 'block');
+
+        $.ajax({
+            url: "<?php echo base_url();?>access/refreshManualQtyAsPerformance/",
+            type: "POST",
+            data: {},
+            dataType: "html",
+            success: function (data) {
+
+                console.log(data);
+
+                if(data='done'){
+                    $("#loader").css('display', 'none');
+                    alert("Manual Qty is Adjusted with Today's Performance!");
+                }
+
+            }
+        });
+    }
+    
     function ExportToExcel(tableid) {
 
         $(".size_carton_quantity").css('background-color', '#ffffff');

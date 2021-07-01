@@ -40,8 +40,9 @@
                 <div class="col-md-12">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <select required class="form-control" id="po_no" name="po_no" multiple="multiple" data-placeholder="SO_GroupSO_ExFacDate_Type">
+                        <select required class="form-control" id="so_no" name="so_no">
 
+                            <option value="">SO_GroupSO_PO_ITEM_COLOR_ExFacDate_Type</option>
                             <?php
                                 foreach ($purchase_order_nos as $pos){
 
@@ -59,12 +60,12 @@
                                     ?>
 <!--                                    <option value="--><?php //echo $pos['so_no'].'_'.$pos['po_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['color'];?><!--">--><?php //echo $pos['so_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['quality'].'_'.$pos['color'].'_'.$pos['style_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?><!--</option>-->
 
-                                    <option value="<?php echo $pos['so_no'];?>"><?php echo $pos['so_no'].'_'.$pos['po_no'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?></option>
+                                    <option value="<?php echo $pos['so_no'];?>"><?php echo $pos['so_no'].'_'.$pos['po_no'].'_'.$pos['purchase_order'].'_'.$pos['item'].'_'.$pos['color'].'_'.$pos['approved_ex_factory_date'].'_'.$po_type;?></option>
                             <?php
                                 }
 //                          ?>
                         </select>
-                        <p style="font-size: 11px; padding: 5px;">* SO_GroupSO_ExFacDate_Type</p>
+                        <p style="font-size: 11px; padding: 5px;">* SO_GroupSO_PO_ITEM_COLOR_ExFacDate_Type</p>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -98,14 +99,16 @@
 
 
 <script type="text/javascript">
-    $('select').select2();
+    $('select').select2({
+        minimumInputLength: 3 // only start searching when the user has input 3 or more characters
+    });
 
 //    setTimeout(function(){
 //        window.location.reload(1);
 //    }, 5000);
 
     function getReportByPo() {
-        var so_no = $("#po_no").val();
+        var so_no = $("#so_no").val();
 
 //        var purchase_order_stuff = $("#"+id).val();
 

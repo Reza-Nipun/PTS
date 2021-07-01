@@ -36,16 +36,16 @@ $week_total_carton_balance_qty = array();
 $week_total_wh_qty = array();
 $week_total_balance_qty = array();
 
-foreach ($dates as $dt){
+//foreach ($dates as $dt){
+//
+//array_push($week_date, $dt['approved_ex_factory_date']);
 
-    array_push($week_date, $dt['approved_ex_factory_date']);
-
-    ?>
-<table class="display table table-bordered table-striped" id="" border="1">
+?>
+<table class="display table table-bordered table-striped" id="table_id" border="1">
     <thead>
-    <tr>
-        <th class="hidden-phone center" colspan="34"><h3>Ship Date: <?php echo $dt['approved_ex_factory_date'];?></h3></th>
-    </tr>
+<!--    <tr>-->
+<!--        <th class="hidden-phone center" colspan="34"><h3>Ship Date: --><?php //echo $dt['approved_ex_factory_date'];?><!--</h3></th>-->
+<!--    </tr>-->
     <tr>
         <th class="hidden-phone center">SO</th>
         <th class="hidden-phone center">Brand</th>
@@ -87,6 +87,11 @@ foreach ($dates as $dt){
     </thead>
     <tbody>
     <?php
+
+    foreach ($dates as $dt){
+
+    array_push($week_date, $dt['approved_ex_factory_date']);
+
     $po_close_report = $this->method_call->getShipReportByDate($dt['approved_ex_factory_date'], $brands_string, $po_type, $remarks);
 
     $sew_balance_qty = 0;
@@ -250,37 +255,7 @@ foreach ($dates as $dt){
     <?php
     }
     ?>
-    </tbody>
-    <tfoot>
-    <tr>
-        <td colspan="11" align="right"><h4><b>Total</b></h4></td>
-        <td class="center"><h4><b><?php echo $total_order_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_cut_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_cut_package_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_cut_pass_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_line_input_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_line_output_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_line_output_balance_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_wash_send_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_washed_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_wash_balance_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_packing_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_packing_balance_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_carton_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo $total_carton_balance_qty;?></b></h4></td>
-        <td class="center"><h4><b><?php echo ($total_wh_qty + $total_other_qty);?></b></h4></td>
-        <!--        <td class="center"><h4><b>--><?php //echo $total_other_qty;?><!--</b></h4></td>-->
-        <td class="center"><h4><b><?php echo $total_balance_qty;?></b></h4></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-        <td class="center"></td>
-    </tr>
-    </tfoot>
-</table>
+
 <?php
 
     array_push($week_total_order_qty, $total_order_qty);
@@ -319,6 +294,8 @@ foreach ($dates as $dt){
     $total_month_balance_qty += $total_balance_qty;
 
 } ?>
+    </tbody>
+</table>
 <table class="display table table-bordered table-striped" id="" border="1">
     <thead>
     <tr>
