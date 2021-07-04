@@ -108,6 +108,10 @@
 //                                    echo '<pre>';
 //                                    print_r('Prod Min: '.$produce_minute);
 //                                    echo '</pre>';
+//
+//                                    echo '<pre>';
+//                                    print_r('Segment: '.$segment_id);
+//                                    echo '</pre>';
 
     $eff = ($produce_minute/$work_minute) * 100;
     $line_efficiency = sprintf('%0.2f', $eff);

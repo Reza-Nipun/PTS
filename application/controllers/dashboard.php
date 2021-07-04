@@ -5979,7 +5979,7 @@ class Dashboard extends CI_Controller {
 
         if($segment_id == 4){
             $avg_effiency = round((($produce_minute_1+$produce_minute_2+$produce_minute_3+$produce_minute_4)/($work_minute_1+$work_minute_2+$work_minute_3+$work_minute_4))*100, 2);
-            $set_fields .= " SET produce_minute_4=$produce_minute_4, work_minute_4=$work_minute_4 , work_hour_4='$hour',efficiency=$avg_effiency";
+            $set_fields .= " SET produce_minute_4=$produce_minute, work_minute_4=$work_minute , work_hour_4='$hour',efficiency=$avg_effiency";
             $this->dashboard_model->updateTodayEfficiency($line_id, $set_fields);
         }
 

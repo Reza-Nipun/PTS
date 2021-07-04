@@ -476,6 +476,7 @@ class Access extends CI_Controller {
             $line_id = $line_manual_qty['line_id'];
             $manual_qty = $line_manual_qty['manual_qty'];
 
+            $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=0 ", " AND line_id=$line_id AND date = '$date'");
             $this->access_model->updateTblFields('tb_today_line_output_qty', " SET manual_qty=$manual_qty ", " AND line_id=$line_id AND date = '$date' AND '$time' BETWEEN start_time AND end_time");
         }
 
@@ -4964,126 +4965,285 @@ class Access extends CI_Controller {
         }
     }
 
+    public function getLineTargetInfos($line_id, $date){
+
+        $where = '';
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id";
+        }
+
+        if($date != ''){
+            $where .= " AND date='$date'";
+        }
+
+        return $this->access_model->getLineTarget($where);
+
+    }
+
+    public function getHourRanges($floor){
+        return $data['hour_ranges'] = $this->access_model->selectTableDataRowQuery(' * ', 'tb_today_line_output_qty', " AND floor_id=$floor GROUP BY floor_id, hour");
+    }
+
+    public function getLinePerformanceSummary($line_id, $date, $start_time, $end_time){
+        return $this->access_model->getLineOutputReport($line_id, $date, $start_time, $end_time);
+    }
+
+    public function getLastSegment($floor){
+        $where_seg = "";
+        if($floor != ''){
+            $where_seg .= " AND floor_id=$floor ORDER BY id DESC LIMIT 1";
+        }
+
+        return $data['segments'] = $this->dashboard_model->selectTableDataRowQuery(' * ', 'tb_segment', $where_seg);
+    }
+
+    public function getLineDhuSumReport($line_id, $date){
+        return $this->access_model->getLineDhuSumReport($line_id, $date);
+    }
+
     public function getBackupLineLastDayProduction($line_id, $previous_date){
 
-        $line_output = 0;
-        $total_line_output = 0;
+        $lines = $this->dashboard_model->selectTableDataRowQuery(" * ", 'tb_line', " AND id=$line_id");
 
-        $time_range = $this->dashboard_model->getWorkingTimeRange();
+        $total_line_target=0;
+        $total_line_normal_output=0;
+        $total_over_time_qty=0;
+        $total_line_output=0;
+        $grand_total_output_lines=0;
+        $total_sum_efficiency=0;
+        $count_lines=0;
+        $over_time_qty = 0;
+        $total_line_rft_qty=0;
 
-        $starting_time = $time_range[0]['starting_time'];
-        $ending_time = $time_range[0]['ending_time'];
+        foreach ($lines as $v){
 
-        $where_seg = "";
-        if($starting_time != '' && $ending_time != ''){
-            $where_seg .= "  ORDER BY id DESC LIMIT 1";
-        }
+            $count_lines++;
 
-        $segments = $this->dashboard_model->getSegments($where_seg);
-        $start_time = $segments[0]['start_time'];
-        $end_time = $segments[0]['end_time'];
+            $line_target = 0;
+            $line_output = 0;
+            $line_normal_output = 0;
+            $line_dhu = 0;
+            $line_manual_qty = 0;
+
+            $line_target_info = $this->getLineTargetInfos($v['id'], $previous_date);
+
+            $man_power_1 = ($line_target_info[0]['man_power_1'] > 0 ? $line_target_info[0]['man_power_1'] : 0);
+            $man_power_2 = ($line_target_info[0]['man_power_2'] > 0 ? $line_target_info[0]['man_power_2'] : 0);
+            $man_power_3 = ($line_target_info[0]['man_power_3'] > 0 ? $line_target_info[0]['man_power_3'] : 0);
+            $man_power_4 = ($line_target_info[0]['man_power_4'] > 0 ? $line_target_info[0]['man_power_4'] : 0);
+
+            $hour_ranges = $this->getHourRanges($v['floor']);
+
+            foreach ($hour_ranges as $h){
+                $line_pre_info = $this->getLinePerformanceSummary($v['id'], $previous_date, $h['start_time'], $h['end_time']);
+
+                foreach ($line_pre_info as $lpi){
+                    $line_output += ($lpi['qty']+$lpi['manual_qty']);
+                    $line_manual_qty += $lpi['manual_qty'];
+                }
+
+            }
+
+            $line_target = $line_pre_info[0]['target'];
+
+            $produce_minute_1 = ($line_pre_info[0]['produce_minute_1'] > 0 ? $line_pre_info[0]['produce_minute_1'] : 0);
+            $produce_minute_2 = ($line_pre_info[0]['produce_minute_2'] > 0 ? $line_pre_info[0]['produce_minute_2'] : 0);
+            $produce_minute_3 = ($line_pre_info[0]['produce_minute_3'] > 0 ? $line_pre_info[0]['produce_minute_3'] : 0);
+            $produce_minute_4 = ($line_pre_info[0]['produce_minute_4'] > 0 ? $line_pre_info[0]['produce_minute_4'] : 0);
+
+            $work_hour_1 = ($line_pre_info[0]['work_hour_1'] > 0 ? $line_pre_info[0]['work_hour_1'] : 0);
+            $work_hour_2 = ($line_pre_info[0]['work_hour_2'] > 0 ? $line_pre_info[0]['work_hour_2'] : 0);
+            $work_hour_3 = ($line_pre_info[0]['work_hour_3'] > 0 ? $line_pre_info[0]['work_hour_3'] : 0);
+            $work_hour_4 = ($line_pre_info[0]['work_hour_4'] > 0 ? $line_pre_info[0]['work_hour_4'] : 0);
+
+            $work_minute_1 = ($line_pre_info[0]['work_minute_1'] > 0 ? $line_pre_info[0]['work_minute_1'] : 0);
+            $work_minute_2 = ($line_pre_info[0]['work_minute_2'] > 0 ? $line_pre_info[0]['work_minute_2'] : 0);
+            $work_minute_3 = ($line_pre_info[0]['work_minute_3'] > 0 ? $line_pre_info[0]['work_minute_3'] : 0);
+            $work_minute_4 = ($line_pre_info[0]['work_minute_4'] > 0 ? $line_pre_info[0]['work_minute_4'] : 0);
+            $avg_of_work_hour=round(((($work_minute_1+$work_minute_2+$work_minute_3+$work_minute_4) / 60) / $man_power_1), 2);
+
+            $line_remarks = $line_pre_info[0]['remarks'];
+            $line_efficiency = $line_pre_info[0]['efficiency'];
+
+            $segments = $this->getLastSegment($v['floor']);
+            $extra_line_qty = $this->getLinePerformanceSummary($v['id'], $previous_date, $segments[0]['start_time'], $segments[0]['end_time']);
+            $over_time_qty = $extra_line_qty[0]['qty'];
+
+            $line_dhu = $this->getLineDhuSumReport($v['id'], $previous_date);
+            $line_dhu = $line_dhu[0]['dhu'];
 
 
-        $where_t = '';
-        if($line_id != ''){
-            $where_t .= " AND line_id=$line_id";
-        }
+            if($line_remarks != ''){
+                $remarks = $line_remarks;
+            }else{
+                $remarks = '';
+            }
 
-        if($previous_date != ''){
-            $where_t .= " AND date='$previous_date'";
-        }
+            $total_line_rft_qty = $line_pre_info[0]['rft_qty'];
 
-        $line_target_info = $this->access_model->getLineTarget($where_t);
+            $line_normal_output = $line_output - $over_time_qty;
 
-        $man_power_1 = ($line_target_info[0]['man_power_1'] > 0 ? $line_target_info[0]['man_power_1'] : 0);
-        $man_power_2 = ($line_target_info[0]['man_power_2'] > 0 ? $line_target_info[0]['man_power_2'] : 0);
-        $man_power_3 = ($line_target_info[0]['man_power_3'] > 0 ? $line_target_info[0]['man_power_3'] : 0);
-        $man_power_4 = ($line_target_info[0]['man_power_4'] > 0 ? $line_target_info[0]['man_power_4'] : 0);
+            $total_line_target += $line_target;
+            $total_line_normal_output += $line_normal_output;
+            $total_over_time_qty += $over_time_qty;
 
-        $hour_ranges = $this->access_model->getHours();
-        foreach ($hour_ranges as $h){
-            $line_pre_info = $this->access_model->getLineOutputReport($line_id, $previous_date, $h['start_time'], $h['end_time']);
+            $grand_total_output_lines += $line_output;
 
-            foreach ($line_pre_info as $lpi){
-                $line_output += $lpi['qty'];
+            $data_l = array(
+                'line_id' => ($v['id'] != '' ? $v['id'] : 0),
+                'target' => ($line_target != '' ? $line_target : 0),
+                'normal_output' => ($line_normal_output != 0 ? $line_normal_output : 0),
+                'eot_output' => ($over_time_qty != '' ? $over_time_qty : 0),
+                'manual_qty' => ($line_manual_qty != '' ? $line_manual_qty : 0),
+                'output' => ($line_output != '' ? $line_output : 0),
+                'work_hour' => ($avg_of_work_hour != '' ? $avg_of_work_hour : 0),
+                'efficiency' => ($line_efficiency != '' ? $line_efficiency : 0),
+                'dhu' => ($line_dhu != '' ? $line_dhu : 0),
+                'date' => $previous_date,
+                'man_power_1' => $man_power_1,
+                'produce_minute_1' => $produce_minute_1,
+                'work_minute_1' => $work_minute_1,
+                'work_hour_1' => $work_hour_1,
+                'man_power_2' => $man_power_2,
+                'produce_minute_2' => $produce_minute_2,
+                'work_minute_2' => $work_minute_2,
+                'work_hour_2' => $work_hour_2,
+                'man_power_3' => $man_power_3,
+                'produce_minute_3' => $produce_minute_3,
+                'work_minute_3' => $work_minute_3,
+                'work_hour_3' => $work_hour_3,
+                'man_power_4' => $man_power_4,
+                'produce_minute_4' => $produce_minute_4,
+                'work_minute_4' => $work_minute_4,
+                'work_hour_4' => $work_hour_4,
+                'remarks' => $remarks,
+                'rft_qty' => $total_line_rft_qty,
+            );
+
+            if($line_output != 0 && $line_output != ''){
+                $this->access_model->insertingData('tb_daily_line_summary', $data_l);
             }
 
         }
-        $line_target = $line_pre_info[0]['target'];
 
-        $produce_minute_1 = ($line_pre_info[0]['produce_minute_1'] > 0 ? $line_pre_info[0]['produce_minute_1'] : 0);
-        $produce_minute_2 = ($line_pre_info[0]['produce_minute_2'] > 0 ? $line_pre_info[0]['produce_minute_2'] : 0);
-        $produce_minute_3 = ($line_pre_info[0]['produce_minute_3'] > 0 ? $line_pre_info[0]['produce_minute_3'] : 0);
-        $produce_minute_4 = ($line_pre_info[0]['produce_minute_4'] > 0 ? $line_pre_info[0]['produce_minute_4'] : 0);
-
-        $work_hour_1 = ($line_pre_info[0]['work_hour_1'] > 0 ? $line_pre_info[0]['work_hour_1'] : 0);
-        $work_hour_2 = ($line_pre_info[0]['work_hour_2'] > 0 ? $line_pre_info[0]['work_hour_2'] : 0);
-        $work_hour_3 = ($line_pre_info[0]['work_hour_3'] > 0 ? $line_pre_info[0]['work_hour_3'] : 0);
-        $work_hour_4 = ($line_pre_info[0]['work_hour_4'] > 0 ? $line_pre_info[0]['work_hour_4'] : 0);
-
-        $work_minute_1 = ($line_pre_info[0]['work_minute_1'] > 0 ? $line_pre_info[0]['work_minute_1'] : 0);
-        $work_minute_2 = ($line_pre_info[0]['work_minute_2'] > 0 ? $line_pre_info[0]['work_minute_2'] : 0);
-        $work_minute_3 = ($line_pre_info[0]['work_minute_3'] > 0 ? $line_pre_info[0]['work_minute_3'] : 0);
-        $work_minute_4 = ($line_pre_info[0]['work_minute_4'] > 0 ? $line_pre_info[0]['work_minute_4'] : 0);
-        $avg_of_work_hour=round(((($work_minute_1+$work_minute_2+$work_minute_3+$work_minute_4) / 60) / $man_power_1), 2);
-
-        $line_remarks = $line_pre_info[0]['remarks'];
-        $line_efficiency = $line_pre_info[0]['efficiency'];
-
-        $extra_line_qty = $this->access_model->getLineOutputReport($line_id, $previous_date, $start_time, $end_time);
-        $over_time_qty = $extra_line_qty[0]['qty'];
-
-
-        $line_dhu = $this->access_model->getLineDhuSumReport($line_id, $previous_date);
-//        $line_sum_dhu = $line_dhu[0]['dhu'];
-//        $average_dhu = round(($line_sum_dhu/$avg_of_work_hour), 2);
-
-        $line_dhu = $line_dhu[0]['dhu'];
-        $line_manual_qty = $line_dhu[0]['manual_qty'];
-
-        if($line_remarks != ''){
-            $remarks = $line_remarks;
-        }else{
-            $remarks = '';
-        }
-
-        $total_line_output = ($line_output + $over_time_qty);
-
-        $data_l = array(
-
-            'line_id' => $line_id,
-            'target' => ($line_target != '' ? $line_target : 0),
-            'normal_output' => ($line_output != 0 ? $line_output : 0),
-            'eot_output' => ($over_time_qty != '' ? $over_time_qty : 0),
-            'manual_qty' => ($line_manual_qty != '' ? $line_manual_qty : 0),
-            'output' => ($total_line_output != '' ? $total_line_output : 0),
-            'work_hour' => ($avg_of_work_hour != '' ? $avg_of_work_hour : 0),
-            'efficiency' => ($line_efficiency != '' ? $line_efficiency : 0),
-            'dhu' => ($line_dhu != '' ? $line_dhu : 0),
-            'date' => $previous_date,
-            'man_power_1' => $man_power_1,
-            'produce_minute_1' => $produce_minute_1,
-            'work_minute_1' => $work_minute_1,
-            'work_hour_1' => $work_hour_1,
-            'man_power_2' => $man_power_2,
-            'produce_minute_2' => $produce_minute_2,
-            'work_minute_2' => $work_minute_2,
-            'work_hour_2' => $work_hour_2,
-            'man_power_3' => $man_power_3,
-            'produce_minute_3' => $produce_minute_3,
-            'work_minute_3' => $work_minute_3,
-            'work_hour_3' => $work_hour_3,
-            'man_power_4' => $man_power_4,
-            'produce_minute_4' => $produce_minute_4,
-            'work_minute_4' => $work_minute_4,
-            'work_hour_4' => $work_hour_4,
-            'remarks' => $remarks
-
-        );
-
-        if($line_output != 0 && $line_output != ''){
-            $this->dashboard_model->insertTblData('tb_daily_line_summary', $data_l);
-        }
+//        $line_output = 0;
+//        $total_line_output = 0;
+//
+//        $time_range = $this->dashboard_model->getWorkingTimeRange();
+//
+//        $starting_time = $time_range[0]['starting_time'];
+//        $ending_time = $time_range[0]['ending_time'];
+//
+//        $where_seg = "";
+//        if($starting_time != '' && $ending_time != ''){
+//            $where_seg .= "  ORDER BY id DESC LIMIT 1";
+//        }
+//
+//        $segments = $this->dashboard_model->getSegments($where_seg);
+//        $start_time = $segments[0]['start_time'];
+//        $end_time = $segments[0]['end_time'];
+//
+//
+//        $where_t = '';
+//        if($line_id != ''){
+//            $where_t .= " AND line_id=$line_id";
+//        }
+//
+//        if($previous_date != ''){
+//            $where_t .= " AND date='$previous_date'";
+//        }
+//
+//        $line_target_info = $this->access_model->getLineTarget($where_t);
+//
+//        $man_power_1 = ($line_target_info[0]['man_power_1'] > 0 ? $line_target_info[0]['man_power_1'] : 0);
+//        $man_power_2 = ($line_target_info[0]['man_power_2'] > 0 ? $line_target_info[0]['man_power_2'] : 0);
+//        $man_power_3 = ($line_target_info[0]['man_power_3'] > 0 ? $line_target_info[0]['man_power_3'] : 0);
+//        $man_power_4 = ($line_target_info[0]['man_power_4'] > 0 ? $line_target_info[0]['man_power_4'] : 0);
+//
+//        $hour_ranges = $this->access_model->getHours();
+//        foreach ($hour_ranges as $h){
+//            $line_pre_info = $this->access_model->getLineOutputReport($line_id, $previous_date, $h['start_time'], $h['end_time']);
+//
+//            foreach ($line_pre_info as $lpi){
+//                $line_output += $lpi['qty'];
+//            }
+//
+//        }
+//        $line_target = $line_pre_info[0]['target'];
+//
+//        $produce_minute_1 = ($line_pre_info[0]['produce_minute_1'] > 0 ? $line_pre_info[0]['produce_minute_1'] : 0);
+//        $produce_minute_2 = ($line_pre_info[0]['produce_minute_2'] > 0 ? $line_pre_info[0]['produce_minute_2'] : 0);
+//        $produce_minute_3 = ($line_pre_info[0]['produce_minute_3'] > 0 ? $line_pre_info[0]['produce_minute_3'] : 0);
+//        $produce_minute_4 = ($line_pre_info[0]['produce_minute_4'] > 0 ? $line_pre_info[0]['produce_minute_4'] : 0);
+//
+//        $work_hour_1 = ($line_pre_info[0]['work_hour_1'] > 0 ? $line_pre_info[0]['work_hour_1'] : 0);
+//        $work_hour_2 = ($line_pre_info[0]['work_hour_2'] > 0 ? $line_pre_info[0]['work_hour_2'] : 0);
+//        $work_hour_3 = ($line_pre_info[0]['work_hour_3'] > 0 ? $line_pre_info[0]['work_hour_3'] : 0);
+//        $work_hour_4 = ($line_pre_info[0]['work_hour_4'] > 0 ? $line_pre_info[0]['work_hour_4'] : 0);
+//
+//        $work_minute_1 = ($line_pre_info[0]['work_minute_1'] > 0 ? $line_pre_info[0]['work_minute_1'] : 0);
+//        $work_minute_2 = ($line_pre_info[0]['work_minute_2'] > 0 ? $line_pre_info[0]['work_minute_2'] : 0);
+//        $work_minute_3 = ($line_pre_info[0]['work_minute_3'] > 0 ? $line_pre_info[0]['work_minute_3'] : 0);
+//        $work_minute_4 = ($line_pre_info[0]['work_minute_4'] > 0 ? $line_pre_info[0]['work_minute_4'] : 0);
+//        $avg_of_work_hour=round(((($work_minute_1+$work_minute_2+$work_minute_3+$work_minute_4) / 60) / $man_power_1), 2);
+//
+//        $line_remarks = $line_pre_info[0]['remarks'];
+//        $line_efficiency = $line_pre_info[0]['efficiency'];
+//
+//        $extra_line_qty = $this->access_model->getLineOutputReport($line_id, $previous_date, $start_time, $end_time);
+//        $over_time_qty = $extra_line_qty[0]['qty'];
+//
+//
+//        $line_dhu = $this->access_model->getLineDhuSumReport($line_id, $previous_date);
+////        $line_sum_dhu = $line_dhu[0]['dhu'];
+////        $average_dhu = round(($line_sum_dhu/$avg_of_work_hour), 2);
+//
+//        $line_dhu = $line_dhu[0]['dhu'];
+//        $line_manual_qty = $line_dhu[0]['manual_qty'];
+//
+//        if($line_remarks != ''){
+//            $remarks = $line_remarks;
+//        }else{
+//            $remarks = '';
+//        }
+//
+//        $total_line_output = ($line_output + $over_time_qty);
+//
+//        $data_l = array(
+//
+//            'line_id' => $line_id,
+//            'target' => ($line_target != '' ? $line_target : 0),
+//            'normal_output' => ($line_output != 0 ? $line_output : 0),
+//            'eot_output' => ($over_time_qty != '' ? $over_time_qty : 0),
+//            'manual_qty' => ($line_manual_qty != '' ? $line_manual_qty : 0),
+//            'output' => ($total_line_output != '' ? $total_line_output : 0),
+//            'work_hour' => ($avg_of_work_hour != '' ? $avg_of_work_hour : 0),
+//            'efficiency' => ($line_efficiency != '' ? $line_efficiency : 0),
+//            'dhu' => ($line_dhu != '' ? $line_dhu : 0),
+//            'date' => $previous_date,
+//            'man_power_1' => $man_power_1,
+//            'produce_minute_1' => $produce_minute_1,
+//            'work_minute_1' => $work_minute_1,
+//            'work_hour_1' => $work_hour_1,
+//            'man_power_2' => $man_power_2,
+//            'produce_minute_2' => $produce_minute_2,
+//            'work_minute_2' => $work_minute_2,
+//            'work_hour_2' => $work_hour_2,
+//            'man_power_3' => $man_power_3,
+//            'produce_minute_3' => $produce_minute_3,
+//            'work_minute_3' => $work_minute_3,
+//            'work_hour_3' => $work_hour_3,
+//            'man_power_4' => $man_power_4,
+//            'produce_minute_4' => $produce_minute_4,
+//            'work_minute_4' => $work_minute_4,
+//            'work_hour_4' => $work_hour_4,
+//            'remarks' => $remarks
+//
+//        );
+//
+//        if($line_output != 0 && $line_output != ''){
+//            $this->dashboard_model->insertTblData('tb_daily_line_summary', $data_l);
+//        }
 
     }
 
@@ -7322,23 +7482,27 @@ class Access extends CI_Controller {
             }else{
                 if ($line == $line_id) {
                     if (($last_access_points == 3) && ($last_access_points_status == 1)&& ($is_bundle_collar_cuff_scan_line == 1)) {
-                        $this->access_model->endLineQC($carelabel_tracking_no, $access_points, 4, $date_time);
+                        $res = $this->access_model->endLineQC($carelabel_tracking_no, $access_points, 4, $date_time);
 
-                        $this->access_model->updateTodayLineOutputQty($line, $date, $time);
+                        if($res == true){
+                            $this->access_model->updateTodayLineOutputQty($line, $date, $time);
 
-                        // Brand of Last Scanning Piece
-                        $this->access_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line, array('brand' => $brand));
+                            // Brand of Last Scanning Piece
+                            $this->access_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line, array('brand' => $brand));
+                        }
 
                         echo 'Successfully Passed!';
                     } elseif (($last_access_points == $access_points) && ($last_access_points_status == 2)&& ($is_bundle_collar_cuff_scan_line == 1)) {
                         $this->access_model->updateDefectStatus($carelabel_tracking_no, $line, $access_points, $access_points_status, $date_time);
+                        $res = $this->access_model->endLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time);
 
-                        $this->access_model->updateTodayLineOutputQty($line, $date, $time);
+                        if($res == true){
+                            $this->access_model->updateTodayLineOutputQty($line, $date, $time);
 
-                        // Brand of Last Scanning Piece
-                        $this->access_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line, array('brand' => $brand));
+                            // Brand of Last Scanning Piece
+                            $this->access_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line, array('brand' => $brand));
+                        }
 
-                        $this->access_model->endLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time);
                         echo 'Successfully Passed!';
                     }
 //            elseif (($last_access_points == $access_points) && ($last_access_points_status == 3)){
