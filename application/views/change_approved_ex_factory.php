@@ -16,7 +16,7 @@
         <div class="block-web">
             <div class="header">
                 <div class="actions"> <a class="minimize" href="#"><i class="fa fa-chevron-down"></i></a><a class="close-down" href="#"><i class="fa fa-times"></i></a> </div>
-                <h3 class="content-header">Change Approved ExFactory</h3>
+                <h3 class="content-header"></h3>
             </div>
         </div>
 
@@ -55,7 +55,7 @@
             <form action="<?php echo base_url();?>access/changingApprovedExfactory" method="post">
 
                 <div id="row">
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <div id="set_form">
                                 <table class="display table table-bordered table-striped" id="sample_2">
@@ -66,9 +66,9 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="center">SO No *</td>
+                                        <td class="center" width="20%">SO No *</td>
                                         <td class="center">
-                                            <select required id="so_no" class="form-control" name="so_no" onchange="getExfatory();">
+                                            <select required id="so_no" class="form-control" name="so_no[]" multiple="multiple" data-placeholder="SO~PO~ITEM~QUALITY~COLOR~StyleNo~StyleName~ExFacDate~AppExFacDate~TYPE">
                                                 <option value="">Select SO No</option>
                                                 <?php
                                                 $po_type = '';
@@ -83,29 +83,29 @@
                                                         $po_type='SAMPLE';
                                                     }
                                                 ?>
-                                                    <option value="<?php echo $v_s['so_no'];?>"><?php echo $v_s['so_no'].'~'.$v_s['purchase_order'].'~'.$v_s['item'].'~'.$v_s['quality'].'~'.$v_s['color'].'~'.$v_s['style_no'].'~'.$v_s['style_name'].'~'.$v_s['ex_factory_date'].'~'.$po_type;?></option>
+                                                    <option value="<?php echo $v_s['so_no'];?>"><?php echo $v_s['so_no'].'~'.$v_s['purchase_order'].'~'.$v_s['item'].'~'.$v_s['quality'].'~'.$v_s['color'].'~'.$v_s['style_no'].'~'.$v_s['style_name'].'~'.$v_s['ex_factory_date'].'~'.$v_s['approved_ex_factory_date'].'~'.$po_type;?></option>
                                                 <?php } ?>
                                             </select>
-                                            <span id="" style="color: red;">SO~PO~ITEM~QUALITY~COLOR~StyleNo~StyleName~ExFacDate~TYPE</span>
+                                            <span id="" style="color: red;">SO~PO~ITEM~QUALITY~COLOR~StyleNo~StyleName~ExFacDate~AppExFacDate~TYPE</span>
                                         </td>
                                     </tr>
 
+<!--                                    <tr>-->
+<!--                                        <td class="center">Ex-Factory</td>-->
+<!--                                        <td class="center">-->
+<!--                                            <input type="text" name="ex_factory" id="ex_factory" readonly="readonly" />-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+
                                     <tr>
-                                        <td class="center">Ex-Factory</td>
+                                        <td class="center" width="20%">Approved Ex-Factory *</td>
                                         <td class="center">
-                                            <input type="text" name="ex_factory" id="ex_factory" readonly="readonly" />
+                                            <input type="text" class="form-control form-control-inline input-small default-date-picker" id="approved_exfactory" name="approved_exfactory" required autocomplete="off" />
                                         </td>
                                     </tr>
 
                                     <tr>
-                                        <td class="center">Approved Ex-Factory *</td>
-                                        <td class="center">
-                                            <input type="text" class="form-control-inline input-small default-date-picker" id="approved_exfactory" name="approved_exfactory" required autocomplete="off" />
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="center">Remarks </td>
+                                        <td class="center" width="20%">Remarks </td>
                                         <td class="center">
                                             <input type="text" class="form-control" id="remarks" name="remarks" autocomplete="off" />
                                         </td>
@@ -131,8 +131,11 @@
 </div><!--/row-->
 
 <script type="text/javascript">
-    $('#so_no').select2();
+    $('select').select2({
+        minimumInputLength: 3 // only start searching when the user has input 3 or more characters
+    });
 
+//    $('#so_no').select2();
 
     function getExfatory() {
 

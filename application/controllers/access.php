@@ -1776,10 +1776,10 @@ class Access extends CI_Controller {
         $res = $this->checkAuthorization($data['access_points'], $cur_url);
 
         if(sizeof($res) > 0) {
-        $data['so_nos'] = $this->access_model->getAllSOs();
-        $data['maincontent'] = $this->load->view('change_approved_ex_factory', $data, true);
-        $this->load->view('master', $data);
-
+//            $data['so_nos'] = $this->access_model->getAllSOs();
+            $data['so_nos'] = $this->access_model->selectTableDataRowQuery(' * ', 'tb_production_summary', '');
+            $data['maincontent'] = $this->load->view('change_approved_ex_factory', $data, true);
+            $this->load->view('master', $data);
         }else{
             echo $this->load->view('404');
         }
@@ -1810,17 +1810,20 @@ class Access extends CI_Controller {
     }
 
     public function changingApprovedExfactory(){
-        $so_no=$this->input->post('so_no');
+        $so_nos=$this->input->post('so_no');
         $approved_exfactory=$this->input->post('approved_exfactory');
         $date = explode('-', $approved_exfactory);
         $year=$date[2];
         $month=$date[0];
         $day=$date[1];
 
-        $data['approved_ex_factory_date']=$year.'-'.$month.'-'.$day;
-        $data['remarks']=$this->input->post('remarks');
+        foreach ($so_nos AS $k => $so_no){
+            $data['approved_ex_factory_date']=$year.'-'.$month.'-'.$day;
+            $data['remarks']=$this->input->post('remarks');
 
-        $this->access_model->updateTblNew('tb_po_detail', 'so_no', $so_no, $data);
+            $this->access_model->updateTblNew('tb_po_detail', 'so_no', $so_no, $data);
+        }
+
         $data['message']='Approved Ex-Factory Updated Successfully!';
         $this->session->set_userdata($data);
         redirect('access/changeApprovedExfactory');
