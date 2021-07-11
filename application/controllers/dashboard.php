@@ -5442,6 +5442,30 @@ class Dashboard extends CI_Controller {
     }
 
     public function getLineHourlyOutputReload($line_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $time=$datex->format('H:i:s');
+        $date=$datex->format('Y-m-d');
+
+//        Getting Current Hour & Last Hour - Start
+        $current_hour_info = $this->access_model->selectTableDataRowQuery(' * ', 'tb_today_line_output_qty', " AND `line_id` = $line_id AND `date`='$date' AND '$time' BETWEEN start_time AND end_time");
+        $current_hour = $current_hour_info[0]['hour'];
+
+        $last_hour_info = $this->access_model->selectTableDataRowQuery(' * ', 'tb_today_line_output_qty', " AND `line_id` = $line_id AND `date`='$date' AND `hour`=($current_hour - 1)");
+        $last_hour = $last_hour_info[0]['hour'];
+        $last_hour_start_time = $last_hour_info[0]['start_time'];
+        $last_hour_end_time = $last_hour_info[0]['end_time'];
+//        Getting Current Hour & Last Hour - End
+
+//        Updating Last Hour Production Qty - Start
+        $last_hour_prod_info = $this->access_model->selectTableDataRowQuery(' COUNT(id) AS production_qty ', 'tb_care_labels', " AND line_id=$line_id AND access_points=4 AND access_points_status=4 AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date' AND DATE_FORMAT(end_line_qc_date_time, '%H:%i:%s') BETWEEN '$last_hour_start_time' AND '$last_hour_end_time' AND is_manually_adjusted=0");
+        $production_qty = $last_hour_prod_info[0]['production_qty'];
+
+        $this->access_model->updateTblFields('tb_today_line_output_qty', " SET qty=$production_qty ", " AND `line_id`=$line_id AND `date`='$date' AND `hour`=$last_hour");
+//        Updating Last Hour Production Qty - End
+
+
+
         $data['line_info'] = $this->access_model->getLineInfo($line_id);
 
         $data['hours'] = $this->access_model->getHours();
