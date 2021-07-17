@@ -238,17 +238,17 @@
             <td align="center" title="<?php echo $total_wh;?>">
                 <?php
 
-//                    $n = $total_wh;
-//                    $whole = floor($n);      // 1
-//                    $fraction = $n - $whole; // .25
-//
-//                    if($fraction > 0){
-//                        $whole = $whole + 1;
-//                    }else{
-//                        $whole = $whole;
-//                    }
+                    $n = $total_wh;
+                    $whole = floor($n);      // 1
+                    $fraction = $n - $whole; // .25
 
-                    echo round($total_output/ round($total_wh), 2);
+                    if($fraction > 0){
+                        $whole = $whole + 1;
+                    }else{
+                        $whole = $whole;
+                    }
+
+                    echo round($total_output/ $whole, 2);
                 ?>
             </td>
             <td align="center" title="Manual Adjustment: <?php echo $total_manual_output;?>"><?php echo $total_output;?></td>
