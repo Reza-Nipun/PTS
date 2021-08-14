@@ -123,39 +123,39 @@
             </div><!--/col-md-12-->
         </form>
           <div class="row">
-              <div class="col-md-8 scroll2">
-                  <div class="block-web">
-
-                      <div class="porlets-content">
-
-                          <div class="table-responsive" id="size_tbl">
-                              <table class="display table table-bordered table-striped">
-                                  <thead>
-                                  <tr>
-                                      <th class="center">Size</th>
-                                      <th class="center">Order</th>
-                                      <th class="center">Cut Pass</th>
-                                      <th class="center">End</th>
-                                      <th class="center">Wash</th>
-                                      <th class="center">Pack</th>
-                                  </tr>
-                                  </thead>
-                                  <tbody>
-                                  <tr>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                  </tr>
-                                  </tbody>
-                              </table>
-                          </div><!--/table-responsive-->
-                      </div>
-
-                  </div><!--/porlets-content-->
-              </div><!--/block-web-->
+<!--              <div class="col-md-8 scroll2">-->
+<!--                  <div class="block-web">-->
+<!---->
+<!--                      <div class="porlets-content">-->
+<!---->
+<!--                          <div class="table-responsive" id="size_tbl">-->
+<!--                              <table class="display table table-bordered table-striped">-->
+<!--                                  <thead>-->
+<!--                                  <tr>-->
+<!--                                      <th class="center">Size</th>-->
+<!--                                      <th class="center">Order</th>-->
+<!--                                      <th class="center">Cut Pass</th>-->
+<!--                                      <th class="center">End</th>-->
+<!--                                      <th class="center">Wash</th>-->
+<!--                                      <th class="center">Pack</th>-->
+<!--                                  </tr>-->
+<!--                                  </thead>-->
+<!--                                  <tbody>-->
+<!--                                  <tr>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                  </tr>-->
+<!--                                  </tbody>-->
+<!--                              </table>-->
+<!--                          </div>-->
+<!--                      </div>-->
+<!---->
+<!--                  </div>-->
+<!--              </div>-->
 <!--              <div class="col-md-4">-->
 <!--                  <div class="block-web">-->
 <!---->

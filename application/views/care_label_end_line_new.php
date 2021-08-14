@@ -20,125 +20,94 @@
     }
 </style>
 <div class="pull-left breadcrumb_admin clear_both">
-        <div class="pull-left page_title theme_color">
-          <h1>End Line QC</h1>
-          <a class="btn btn-warning" href="<?php echo base_url()?>access/lineFinishingAlter">Finishing Alter</a>
-<!--          <a class="btn btn-success" href="--><?php //echo base_url()?><!--access/poOutputControl">Output Control</a>-->
-          <a class="btn btn-danger" href="<?php echo base_url()?>access/machineMaintenance">Machine Maintenance</a>
-        </div>
-        <div class="pull-right">
-          <ol class="breadcrumb">
-              <li><a href="<?php echo base_url();?>">Home</a></li>
-              <li class="active">End Line QC</li>
-          </ol>
-        </div>
-      </div>
-      <div class="container clear_both padding_fix">
-          <div class="row">
-              <div class="col-md-12">
-                  <div class="panel-body">
-                      <div class="porlets-content">
-                          <h4><span id="p_er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
-                          <h4><span id="p_s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
-                          <div class="col-md-1">
-                              <!--                            <div class="panel-heading" style="color: green;"> Pass<span class="semi-bold"></span> </div>-->
+    <div class="pull-left page_title theme_color">
+      <h1>End Line QC</h1>
+      <a class="btn btn-warning" href="<?php echo base_url()?>access/lineFinishingAlter">Finishing Alter</a>
+    <!--          <a class="btn btn-success" href="--><?php //echo base_url()?><!--access/poOutputControl">Output Control</a>-->
+      <a class="btn btn-danger" href="<?php echo base_url()?>access/machineMaintenance">Machine Maintenance</a>
+    </div>
+    <div class="pull-right">
+      <ol class="breadcrumb">
+          <li><a href="<?php echo base_url();?>">Home</a></li>
+          <li class="active">End Line QC</li>
+      </ol>
+    </div>
+</div>
+<div class="container clear_both padding_fix">
+  <div class="row">
+      <div class="col-md-12">
+          <div class="panel-body">
+              <div class="porlets-content">
+                  <h4><span id="p_er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
+                  <h4><span id="p_s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
+                  <div class="col-md-1">
+                      <!--                            <div class="panel-heading" style="color: green;"> Pass<span class="semi-bold"></span> </div>-->
 
-                              <input type="text" placeholder="Pass" class="form-control" name="carelabel_tracking_no" autofocus required id="carelabel_tracking_no" autocomplete="off" onkeyup="submitClQcInfo();" />
-                              <span style="">Pass</span>
-                              <button style="display: none;" id="submit_btn_save_pass" class="btn btn-success">Save</button>
-                              <br />
-                              <span style="margin-top: 30px;" id="refresh_report" class="btn btn-primary" onclick="getLineOutputReport();">Report</span>
-                              <br />
-                              <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
-                          </div>
-                          <div class="col-md-4">
+                      <input type="text" placeholder="Pass" class="form-control" name="carelabel_tracking_no" autofocus required id="carelabel_tracking_no" autocomplete="off" onkeyup="submitClQcInfo();" />
+                      <span style="">Pass</span>
+                      <button style="display: none;" id="submit_btn_save_pass" class="btn btn-success">Save</button>
+                      <br />
+                      <span style="margin-top: 30px;" id="refresh_report" class="btn btn-primary" onclick="getLineOutputReport();">Report</span>
+                      <br />
+                      <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
+                  </div>
+                  <div class="col-md-4">
 
-                              <!--                                <div class="panel-heading" style="color: red;"> Defects<span class="semi-bold"></span> </div>-->
-                              <!--                                <div class="panel-body">-->
-                              <h4><span id="er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
-                              <h4><span id="s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
-                              <div class="col-md-6">
+                      <!--                                <div class="panel-heading" style="color: red;"> Defects<span class="semi-bold"></span> </div>-->
+                      <!--                                <div class="panel-body">-->
+                      <h4><span id="er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
+                      <h4><span id="s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
+                      <div class="col-md-6">
 <!--                                  <input type="text" placeholder="Defect" class="form-control" name="carelabel_tracking_no_defect" required id="carelabel_tracking_no_defect" onkeyup="submitClQcDefectInfo();" />-->
 <!--                                  <span style=""> Defect</span>-->
 
-                              </div>
-                              <div class="col-md-6">
-                                  <button style="display: none;" id="submit_btn_save_defect" class="btn btn-success">Save</button>
-                              </div>
+                      </div>
+                      <div class="col-md-6">
+                          <button style="display: none;" id="submit_btn_save_defect" class="btn btn-success">Save</button>
+                      </div>
 
-                              <div class="row">
-                                  <div class="col-md-12">
-                                      <div class="porlets-content">
-                                          <div class="row">
-                                              <div class="col-lg-12">
-                                                  <section class="panel default blue_title h2">
-                                                      <div class="panel-body">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="porlets-content">
+                                  <div class="row">
+                                      <div class="col-lg-12">
+                                          <section class="panel default blue_title h2">
+                                              <div class="panel-body">
 
-                                                          <table class="table table-bordered" id="defect_code_tbl">
-                                                              <thead>
-                                                              <tr>
-                                                                  <th class="center">Defect Code</th>
-                                                                  <th class="center">Action</th>
-                                                              </tr>
-                                                              </thead>
-                                                              <tbody>
-                                                              <!--                                                                <tr>-->
-                                                              <!--                                                                    <td><input onkeyup="getTxt(id);" autofocus class="form-control defect_part" type="text" name="defect_part[]" id="defect_part0" /></td>-->
-                                                              <!--                                                                    <td><input onkeyup="getTxt_1(id);" autofocus class="form-control defect_code" type="text" name="defect_codes[]" id="defect_codes0" /></td>-->
-                                                              <!--                                                                    <td><span class="btn btn-danger" id="remove" onclick="deleteRow(this);">REMOVE</span></td>-->
-                                                              <!--                                                                </tr>-->
-                                                              </tbody>
-                                                              <tfoot>
-                                                              <td></td>
-                                                              <td><span class="btn btn-success" id="add_btn" onclick="addNewRow();">ADD</span></td>
-                                                              </tfoot>
-                                                          </table>
-                                                      </div>
-                                                      <div></div>
-                                                  </section>
-                                              </div>
-                                          </div>
-                                      </div>
-
-                                  </div><!--/block-web-->
-                              </div><!--/col-md-12-->
-                              <!--                                </div>-->
-                              <!--/col-md-6-->
-                          </div>
-                          <div class="col-md-7">
-                              <div class="row">
-                                  <div class="col-md-8 scroll3">
-                                      <div class="block-web">
-
-                                          <div class="porlets-content">
-
-                                              <div class="table-responsive" id="size_tbl">
-                                                  <table class="display table table-bordered table-striped">
+                                                  <table class="table table-bordered" id="defect_code_tbl">
                                                       <thead>
                                                       <tr>
-                                                          <th class="center">Size</th>
-                                                          <th class="center">Cut</th>
-                                                          <th class="center">Input</th>
-                                                          <th class="center">Mid</th>
-                                                          <th class="center">End</th>
+                                                          <th class="center">Defect Code</th>
+                                                          <th class="center">Action</th>
                                                       </tr>
                                                       </thead>
                                                       <tbody>
-                                                      <tr>
-                                                          <td class="hidden-phone center"></td>
-                                                          <td class="hidden-phone center"></td>
-                                                          <td class="hidden-phone center"></td>
-                                                          <td class="hidden-phone center"></td>
-                                                          <td class="hidden-phone center"></td>
-                                                      </tr>
+                                                      <!--                                                                <tr>-->
+                                                      <!--                                                                    <td><input onkeyup="getTxt(id);" autofocus class="form-control defect_part" type="text" name="defect_part[]" id="defect_part0" /></td>-->
+                                                      <!--                                                                    <td><input onkeyup="getTxt_1(id);" autofocus class="form-control defect_code" type="text" name="defect_codes[]" id="defect_codes0" /></td>-->
+                                                      <!--                                                                    <td><span class="btn btn-danger" id="remove" onclick="deleteRow(this);">REMOVE</span></td>-->
+                                                      <!--                                                                </tr>-->
                                                       </tbody>
+                                                      <tfoot>
+                                                      <td></td>
+                                                      <td><span class="btn btn-success" id="add_btn" onclick="addNewRow();">ADD</span></td>
+                                                      </tfoot>
                                                   </table>
-                                              </div><!--/table-responsive-->
-                                          </div>
+                                              </div>
+                                              <div></div>
+                                          </section>
+                                      </div>
+                                  </div>
+                              </div>
 
-                                      </div><!--/porlets-content-->
-                                  </div><!--/block-web-->
-
+                          </div><!--/block-web-->
+                      </div><!--/col-md-12-->
+                      <!--                                </div>-->
+                      <!--/col-md-6-->
+                  </div>
+                  <div class="col-md-7">
+                      <div class="row">
+                          <div class="information_inner" id="efficiency" style="color: green; display: none;"></div>
 <!--                                  <div class="col-md-4">-->
 <!--                                      <div class="">-->
 <!---->
@@ -163,92 +132,92 @@
 <!--                                      </div>-->
 <!--                                  </div>-->
 
-                              </div><!--/col-md-12-->
-                          </div>
-                      </div>
+                      </div><!--/col-md-12-->
+                  </div>
+              </div>
 
-                  </div><!--/block-web-->
-              </div><!--/col-md-12-->
-          </div>
+          </div><!--/block-web-->
+      </div><!--/col-md-12-->
+  </div>
           <!--                    </form>-->
-          <div class="row">
-              <div class="col-md-12">
-                  <section class="panel default blue_title h2">
-                      <!--                <div class="panel-heading" style="color: green;"> Pass<span class="semi-bold"></span> </div>-->
-                      <div class="panel-body">
+  <div class="row">
+      <div class="col-md-12">
+          <section class="panel default blue_title h2">
+              <!--                <div class="panel-heading" style="color: green;"> Pass<span class="semi-bold"></span> </div>-->
+              <div class="panel-body">
 
-                          <div class="porlets-content">
+                  <div class="porlets-content">
 
-                              <div class="col-md-12">
-                                  <div class="col-md-11 scroll" id="reload_div">
-                                      <?php
+                      <div class="col-md-12">
+                          <div class="col-md-11 scroll" id="reload_div">
+                              <?php
 //                                      $prod_summary = $this->method_call->getProductionSummaryReport();
-                                      ?>
-                                      <div class="block-web">
+                              ?>
+                              <div class="block-web">
 
-                                          <div class="porlets-content">
+                                  <div class="porlets-content">
 
-                                              <div class="table-responsive">
-                                                  <table class="display table table-bordered table-striped" id="">
-                                                      <thead>
-                                                      <tr>
-                                                          <th class="hidden-phone" colspan="6"></th>
-                                                          <th class="hidden-phone center" colspan="3">Sewing</th>
-                                                      </tr>
-                                                      <tr>
-                                                          <th class="hidden-phone center">PO-ITEM</th>
-                                                          <th class="hidden-phone center">Brand</th>
-                                                          <th class="hidden-phone center">STL</th>
-                                                          <th class="hidden-phone center">QL-CLR</th>
-                                                          <th class="hidden-phone center">Order</th>
-                                                          <th class="hidden-phone center">ExFac</th>
-                                                          <th class="hidden-phone center"><span data-toggle="tooltip" title="Mid-Line QTY">Mid QC</span></th>
-                                                          <th class="hidden-phone center"><span data-toggle="tooltip" title="End-Line QTY">End QC</span></th>
-                                                          <th class="hidden-phone center"><span data-toggle="tooltip" title="Balance QTY">Balance</span></th>
-                                                      </tr>
-                                                      </thead>
-                                                      <tbody>
-                                                      <?php
-                                                      foreach($prod_summary as $k => $v) {
-                                                          if (($v['count_input_qty_line'] - $v['count_end_line_qc_pass']) != 0) {
-                                                              ?>
-                                                              <tr>
-                                                                  <td class="hidden-phone center"><span
-                                                                              style="color: #727dff; cursor: pointer;"
-                                                                              onclick="getSizeWiseReport('<?php echo $v['po_no']; ?>', '<?php echo $v['purchase_order']; ?>','<?php echo $v['item']; ?>');"><?php echo $v['purchase_order'] . '-' . $v['item']; ?></span>
-                                                                  </td>
-                                                                  <td class="hidden-phone center"><?php echo $v['brand']; ?></td>
-                                                                  <td class="hidden-phone center"><?php echo $v['style_no'] . '-' . $v['style_name']; ?></td>
-                                                                  <td class="hidden-phone center"><?php echo $v['quality'] . '-' . $v['color']; ?></td>
-                                                                  <td class="hidden-phone center"><?php echo $v['total_order_qty']; ?></td>
-                                                                  <td class="hidden-phone center"><?php echo $v['ex_factory_date']; ?></td>
-                                                                  <td class="hidden-phone center"><?php echo $v['count_mid_line_qc_pass']; ?></td>
-                                                                  <td class="hidden-phone center" <?php if($v['count_mid_line_qc_pass'] > $v['count_end_line_qc_pass']){ ?>style="background-color: red;" <?php } ?> <?php if($v['count_mid_line_qc_pass'] == $v['count_end_line_qc_pass']){ ?>style="background-color: darkgreen;" <?php } ?>>
-                                                                      <span style="color: white; font-size: 20px;"><?php echo $v['count_end_line_qc_pass']; ?></span>
-                                                                  </td>
-                                                                  <td class="hidden-phone center">
-                                                                      <a target="_blank" href="<?php echo base_url(); ?>access/remainQtyStatus/<?php echo $v['purchase_order']; ?>/<?php echo $v['item']; ?>/4"><?php echo $v['total_cut_qty'] - $v['count_packing_pass']; ?></a>
-                                                                  </td>
-                                                              </tr>
-                                                      <?php
-                                                          }
-                                                      }
+                                      <div class="table-responsive">
+                                          <table class="display table table-bordered table-striped" id="">
+                                              <thead>
+                                              <tr>
+                                                  <th class="hidden-phone" colspan="6"></th>
+                                                  <th class="hidden-phone center" colspan="3">Sewing</th>
+                                              </tr>
+                                              <tr>
+                                                  <th class="hidden-phone center">PO-ITEM</th>
+                                                  <th class="hidden-phone center">Brand</th>
+                                                  <th class="hidden-phone center">STL</th>
+                                                  <th class="hidden-phone center">QL-CLR</th>
+                                                  <th class="hidden-phone center">Order</th>
+                                                  <th class="hidden-phone center">ExFac</th>
+                                                  <th class="hidden-phone center"><span data-toggle="tooltip" title="Mid-Line QTY">Mid QC</span></th>
+                                                  <th class="hidden-phone center"><span data-toggle="tooltip" title="End-Line QTY">End QC</span></th>
+                                                  <th class="hidden-phone center"><span data-toggle="tooltip" title="Balance QTY">Balance</span></th>
+                                              </tr>
+                                              </thead>
+                                              <tbody>
+                                              <?php
+                                              foreach($prod_summary as $k => $v) {
+                                                  if (($v['count_input_qty_line'] - $v['count_end_line_qc_pass']) != 0) {
                                                       ?>
-                                                      </tbody>
-                                                  </table>
-                                              </div><!--/table-responsive-->
-                                          </div>
+                                                      <tr>
+                                                          <td class="hidden-phone center"><span
+                                                                      style="color: #727dff; cursor: pointer;"
+                                                                      onclick="getSizeWiseReport('<?php echo $v['po_no']; ?>', '<?php echo $v['purchase_order']; ?>','<?php echo $v['item']; ?>');"><?php echo $v['purchase_order'] . '-' . $v['item']; ?></span>
+                                                          </td>
+                                                          <td class="hidden-phone center"><?php echo $v['brand']; ?></td>
+                                                          <td class="hidden-phone center"><?php echo $v['style_no'] . '-' . $v['style_name']; ?></td>
+                                                          <td class="hidden-phone center"><?php echo $v['quality'] . '-' . $v['color']; ?></td>
+                                                          <td class="hidden-phone center"><?php echo $v['total_order_qty']; ?></td>
+                                                          <td class="hidden-phone center"><?php echo $v['ex_factory_date']; ?></td>
+                                                          <td class="hidden-phone center"><?php echo $v['count_mid_line_qc_pass']; ?></td>
+                                                          <td class="hidden-phone center" <?php if($v['count_mid_line_qc_pass'] > $v['count_end_line_qc_pass']){ ?>style="background-color: red;" <?php } ?> <?php if($v['count_mid_line_qc_pass'] == $v['count_end_line_qc_pass']){ ?>style="background-color: darkgreen;" <?php } ?>>
+                                                              <span style="color: white; font-size: 20px;"><?php echo $v['count_end_line_qc_pass']; ?></span>
+                                                          </td>
+                                                          <td class="hidden-phone center">
+                                                              <a target="_blank" href="<?php echo base_url(); ?>access/remainQtyStatus/<?php echo $v['purchase_order']; ?>/<?php echo $v['item']; ?>/4"><?php echo $v['total_cut_qty'] - $v['count_packing_pass']; ?></a>
+                                                          </td>
+                                                      </tr>
+                                              <?php
+                                                  }
+                                              }
+                                              ?>
+                                              </tbody>
+                                          </table>
+                                      </div><!--/table-responsive-->
+                                  </div>
 
-                                      </div><!--/porlets-content-->
-                                  </div><!--/block-web-->
-                              </div>
-                          </div>
+                              </div><!--/porlets-content-->
+                          </div><!--/block-web-->
+                      </div>
+                  </div>
 
-                      </div><!--/block-web-->
-                  </section><!--/porlets-content-->
-              </div><!--/col-md-12-->
-          </div>
-            </div>
+              </div><!--/block-web-->
+          </section><!--/porlets-content-->
+      </div><!--/col-md-12-->
+  </div>
+</div>
 <!--                    </form>-->
 
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -313,6 +282,10 @@
 
 
         }, 10000);
+
+        setInterval(function() {
+            $("#efficiency").load('<?php echo base_url();?>dashboard/getEfficiencyReload/<?php echo $line_id;?>');
+        }, 60000);
     });
 
     $("#carelabel_tracking_no").blur(function(){
@@ -460,6 +433,7 @@
 
             if(rowCount==0){
                 $.ajax({
+                    async: false,
                     type: "POST",
                     url: "<?php echo base_url();?>access/careLabelEndPassSave/",
                     data: {cl_track_no_defect: carelabel_tracking_no, access_points_status: 4},

@@ -106,35 +106,35 @@
                         </div>
                         <div class="col-md-7">
                             <div class="row">
-                                <div class="col-md-8 scroll3">
-                                    <div class="block-web">
-
-                                        <div class="porlets-content">
-
-                                            <div class="table-responsive" id="size_tbl">
-                                                <table class="display table table-bordered table-striped">
-                                                    <thead>
-                                                    <tr>
-                                                        <th class="center">Size</th>
-                                                        <th class="center">Cut</th>
-                                                        <th class="center">Line Input</th>
-                                                        <th class="center">Mid Pass</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr>
-                                                        <td class="hidden-phone center"></td>
-                                                        <td class="hidden-phone center"></td>
-                                                        <td class="hidden-phone center"></td>
-                                                        <td class="hidden-phone center"></td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div><!--/table-responsive-->
-                                        </div>
-
-                                    </div><!--/porlets-content-->
-                                </div><!--/block-web-->
+<!--                                <div class="col-md-8 scroll3">-->
+<!--                                    <div class="block-web">-->
+<!---->
+<!--                                        <div class="porlets-content">-->
+<!---->
+<!--                                            <div class="table-responsive" id="size_tbl">-->
+<!--                                                <table class="display table table-bordered table-striped">-->
+<!--                                                    <thead>-->
+<!--                                                    <tr>-->
+<!--                                                        <th class="center">Size</th>-->
+<!--                                                        <th class="center">Cut</th>-->
+<!--                                                        <th class="center">Line Input</th>-->
+<!--                                                        <th class="center">Mid Pass</th>-->
+<!--                                                    </tr>-->
+<!--                                                    </thead>-->
+<!--                                                    <tbody>-->
+<!--                                                    <tr>-->
+<!--                                                        <td class="hidden-phone center"></td>-->
+<!--                                                        <td class="hidden-phone center"></td>-->
+<!--                                                        <td class="hidden-phone center"></td>-->
+<!--                                                        <td class="hidden-phone center"></td>-->
+<!--                                                    </tr>-->
+<!--                                                    </tbody>-->
+<!--                                                </table>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!---->
+<!--                                    </div>-->
+<!--                                </div>-->
 
 <!--                                <div class="col-md-4">-->
 <!--                                    <div class="">-->
