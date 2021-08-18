@@ -202,8 +202,6 @@
             dataType: "html",
             success: function (data) {
 
-                console.log(data);
-
                 if(data='done'){
                     $("#loader").css('display', 'none');
                     alert("Manual Qty is Adjusted with Today's Performance!");

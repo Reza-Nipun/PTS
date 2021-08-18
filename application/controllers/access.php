@@ -5988,7 +5988,13 @@ class Access extends CI_Controller {
     }
 
     public function getPieceByPieceDetailBySo($so_no){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
         $data['title'] = "Piece By Piece Detail";
+        $data['so_no'] = $so_no;
 
         $where = '';
         if($so_no != ''){
@@ -5999,6 +6005,84 @@ class Access extends CI_Controller {
 
         $data['maincontent'] = $this->load->view('piece_by_piece_detail', $data, true);
         $this->load->view('master', $data);
+    }
+
+    public function filterPieces(){
+        $so_no = $this->input->post('so_no');
+        $size = $this->input->post('size');
+
+        $where = '';
+        if($so_no != ''){
+            $where .= " AND so_no='$so_no'";
+        }
+
+        if($size != ''){
+            $where .= " AND size='$size'";
+        }
+
+        $data['pieces'] = $this->dashboard_model->getPieceByPieceDetailBySo($where);
+
+        $data['maincontent'] = $this->load->view('piece_by_piece_detail_filter', $data);
+    }
+
+    public function updatePieceLastScanningPoint(){
+        $scanning_point = $this->input->post('scanning_point');
+        $pc_nos = $this->input->post('pc_nos');
+
+        foreach($pc_nos as $pc_no){
+            $pc_info = $this->access_model->selectTableDataRowQuery('*', 'tb_care_labels', " AND pc_tracking_no='$pc_no'");
+
+            $line_id = $pc_info[0]['line_id'];
+
+            if($line_id > 0){
+                if($scanning_point == 3){
+                    $data = array(
+                        'access_points' => 3,
+                        'access_points' => 1,
+                        'end_line_qc_date_time' => '0000-00-00 00:00:00',
+                        'is_going_wash' => 0,
+                        'going_wash_scan_date_time' => '0000-00-00 00:00:00',
+                        'washing_status' => 0,
+                        'washing_date_time' => '0000-00-00 00:00:00',
+                        'packing_status' => 0,
+                        'packing_date_time' => '0000-00-00 00:00:00',
+                        'carton_status' => 0,
+                        'carton_date_time' => '0000-00-00 00:00:00',
+                        'warehouse_qa_type' => 0,
+                        'manually_closed' => 0,
+                        'is_manually_adjusted' => 0,
+                        'manual_adjustment_date_time' => '0000-00-00 00:00:00',
+                        'manual_adjustment_by' => '',
+                    );
+
+                    $this->access_model->updateTblNew('tb_care_labels', 'pc_tracking_no', $pc_no, $data);
+                }
+
+                if($scanning_point == 4){
+                    $data = array(
+                        'access_points' => 4,
+                        'access_points' => 4,
+                        'is_going_wash' => 0,
+                        'going_wash_scan_date_time' => '0000-00-00 00:00:00',
+                        'washing_status' => 0,
+                        'washing_date_time' => '0000-00-00 00:00:00',
+                        'packing_status' => 0,
+                        'packing_date_time' => '0000-00-00 00:00:00',
+                        'carton_status' => 0,
+                        'carton_date_time' => '0000-00-00 00:00:00',
+                        'warehouse_qa_type' => 0,
+                        'manually_closed' => 0,
+                        'is_manually_adjusted' => 0,
+                        'manual_adjustment_date_time' => '0000-00-00 00:00:00',
+                        'manual_adjustment_by' => '',
+                    );
+
+                    $this->access_model->updateTblNew('tb_care_labels', 'pc_tracking_no', $pc_no, $data);
+                }
+            }
+        }
+
+        echo 'done';
     }
 
     public function deletePieceNo($pc_tracking_no){

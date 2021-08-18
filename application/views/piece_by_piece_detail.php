@@ -61,14 +61,46 @@
                         ?>
                     </h6>
                 </div>
+
+                <?php
+                    $sizes = [];
+
+                    foreach ($pieces as $s){
+                        array_push($sizes, $s['size']);
+                    }
+
+                $sizes = array_unique($sizes);
+                ?>
+
                 <div class="porlets-content">
                     <div class="row" style="text-align: left">
                         <div class="form-group">
+                            <div class="col-md-2">
+                                <select class="form-control select" id="size" name="size">
+                                    <option value="">Select Size</option>
 
-                            <div class="col-lg-4">
-                                <button type="submit" id="save_btn" class="btn btn-danger"onclick="deletePieces()"><i class="fa fa-archive"></i> DELETE PIECES</button>
+                                    <?php foreach ($sizes as $size){ ?>
+                                        <option value="<?php echo $size?>"><?php echo $size?></option>
+                                    <?php } ?>
+
+                                </select>
+                                <input type="hidden" name="so_no" id="so_no" value="<?php echo $so_no?>" readonly="readonly" />
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-md-1">
+                                <span id="search_btn" class="btn btn-success" onclick="filterPieces()"><i class="fa fa-search"></i> SEARCH</span>
+                            </div>
+                            <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row" style="text-align: left">
+                        <div class="form-group">
+
+                            <div class="col-md-4">
+                                <button type="submit" id="save_btn" class="btn btn-danger" onclick="deletePieces()"><i class="fa fa-archive"></i> DELETE PIECES</button>
+                                <span id="" class="btn btn-warning" onclick="updatePieceLastScanningPointModal()"><i class="fa fa-edit"></i> UPDATE LAST SCAN POINT</span>
+                            </div>
+                            <div class="col-md-4">
                                 <h3>Total Selected:  <span id="count_select">0</span></h3>
                             </div>
 
@@ -172,36 +204,34 @@
 
 </div>
 
-<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel1"></h4>
+                <h4 class="modal-title" id="myModalLabel">Update Scanning Point</h4>
             </div>
-
             <div class="modal-body">
-                <div class="col-md-3 scroll4">
-                    <div class="porlets-content">
-                        <div class="table-responsive" id="wh_cl_list">
-
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Scanning Point:</label>
+                    <select class="form-control" id="scanning_point" name="scanning_point">
+                        <option value="">Select Scanning Point</option>
+                        <option value="3">Line Mid QC Pass</option>
+                        <option value="4">Line End QC Pass</option>
+                    </select>
                 </div>
             </div>
-
             <div class="modal-footer">
-                <!--                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                <!--                <button type="button" class="btn btn-primary">Save changes</button>-->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <span class="btn btn-primary" onclick="updatePieceLastScanningPoint()">Update</span>
             </div>
-
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    $('select').select2();
+    $('.select').select2();
 
     $(document).on('click','#checkAll',function () {
         $('.checkItem').not(this).prop('checked', this.checked);
@@ -228,8 +258,6 @@
 
         });
 
-        console.log(pc_nos);
-
         var r = confirm('Are you sure to delete the pieces!');
         if(r == true){
             if(pc_nos !='')
@@ -247,10 +275,62 @@
                     }
                 });
             }else{
-                alert('No Pieces seleceted!');
+                alert('No Pieces Selected!');
             }
         }
 
+    }
+    
+    function filterPieces() {
+        var so_no = $("#so_no").val();
+        var size = $("#size").val();
+
+        $("#table_content").empty();
+        $("#loader").css('display', 'block');
+
+        $.ajax({
+            url:"<?php echo base_url('access/filterPieces')?>",
+            type:"post",
+            dataType:"html",
+            data:{so_no:so_no, size:size},
+            success:function (data) {
+                $("#table_content").append(data);
+                $("#loader").css('display', 'none');
+            }
+        });
+    }
+    
+    function updatePieceLastScanningPointModal() {
+        $("#myModal").modal('show');
+    }
+
+    function updatePieceLastScanningPoint() {
+        var scanning_point = $("#scanning_point").val();
+
+        var pc_nos = [];
+
+        $('input.checkItem:checkbox:checked').each(function () {
+            var sThisVal = $(this).val();
+
+            pc_nos.push(sThisVal);
+        });
+
+        if(pc_nos !='' && scanning_point != '')
+        {
+            $.ajax({
+                url:"<?php echo base_url('access/updatePieceLastScanningPoint')?>",
+                type:"post",
+                dataType:"html",
+                data:{scanning_point: scanning_point, pc_nos:pc_nos},
+                success:function (data) {
+                    if(data == 'done'){
+                        $("#myModal").modal('hide');
+                        $("#search_btn").click();
+                        $("#count_select").text(0);
+                    }
+                }
+            });
+        }
     }
 
 </script>
