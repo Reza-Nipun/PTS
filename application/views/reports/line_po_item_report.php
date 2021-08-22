@@ -17,7 +17,13 @@
             <table class="table" border="1">
                 <thead>
                     <tr>
-                        <th class="center" colspan="17"><span style="font-size: 20px;"><?php echo $line_po_items[0]['line_name']?></span></th>
+                        <th class="center" colspan="17">
+                            <span style="font-size: 20px;">
+                                <a href="<?php echo base_url()?>dashboard/runningPoSublineReport/<?php echo $vl?>" target="_blank">
+                                    <?php echo $line_po_items[0]['line_name']?>
+                                </a>
+                            </span>
+                        </th>
                     </tr>
                     <tr>
                         <th class="center">PO-Item</th>

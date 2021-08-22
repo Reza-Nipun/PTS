@@ -40,6 +40,8 @@
                     <div class="porlets-content">
                         <h4><span id="p_er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
                         <h4><span id="p_s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
+                        <h4><span id="er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
+                        <h4><span id="s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
                         <div class="col-md-1">
 <!--                            <div class="panel-heading" style="color: green;"> Pass<span class="semi-bold"></span> </div>-->
 
@@ -49,118 +51,17 @@
                             <span style="margin-top: 30px;" id="refresh_report" class="btn btn-primary" onclick="getLineMidOutputReport();">Report</span>
                             <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
+                            <select class="form-control" name="sub_line_id" id="sub_line_id"
+                                <?php if(sizeof($sub_lines) == 0){ ?> style="display: none" <?php } ?>>
 
-<!--                                <div class="panel-heading" style="color: red;"> Defects<span class="semi-bold"></span> </div>-->
-<!--                                <div class="panel-body">-->
-                            <h4><span id="er_msg" style="color: red; font-size: 30px; font-weight: 900;"></span></h4>
-                            <h4><span id="s_msg" style="color: green; font-size: 30px; font-weight: 900;"></span></h4>
-                                    <div class="col-md-6">
-                                        <input type="text" placeholder="Defect" class="form-control" name="carelabel_tracking_no_defect" required id="carelabel_tracking_no_defect" onkeyup="submitClQcDefectInfo();" />
-                                        <span style=""> Defect</span>
+                                <option value="">Select Sub-Line</option>
+                                <?php foreach ($sub_lines as $sub_line){ ?>
+                                    <option value="<?php echo $sub_line['id']?>"><?php echo $sub_line['sub_line_name']?></option>
+                                <?php } ?>
 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <button style="display: none;" id="submit_btn_save_defect" class="btn btn-success">Save</button>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="porlets-content">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <section class="panel default blue_title h2">
-                                                            <div class="panel-body">
-
-                                                                <table class="table table-bordered" id="defect_code_tbl">
-                                                                    <thead>
-                                                                    <tr>
-                                                                        <th class="center">Defect Part</th>
-                                                                        <th class="center">Defect Code</th>
-                                                                        <th class="center">Action</th>
-                                                                    </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    <!--                                                                <tr>-->
-                                                                    <!--                                                                    <td><input onkeyup="getTxt(id);" autofocus class="form-control defect_part" type="text" name="defect_part[]" id="defect_part0" /></td>-->
-                                                                    <!--                                                                    <td><input onkeyup="getTxt_1(id);" autofocus class="form-control defect_code" type="text" name="defect_codes[]" id="defect_codes0" /></td>-->
-                                                                    <!--                                                                    <td><span class="btn btn-danger" id="remove" onclick="deleteRow(this);">REMOVE</span></td>-->
-                                                                    <!--                                                                </tr>-->
-                                                                    </tbody>
-                                                                    <tfoot>
-                                                                    <td colspan="2"></td>
-                                                                    <td><span class="btn btn-success" id="add_btn" onclick="addNewRow();">ADD</span></td>
-                                                                    </tfoot>
-                                                                </table>
-                                                            </div>
-                                                            <div></div>
-                                                        </section>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div><!--/block-web-->
-                                    </div><!--/col-md-12-->
-<!--                                </div>-->
-                            <!--/col-md-6-->
-                        </div>
-                        <div class="col-md-7">
-                            <div class="row">
-<!--                                <div class="col-md-8 scroll3">-->
-<!--                                    <div class="block-web">-->
-<!---->
-<!--                                        <div class="porlets-content">-->
-<!---->
-<!--                                            <div class="table-responsive" id="size_tbl">-->
-<!--                                                <table class="display table table-bordered table-striped">-->
-<!--                                                    <thead>-->
-<!--                                                    <tr>-->
-<!--                                                        <th class="center">Size</th>-->
-<!--                                                        <th class="center">Cut</th>-->
-<!--                                                        <th class="center">Line Input</th>-->
-<!--                                                        <th class="center">Mid Pass</th>-->
-<!--                                                    </tr>-->
-<!--                                                    </thead>-->
-<!--                                                    <tbody>-->
-<!--                                                    <tr>-->
-<!--                                                        <td class="hidden-phone center"></td>-->
-<!--                                                        <td class="hidden-phone center"></td>-->
-<!--                                                        <td class="hidden-phone center"></td>-->
-<!--                                                        <td class="hidden-phone center"></td>-->
-<!--                                                    </tr>-->
-<!--                                                    </tbody>-->
-<!--                                                </table>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!---->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-<!--                                <div class="col-md-4">-->
-<!--                                    <div class="">-->
-<!---->
-<!--                                        <div class="porlets-content">-->
-<!---->
-<!--                                            <div class="table-responsive">-->
-<!--                                                <table class="display table table-bordered table-striped" id="">-->
-<!--                                                    <thead>-->
-<!--                                                    <tr>-->
-<!--                                                        <th class="hidden-phone center"><a target="_blank" href="--><?php //echo base_url();?><!--dashboard/poWiseCuttingReport" class="btn btn-danger">Cutting</a></th>-->
-<!--                                                        <th class="hidden-phone center" colspan="2"><a target="_blank" href="--><?php //echo base_url();?><!--dashboard/lineWisePoItemReport" class="btn btn-primary">LINE</a></th>-->
-<!--                                                        <th class="hidden-phone center" colspan="3"><a target="_blank" href="--><?php //echo base_url();?><!--dashboard/poWisePackingReport" class="btn btn-success">Packing</a></th>-->
-<!--                                                    </tr>-->
-<!--                                                    </thead>-->
-<!--                                                    <tbody>-->
-<!---->
-<!--                                                    </tbody>-->
-<!--                                                </table>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!---->
-<!--                                    </div>-->
-<!--                                </div>-->
-
-                            </div><!--/col-md-12-->
+                            </select>
+                            <input type="hidden" value="<?php echo sizeof($sub_lines);?>" id="shub_lines" readonly="readonly" />
                         </div>
                     </div>
 
@@ -209,9 +110,8 @@
                                                     if (($v['count_input_qty_line'] - $v['count_end_line_qc_pass']) != 0) {
                                                         ?>
                                                         <tr>
-                                                            <td class="hidden-phone center"><span
-                                                                        style="color: #727dff; cursor: pointer;"
-                                                                        onclick="getSizeWiseReport('<?php echo $v['po_no'];?>', '<?php echo $v['purchase_order']; ?>','<?php echo $v['item']; ?>');"><?php echo $v['purchase_order'] . '-' . $v['item']; ?></span>
+                                                            <td class="hidden-phone center">
+                                                                <?php echo $v['purchase_order'] . '-' . $v['item']; ?>
                                                             </td>
                                                             <td class="hidden-phone center"><?php echo $v['brand']; ?></td>
                                                             <td class="hidden-phone center"><?php echo $v['style_no'] . '-' . $v['style_name']; ?></td>
@@ -331,320 +231,126 @@
 
         }
 
-        function getTxt(id){
-            var txt = $("#"+id).val();
-            var to_int = id.slice(11, 13);
-
-            var first_variable = txt.substring(0, 2);
-            var last_variable = txt.slice(-1);
-
-            if((first_variable == 'Dp') && (last_variable == '.')){
-                $('#defect_part'+to_int).val('');
-            }
-
-            if((txt != '') && (first_variable == 'DP') && (last_variable == '.')){
-                $('#defect_codes'+to_int).focus();
-            }
-
-            if((txt != '') && (first_variable == 'DC') && (last_variable == '.')){
-                $('#defect_part'+to_int).val('');
-                $('#defect_part'+to_int).focus();
-            }
-
-            if((txt != '') && (first_variable != 'DP') && (first_variable != 'Dp') && (first_variable != 'DC') && (first_variable != 'Dc') && (last_variable == '.')){
-//                $('#carelabel_tracking_no_defect').focus();
-                $('#defect_code_tbl tbody').find('tr:last').remove();
-                $('#carelabel_tracking_no_defect').val(txt).keyup();
-            }
-        }
-
-        function getTxt_1(id){
-            var txt = $("#"+id).val();
-            var first_variable = txt.substring(0, 2);
-            var last_variable = txt.slice(-1);
-            var to_int = id.slice(12, 14);
-
-//        var txt_1 = $("#defect_part"+to_int).val();
-
-            if((first_variable == 'Dc') && (last_variable == '.')){
-                $('#defect_codes'+to_int).val('');
-            }
-
-            if((txt != '') && (first_variable == 'DC') && (last_variable == '.')){
-                addNewRow();
-            }
-
-            if((txt != '') && (first_variable == 'DP') && (last_variable == '.')){
-                $("#"+id).val('');
-            }
-
-            if((txt != '') && (first_variable != 'DC') && (first_variable != 'Dc') && (first_variable != 'DP') && (first_variable != 'Dp') && (last_variable == '.')){
-//            $('#carelabel_tracking_no_defect').focus();
-                $('#defect_code_tbl tbody').find('tr:last').remove();
-                $('#carelabel_tracking_no_defect').val(txt).keyup();
-            }
-        }
-
-
-        function addNewRow() {
-            var rowCount = $('#defect_code_tbl tbody tr').length;
-
-            var res = $("#defect_code_tbl tbody tr:last input:first").attr('id');
-//        console.log($("#defect_code_tbl tbody tr:last input:first").attr('id'));
-
-            console.log(res);
-            console.log(rowCount);
-
-            if(rowCount == 0){
-                console.log(res);
-                var rowPlus = rowCount + 1;
-
-                $("#defect_code_tbl > tbody").append('<tr><td><input onkeyup="getTxt(id);" class="form-control defect_part" type="text" name="defect_part[]" id="defect_part' + rowPlus + '" /></td><td><input onkeyup="getTxt_1(id);" class="form-control defect_code" type="text" name="defect_codes[]" id="defect_codes' + rowPlus + '" /></td><td><span class="btn btn-danger" id="remove" onclick="deleteRow(this);">REMOVE</span></td></tr>');
-
-                $('#defect_code_tbl .defect_part').last().focus();
-            }
-            if(rowCount > 0){
-                console.log(res);
-                var to_int = res.slice(11, 13);
-
-                var rowPlus = parseInt(to_int) + 1;
-
-                $("#defect_code_tbl > tbody").append('<tr><td><input onkeyup="getTxt(id);" class="form-control defect_part" type="text" name="defect_part[]" id="defect_part' + rowPlus + '" /></td><td><input onkeyup="getTxt_1(id);" class="form-control defect_code" type="text" name="defect_codes[]" id="defect_codes' + rowPlus + '" /></td><td><span class="btn btn-danger" id="remove" onclick="deleteRow(this);">REMOVE</span></td></tr>');
-
-                $('#defect_code_tbl .defect_part').last().focus();
-            }
-        }
-
-
-        //    //    function autoFocusInput() {
-        //    //        $('#defect_code_tbl input').last().focus();
-        //    //    }
-        //
-        //    //    $(".defect_code").keyup(function(){
-        //    //        var txt = $('#defect_code_tbl input').last().val();
-        //    //        console.log(txt);
-        //    //    });
-        //
-        //
-        function deleteRow(row)
-        {
-            console.log(row);
-            var i = row.parentNode.parentNode.rowIndex;
-            document.getElementById('defect_code_tbl').deleteRow(i);
-
-            $('#defect_code_tbl .defect_part').last().focus();
-        }
-
         function submitClQcInfo(){
             var carelabel_tracking_no = $("#carelabel_tracking_no").val();
 
+            var shub_lines = $("#shub_lines").val();
+            var sub_line_id = $("#sub_line_id").val();
+            sub_line_id = (sub_line_id != '' ? sub_line_id : 0);
+
             var code_length = carelabel_tracking_no.length;
 
-            var first_variable = carelabel_tracking_no.substring(0, 2);
             var last_variable = carelabel_tracking_no.slice(-1);
 
-            var rowCount = $('#defect_code_tbl tbody tr').length;
+            if(shub_lines > 0){
+                if((code_length == 10) && (carelabel_tracking_no != '') && (last_variable == '.')){
+                    if(sub_line_id != ''){
+                        $("#carelabel_tracking_no").attr('readonly', true);
+                        $("#loader").css("display", "block");
 
-            if((code_length == 7) && (first_variable == 'DP') && (first_variable != 'Dp') && (last_variable == '.')){
-                $('#defect_code_tbl tbody tr').remove();
-                addNewRow();
+                        $.ajax({
+                            type: "POST",
+                            url: "<?php echo base_url();?>access/careLabelMidPassSave/",
+                            data: {cl_track_no_defect: carelabel_tracking_no, access_points_status: 1, sub_line_id: sub_line_id},
+                            dataType: "html",
+                            success: function (data) {
 
-                var defect_part_code = carelabel_tracking_no;
+                                if(data != ''){
+                                    $("#p_er_msg").empty();
+                                    $("#er_msg").empty();
+                                    $("#s_msg").empty();
+                                    $("#p_s_msg").empty();
 
-                $('#defect_part1').focus();
-                $('#defect_part1').val(defect_part_code).keyup();
-                $('#carelabel_tracking_no').val('');
-
-//            var rowCount = $('#defect_code_tbl tbody tr').length;
-//
-//            if((code_length < 9) && (rowCount > 0) && (carelabel_tracking_no != '') && (first_variable == 'DP') && (last_variable == '.')){
-//                console.log("Submit Defect");
-//            }
-                console.log(code_length + "IN 7");
-            }
-
-            if((code_length == 10) && (rowCount == 0) && (carelabel_tracking_no != '') && (first_variable != 'DP') && (first_variable != 'Dp') && (first_variable != 'DC') && (first_variable != 'Dc') && (last_variable == '.')){
-//                $("#p_er_msg").empty();
-//                $("#er_msg").empty();
-//                $("#s_msg").empty();
-//                $("#p_s_msg").empty();
-//                $("#p_s_msg").text('Successfully Passed!');
-//
-//                $("#carelabel_tracking_no").val('');
-//                $("#carelabel_tracking_no").focus();
-                $("#carelabel_tracking_no").attr('readonly', true);
-                $("#loader").css("display", "block");
-
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url();?>access/careLabelMidPassSave/",
-                    data: {cl_track_no_defect: carelabel_tracking_no, access_points_status: 1},
-                    dataType: "html",
-                    success: function (data) {
-
-                        if(data != ''){
-                            $("#p_er_msg").empty();
-                            $("#er_msg").empty();
-                            $("#s_msg").empty();
-                            $("#p_s_msg").empty();
-
-                            if((data == 'Line mismatch found!') || (data == 'Previous process in WIP!') || (data == 'Already Defect Found!')){
-                                $("#p_er_msg").text(carelabel_tracking_no+' '+data);
+                                    if((data == 'Line mismatch found!') || (data == 'Previous process in WIP!') || (data == 'Already Defect Found!')){
+                                        $("#p_er_msg").text(carelabel_tracking_no+' '+data);
 //                                location.reload();
-                            }
+                                    }
 
-                            if((data == 'Already Passed!') || (data == 'Successfully Passed!')){
-                                $("#p_s_msg").text(carelabel_tracking_no+' '+data);
+                                    if((data == 'Already Passed!') || (data == 'Successfully Passed!')){
+                                        $("#p_s_msg").text(carelabel_tracking_no+' '+data);
 //                                location.reload();
+                                    }
+
+                                    if((data == 'Not Found')){
+                                        $("#er_msg").text(carelabel_tracking_no+' '+data);
+                                    }
+
+                                    if((data == 'closed')){
+                                        $("#er_msg").text(carelabel_tracking_no+' is Closed!');
+                                    }
+
+                                    if((data == 'Collar/Cuff is not Ready!')){
+                                        $("#er_msg").text('Collar/Cuff is not Ready!');
+                                    }
+
+                                    $("#carelabel_tracking_no").val('');
+                                    $("#carelabel_tracking_no").focus();
+                                }
+
+                                $("#loader").css("display", "none");
+                                $("#carelabel_tracking_no").attr('readonly', false);
                             }
+                        });
+                    }else{
+                        alert("Please Select Sub-Line!");
 
-                            if((data == 'Not Found')){
-                                $("#er_msg").text(carelabel_tracking_no+' '+data);
-                            }
-
-                            if((data == 'closed')){
-                                $("#er_msg").text(carelabel_tracking_no+' is Closed!');
-                            }
-
-                            if((data == 'Collar/Cuff is not Ready!')){
-                                $("#er_msg").text('Collar/Cuff is not Ready!');
-                            }
-
-                            $('#defect_code_tbl tbody tr').remove();
-
-                            $("#carelabel_tracking_no_defect").val('');
-                            $("#carelabel_tracking_no").val('');
-                            $("#carelabel_tracking_no").focus();
-                        }
-                        $("#loader").css("display", "none");
-                        $("#carelabel_tracking_no").attr('readonly', false);
+                        $("#carelabel_tracking_no").val('');
+                        $("#carelabel_tracking_no").focus();
                     }
-                });
-            }
-//            console.log(code_length);
-//            console.log(first_variable);
-//            console.log(last_variable);
-            if((code_length == 7) && ((first_variable == 'DC') || (first_variable == 'Dc')) && (last_variable == '.')){
-                console.log("7 IN");
-                $("#carelabel_tracking_no").val('');
-                $("#carelabel_tracking_no").focus();
-            }
-        }
+                }
+            }else{
+                if((code_length == 10) && (carelabel_tracking_no != '') && (last_variable == '.')){
 
-        function submitClQcDefectInfo(){
-            var carelabel_tracking_no_defect = $("#carelabel_tracking_no_defect").val();
+                    $("#carelabel_tracking_no").attr('readonly', true);
+                    $("#loader").css("display", "block");
 
-            var code_length = carelabel_tracking_no_defect.length;
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url();?>access/careLabelMidPassSave/",
+                        data: {cl_track_no_defect: carelabel_tracking_no, access_points_status: 1, sub_line_id: sub_line_id},
+                        dataType: "html",
+                        success: function (data) {
 
+                            if(data != ''){
+                                $("#p_er_msg").empty();
+                                $("#er_msg").empty();
+                                $("#s_msg").empty();
+                                $("#p_s_msg").empty();
 
-            var first_variable = carelabel_tracking_no_defect.substring(0, 2);
-            var last_variable = carelabel_tracking_no_defect.slice(-1);
+                                if((data == 'Line mismatch found!') || (data == 'Previous process in WIP!') || (data == 'Already Defect Found!')){
+                                    $("#p_er_msg").text(carelabel_tracking_no+' '+data);
+//                                location.reload();
+                                }
 
-            var rowCount = $('#defect_code_tbl tbody tr').length;
+                                if((data == 'Already Passed!') || (data == 'Successfully Passed!')){
+                                    $("#p_s_msg").text(carelabel_tracking_no+' '+data);
+//                                location.reload();
+                                }
 
-            if((code_length == 7) && (first_variable == 'DP') && (first_variable != 'Dp') && (last_variable == '.')){
-                $('#defect_code_tbl tbody tr').remove();
-                addNewRow();
+                                if((data == 'Not Found')){
+                                    $("#er_msg").text(carelabel_tracking_no+' '+data);
+                                }
 
-                var defect_part_code = carelabel_tracking_no_defect;
+                                if((data == 'closed')){
+                                    $("#er_msg").text(carelabel_tracking_no+' is Closed!');
+                                }
 
-                $('#defect_part1').focus();
-                $('#defect_part1').val(defect_part_code).keyup();
-                $('#carelabel_tracking_no_defect').val('');
-            }
+                                if((data == 'Collar/Cuff is not Ready!')){
+                                    $("#er_msg").text('Collar/Cuff is not Ready!');
+                                }
 
-            if((code_length < 8) && (first_variable == 'DC') && (first_variable != 'Dc') && (last_variable == '.')){
-                $('#carelabel_tracking_no_defect').val('');
-                $('#carelabel_tracking_no_defect').focus();
-            }
-
-            if((code_length == 10) && (rowCount > 0) && (carelabel_tracking_no_defect != '') && (last_variable == '.')){
-                console.log("Submit Defect");
-
-                $("#carelabel_tracking_no").attr('readonly', true);
-                $("#loader").css("display", "block");
-
-//            location.reload();
-
-                var cl_track_no_defect = $("#carelabel_tracking_no_defect").val();
-                var defect_part_array = $("input[name='defect_part[]']").map(function(){return $(this).val();}).get();
-                var defect_codes_array = $("input[name='defect_codes[]']").map(function(){return $(this).val();}).get();
-
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url();?>access/careLabelMidDefectSave/",
-                    data: {defect_part_array: defect_part_array, defect_codes_array: defect_codes_array, cl_track_no_defect: cl_track_no_defect, access_points_status: 2},
-                    dataType: "html",
-                    success: function (data) {
-                        if(data != ''){
-                            $("#p_er_msg").empty();
-                            $("#er_msg").empty();
-                            $("#s_msg").empty();
-                            $("#p_s_msg").empty();
-
-                            if((data == 'Line mismatch found!') || (data == 'Previous process in WIP!') || (data == 'Already Defect Found!')){
-                                $("#er_msg").text(cl_track_no_defect+' '+data);
+                                $("#carelabel_tracking_no").val('');
+                                $("#carelabel_tracking_no").focus();
                             }
 
-                            if((data == 'This Process already passed!') || (data == 'Already Passed!') || (data == 'Defect Tracked!')){
-                                $("#s_msg").text(cl_track_no_defect+' '+data);
-                            }
-
-                            if(data == 'closed'){
-                                $("#er_msg").text(cl_track_no_defect+' is Closed!');
-                            }
-
-                            $('#defect_code_tbl tbody tr').remove();
-
-                            $("#carelabel_tracking_no_defect").val('');
-                            $("#carelabel_tracking_no").val('');
-                            $("#carelabel_tracking_no").focus();
+                            $("#loader").css("display", "none");
+                            $("#carelabel_tracking_no").attr('readonly', false);
                         }
-                        $("#loader").css("display", "none");
-                        $("#carelabel_tracking_no").attr('readonly', false);
-                    }
-                });
-            }
-            if((code_length == 10) && (rowCount == 0) && (carelabel_tracking_no_defect != '') && (last_variable == '.')){
-                $("#p_er_msg").empty();
-                $("#er_msg").empty();
-                $("#s_msg").empty();
-                $("#p_s_msg").empty();
+                    });
 
-                $("#er_msg").text("No Defect Selected!");
-                $("#carelabel_tracking_no_defect").val('');
-                $("#carelabel_tracking_no").focus();
-            }
-        }
-
-        function getSizeWiseReport(po_no, so_no, po, item, quality, color) {
-            $("#size_tbl").empty();
-            $("#loader").css("display", "block");
-
-            $.ajax({
-                url: "<?php echo base_url();?>access/getPoItemWiseSizeMidPassReport/",
-                type: "POST",
-                data: {po_no: po_no, so_no: so_no, purchase_order: po, item: item, quality: quality, color: color},
-                dataType: "html",
-                success: function (data) {
-                    $("#size_tbl").append(data);
-                    $("#loader").css("display", "none");
                 }
-            });
-        }
+            }
 
-        function getRemainCLs(po_no, so_no, purchase_order, item, quality, color, size) {
-            $("#remain_cl_list").empty();
-
-            $.ajax({
-                url: "<?php echo base_url();?>access/getPoItemWiseSizeRemainMidCL/",
-                type: "POST",
-                data: {po_no: po_no, so_no: so_no, purchase_order: purchase_order, item: item, quality: quality, color: color, size: size},
-                dataType: "html",
-                success: function (data) {
-                    $("#remain_cl_list").append(data);
-                }
-            });
         }
 
         function getRemainingLinePcs(po_no, so_no, purchase_order, item, quality, color) {

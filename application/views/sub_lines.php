@@ -1,12 +1,12 @@
 <div class="pull-left breadcrumb_admin clear_both">
     <div class="pull-left page_title theme_color">
-        <h1>Lines</h1>
-        <h2 class="">Lines...</h2>
+        <h1><?php echo $line_info[0]['line_name']?> Sub-Lines</h1>
+        <h2 class="">Sub-Lines...</h2>
     </div>
     <div class="pull-right">
         <ol class="breadcrumb">
             <li><a href="<?php echo base_url();?>">Home</a></li>
-            <li class="active">Lines</li>
+            <li class="active"><?php echo $line_info[0]['line_name']?> Sub-Lines</li>
         </ol>
     </div>
 </div>
@@ -41,7 +41,7 @@
         <div class="col-md-12">
             <div class="block-web">
                 <div class="col-md-1">
-                    <a href="<?php echo base_url();?>access/addNewLine" class="btn btn-success" title="ADD LINE"> <i class="fa fa-plus"></i> LINE</a>
+                    <a href="<?php echo base_url();?>access/addNewSubLine/<?php echo $line_id;?>" class="btn btn-success" title="ADD SUB-LINE"> <i class="fa fa-plus"></i> SUB-LINE</a>
                 </div>
                 <br />
                 <br />
@@ -53,32 +53,21 @@
                             <thead>
                                 <tr>
                                     <th class="center hidden-phone">ID</th>
-                                    <th class="center hidden-phone">LINE NAME</th>
-                                    <th class="center hidden-phone">LINE CODE</th>
-                                    <th class="center hidden-phone">DESCRIPTION</th>
-                                    <th class="center hidden-phone">FLOOR</th>
-                                    <th class="center hidden-phone">FINISHING FLOOR</th>
+                                    <th class="center hidden-phone">SUB-LINE</th>
                                     <th class="center hidden-phone">STATUS</th>
                                     <th class="center hidden-phone">ACTION</th>
                                 </tr>
                             </thead>
                             <tbody>
                             <?php
-                            foreach($lines AS $l){ ?>
+                            foreach($sub_lines AS $sub_line){ ?>
                                 <tr>
-                                    <td class="center hidden-phone"><?php echo $l['id'];?></td>
-                                    <td class="center hidden-phone"><?php echo $l['line_name'];?></td>
-                                    <td class="center hidden-phone"><?php echo $l['line_code'];?></td>
-                                    <td class="center hidden-phone"><?php echo $l['line_description'];?></td>
-                                    <td class="center hidden-phone"><?php echo $l['floor_name'];?></td>
-                                    <td class="center hidden-phone"><?php echo $l['finishing_floor_name'];?></td>
-                                    <td class="center hidden-phone"><?php echo $l['status'] == 1 ? 'Active' : 'Inactive';?></td>
+                                    <td class="center hidden-phone"><?php echo $sub_line['id'];?></td>
+                                    <td class="center hidden-phone"><?php echo $sub_line['sub_line_name'];?></td>
+                                    <td class="center hidden-phone"><?php echo $sub_line['status'] == 1 ? 'Active' : 'Inactive';?></td>
                                     <td class="center hidden-phone">
-                                        <a href="<?php echo base_url()?>access/editLineInfo/<?php echo $l['id'];?>" class="btn btn-sm btn-warning" title="EDIT">
+                                        <a href="<?php echo base_url()?>access/editSubLineInfo/<?php echo $sub_line['id'];?>" class="btn btn-sm btn-warning" title="EDIT">
                                             <i class="fa fa-pencil"></i>
-                                        </a>
-                                        <a href="<?php echo base_url()?>access/subLines/<?php echo $l['id'];?>" target="_blank" class="btn btn-sm btn-info" title="Sub-Lines">
-                                            <i class="fa fa-sitemap"></i>
                                         </a>
                                     </td>
                                 </tr>

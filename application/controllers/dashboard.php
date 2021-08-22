@@ -3938,7 +3938,7 @@ class Dashboard extends CI_Controller {
             $min=$datex->format('i');
             $date=$datex->format('Y-m-d');
 
-            $last_hour = ($hour-1).':00:00';
+            $last_hour = ($hour-6).':00:00';
 
             $where = '';
             $select_fields = " date, start_time, end_time, SUM(qty) as total_hour_output_qty ";
@@ -4093,6 +4093,39 @@ class Dashboard extends CI_Controller {
 
     }
 
+    public function runningPoSublineReport($line_id){
+        $data['title']='SUB-LINE MID QC';
+        $data['line_info'] = $this->dashboard_model->selectTableDataRowQuery("*", "tb_line", " AND id=$line_id");
+        $data['sub_lines'] = $this->dashboard_model->selectTableDataRowQuery("*", "tb_sub_line", " AND line_id=$line_id AND status=1");
+
+        $data['maincontent'] = $this->load->view('reports/sub_line_running_po_report', $data, true);
+        $this->load->view('reports/master', $data);
+    }
+
+    public function runningPoSublineReportFilter(){
+        $line_id = $this->input->post('line_id');
+        $sub_line_id = $this->input->post('sub_line_id');
+        $data['date'] = $this->input->post('search_date');
+
+        $where = " AND status=1";
+
+        if($line_id != ''){
+            $where .= " AND line_id=$line_id AND status=1";
+        }
+
+        if($sub_line_id != ''){
+            $where .= " AND id=$sub_line_id";
+        }
+
+        $data['sub_lines'] = $this->dashboard_model->selectTableDataRowQuery("*", "tb_sub_line", $where);
+
+        $data['maincontent'] = $this->load->view('reports/sub_line_running_po_report_filter', $data);
+    }
+
+    public function getSubLinePoReport($sub_line_id, $line_id, $date){
+        return $this->dashboard_model->getSubLinePoReport($sub_line_id, $line_id, $date);
+    }
+
     public function getLineWiseRunningPOs(){
         $line_po_items = $this->dashboard_model->getLineWiseRunningPOs();
 
@@ -4107,7 +4140,7 @@ class Dashboard extends CI_Controller {
                 $idata['item'] = $v['item'];
                 $idata['quality'] = $v['quality'];
                 $idata['color'] = $v['color'];
-                $idata['ex_factory_date'] = $v['ex_factory_date'];
+                $idata['ex_factory_date'] = $v['approved_ex_factory_date'];
                 $idata['style_no'] = $v['style_no'];
                 $idata['style_name'] = $v['style_name'];
                 $idata['line_id'] = $v['line_id'];
@@ -4127,6 +4160,32 @@ class Dashboard extends CI_Controller {
         echo  "<script type='text/javascript'>";
         echo "window.open('', '_self', ''); window.close();";
         echo "</script>";
+    }
+
+    public function lineMidQCDashboard($line_id){
+        $data['title'] = 'Mid QC Dashboard';
+
+        $data['line_info'] = $this->access_model->selectTableDataRowQuery('*', 'tb_line', " AND id=$line_id");
+        $running_pos = $this->access_model->selectTableDataRowQuery('*', 'tb_line_running_pos', " AND line_id=$line_id");
+
+        $data['running_pos'] = $running_pos;
+        $data['line_id'] = $line_id;
+
+        $so_nos = [];
+
+        foreach ($running_pos AS $running_po){
+            array_push($so_nos, $running_po['so_no']);
+        }
+
+        $so_nos_string = "'" . implode( "','", $so_nos) . "'";
+
+        $data['po_sizes'] = $this->access_model->selectTableDataRowQuery('size', 'tb_care_labels', " AND so_no in ($so_nos_string) AND line_id=$line_id GROUP BY `size`");
+
+        $data['maincontent'] = $this->load->view('reports/mid_line_running_po_size_dashboard', $data);
+    }
+
+    public function getMidQcPoSizeQty($line_id, $so_no, $size){
+        return $this->dashboard_model->getMidQcPoSizeQty($line_id, $so_no, $size);
     }
 
     public function finishingPerformanceDashboard(){

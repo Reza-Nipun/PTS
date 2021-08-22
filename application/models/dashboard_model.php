@@ -2901,11 +2901,47 @@ class Dashboard_model extends CI_Model {
         return $query;
     }
 
+    public function getSubLinePoReport($sub_line_id, $line_id, $date){
+        $where = '';
+
+        if(!empty($date) && $date != 'undefined--undefined'){
+            $where .= " AND DATE_FORMAT(mid_line_qc_date_time, '%Y-%m-%d')='$date'";
+        }
+
+        $sql = "SELECT t1.*, t2.mid_qc_sub_line_qty FROM 
+                (SELECT * FROM `tb_line_running_pos` WHERE line_id=$line_id) AS t1
+                
+                INNER JOIN
+                (SELECT so_no, COUNT(pc_tracking_no) AS mid_qc_sub_line_qty 
+                FROM tb_care_labels WHERE line_id=$line_id AND mid_qc_sub_line_id=$sub_line_id 
+                $where
+                GROUP BY so_no) AS t2
+                ON t1.so_no=t2.so_no";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
+    public function getMidQcPoSizeQty($line_id, $so_no, $size){
+        $sql = "SELECT t1.*, t2.mid_qc_pass_size_qty 
+                FROM (SELECT so_no, line_id, size, COUNT(id) AS line_size_qty 
+                FROM `tb_care_labels` WHERE line_id=$line_id AND so_no='$so_no' AND size='$size') AS t1
+
+                LEFT JOIN
+                (SELECT so_no, line_id, size, COUNT(id) AS mid_qc_pass_size_qty FROM `tb_care_labels` 
+                 WHERE line_id=$line_id AND so_no='$so_no' AND size='$size' 
+                 AND access_points>=3 AND access_points_status IN (1,2,4)) AS t2
+                 ON t1.so_no=t2.so_no AND t1.line_id=t2.line_id AND t1.size=t2.size";
+
+        $query = $this->db->query($sql)->result_array();
+        return $query;
+    }
+
     public function getLineWiseRunningPOs(){
         $sql = "SELECT t1.*,
                 (IFNULL(t1.count_input_qty_line, 0)-IFNULL(t1.count_end_line_qc_pass, 0)) AS line_po_balance, 
                 t2.min_line_input_date_time, IFNULL(t3.manually_closed, 0) AS is_manually_closed,
-                t4.min_line_output_date
+                t4.min_line_output_date, t5.approved_ex_factory_date
 
                 FROM 
                 (SELECT po_no,so_no,item,quality,color,purchase_order,line_id,brand,ex_factory_date,style_no,style_name,
@@ -2943,6 +2979,10 @@ class Dashboard_model extends CI_Model {
                 WHERE line_id != 0 AND end_line_qc_date_time!='0000-00-00 00:00:00'
                 GROUP BY so_no, line_id) AS t4
                 ON t1.so_no=t4.so_no AND t1.line_id=t4.line_id
+                
+                LEFT JOIN 
+                tb_production_summary AS t5
+                ON t1.so_no=t5.so_no
                                 
                 WHERE (IFNULL(t1.count_input_qty_line, 0)-IFNULL(t1.count_end_line_qc_pass, 0)) > 0 AND IFNULL(t3.manually_closed, 0)=0";
 
@@ -3694,7 +3734,7 @@ class Dashboard_model extends CI_Model {
                  CASE WHEN id > 0 THEN id END id,
                  CASE WHEN sent_to_production = 1 THEN sent_to_production END sent_to_production,
                  CASE WHEN line_id != 0 THEN line_id END line_id,
-                 CASE WHEN access_points >= 3 AND access_points_status IN (1, 4) THEN mid_line_qc_date_time END mid_line_qc_date_time,
+                 CASE WHEN access_points >= 3 AND access_points_status IN (1, 2, 4) THEN mid_line_qc_date_time END mid_line_qc_date_time,
                  CASE WHEN access_points = 4 AND access_points_status = 4 THEN end_line_qc_date_time END end_line_qc_date_time,
                  CASE WHEN is_going_wash = 1 THEN is_going_wash END is_going_wash,
                  CASE WHEN washing_status = 1 THEN washing_status END washing_status,

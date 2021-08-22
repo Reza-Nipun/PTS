@@ -97,8 +97,11 @@
         <th align="center" colspan="<?php echo $hour_count;?>" style="font-size: 20px; font-weight: 900;">HOURS</th>
         <!--            <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">AVG</th>-->
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">AVG</th>
+        <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;" title="Manual Adjustment">Adjust</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">Total</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">BLNC</th>
+        <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">ProdMin</th>
+        <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">SMV</th>
     </tr>
     <tr style="background-color: #f7ffb0;">
         <?php foreach ($hours as $h){ ?>
@@ -121,6 +124,8 @@
     $grand_average_dhu = 0;
 
     $count_line = 0;
+    $total_wh = 0;
+    $total_produce_min = 0;
 
     $res_hour = $this->method_call->getHoursByTimeRange();
     $hour = $res_hour[0]['hour'];
@@ -142,6 +147,13 @@
         $work_hour_4 = ($dhu_summary[0]['work_hour_4'] != '' ? $dhu_summary[0]['work_hour_4'] : 0);
 
         $total_wh = $work_hour_1+$work_hour_2+$work_hour_3+$work_hour_4;
+
+        $produce_minute_1 = ($dhu_summary[0]['produce_minute_1'] != '' ? $dhu_summary[0]['produce_minute_1'] : 0);
+        $produce_minute_2 = ($dhu_summary[0]['produce_minute_2'] != '' ? $dhu_summary[0]['produce_minute_2'] : 0);
+        $produce_minute_3 = ($dhu_summary[0]['produce_minute_3'] != '' ? $dhu_summary[0]['produce_minute_3'] : 0);
+        $produce_minute_4 = ($dhu_summary[0]['produce_minute_4'] != '' ? $dhu_summary[0]['produce_minute_4'] : 0);
+
+        $total_produce_min = $produce_minute_1+$produce_minute_2+$produce_minute_3+$produce_minute_4;
 
 //            $average_dhu = round($dhu_sum/$hour, 2);
 
@@ -229,9 +241,27 @@
             //            $working_hour = ($total_wh-1)+$min_to_hour; // Getting Exact Current Production Hour-Minute
             ?>
             <!--            <td align="center">--><?php //echo round($total_output/$total_wm_to_wh, 2);?><!--</td>-->
-            <td align="center" title="<?php echo $total_wh;?>"><?php echo round($total_output/$total_wh, 2);?></td>
+            <td align="center" title="<?php echo $total_wh;?>">
+                <?php
+
+                $n = $total_wh;
+                $whole = floor($n);      // 1
+                $fraction = $n - $whole; // .25
+
+                if($fraction > 0){
+                    $whole = $whole + 1;
+                }else{
+                    $whole = $whole;
+                }
+
+                echo round($total_output/ $whole, 2);
+                ?>
+            </td>
+            <td align="center" title="Manual Adjustment"><?php echo $total_manual_output;?></td>
             <td align="center" title="Manual Adjustment: <?php echo $total_manual_output;?>"><?php echo $total_output;?></td>
             <td align="center"><?php echo $total_output_balance;?></td>
+            <td align="center"><?php echo $total_produce_min;?></td>
+            <td align="center"><?php echo round($total_produce_min/$total_output, 2);?></td>
         </tr>
 
         <?php
@@ -273,8 +303,11 @@
         ?>
 
         <th align="center" title="<?php echo $working_hour;?>"><?php echo round($grand_total_output/$working_hour, 2);?></th>
+        <th align="center" style="font-size: 20px; font-weight: 900;" title="Manual Adjustment"><?php echo ''?></th>
         <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_output?></th>
         <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_output - $grand_total_target;?></th>
+        <th align="center" style="font-size: 20px; font-weight: 900;"></th>
+        <th align="center" style="font-size: 20px; font-weight: 900;"></th>
     </tr>
     <?php
 
@@ -362,8 +395,11 @@
             }
             ?>
             <th align="center" title="<?php echo $work_hour;?>"><?php echo round($floor_grand_total_output/$work_hour, 2);?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;" title="Manual Adjustment"><?php echo ''?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_grand_total_output?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_grand_total_output - $floor_total_target;?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"></th>
         </tr>
     <?php } ?>
     </tfoot>

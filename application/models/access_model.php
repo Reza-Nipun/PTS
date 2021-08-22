@@ -2268,7 +2268,8 @@ class Access_model extends CI_Model {
 
     public function getLineDHUSummary($where){
         $sql = "SELECT line_id, dhu, SUM(qty) as total_output_qty, brand,
-                work_hour_1, work_hour_2, work_hour_3, work_hour_4
+                work_hour_1, work_hour_2, work_hour_3, work_hour_4,
+                produce_minute_1, produce_minute_2, produce_minute_3, produce_minute_4
                 FROM `tb_today_line_output_qty` 
                 WHERE 1 $where";
 
@@ -2866,14 +2867,13 @@ class Access_model extends CI_Model {
                  FROM (SELECT so_no,po_no,item,quality,color,purchase_order,line_id,brand,
                  ex_factory_date,style_no,style_name,planned_line_id,sent_to_production_date_time,
                  CASE WHEN sent_to_production != 0 THEN sent_to_production END sent_to_production
-                 FROM vt_few_days_po_pcs) vt_few_days_po_pcs
+                 FROM tb_care_labels) tb_care_labels
                  WHERE 1 $where_1
-                 GROUP BY so_no,po_no,item,quality,color,purchase_order, planned_line_id) as t3
+                 GROUP BY so_no, po_no, planned_line_id) as t3
 
                 LEFT JOIN
                 `tb_production_summary` as t1
-                ON t1.po_no=t3.po_no AND t1.so_no=t3.so_no AND t1.purchase_order=t3.purchase_order
-                AND t1.item=t3.item AND t1.quality=t3.quality AND t1.color=t3.color
+                ON t1.po_no=t3.po_no AND t1.so_no=t3.so_no
           
                 $where";
 
@@ -3139,13 +3139,13 @@ class Access_model extends CI_Model {
                     so_no,po_no,item,quality,color,purchase_order,line_id,brand,ex_factory_date,style_no,style_name,
                     
                     CASE WHEN line_id != 0 THEN line_input_date_time END line_input_date_time,
-                    CASE WHEN access_points>=3 AND access_points_status in (1, 4) THEN mid_line_qc_date_time END mid_line_qc_date_time,
+                    CASE WHEN access_points>=3 AND access_points_status in (1, 2, 4) THEN mid_line_qc_date_time END mid_line_qc_date_time,
                     CASE WHEN access_points=4 AND access_points_status=4 THEN end_line_qc_date_time END end_line_qc_date_time,
                     CASE WHEN manually_closed=1 THEN manually_closed END manually_closed
                    
-                  FROM vt_few_days_po_pcs 
+                  FROM tb_care_labels 
                     
-                ) vt_few_days_po_pcs WHERE line_id=$line_id GROUP BY so_no,po_no,item,quality,color,purchase_order, line_id) as t1
+                ) tb_care_labels WHERE line_id=$line_id GROUP BY so_no,po_no,item,quality,color,purchase_order, line_id) as t1
                 
                 LEFT JOIN
                 (SELECT po_no, so_no, purchase_order, item, quality, color, style_no, style_name, brand, 
@@ -3300,20 +3300,18 @@ class Access_model extends CI_Model {
                   COUNT(end_line_qc_date_time) as count_end_line_qc_pass,
                   COUNT(manually_closed) as count_manual_close
                   
-                  
-                 
                 FROM (
                   SELECT
                     so_no,po_no,item,quality,color,purchase_order,line_id,brand,ex_factory_date, style_no,style_name,
                     
                     CASE WHEN line_id != 0 THEN line_input_date_time END line_input_date_time,
-                    CASE WHEN access_points >= 3 AND access_points_status IN (1, 4) THEN mid_line_qc_date_time END mid_line_qc_date_time,
+                    CASE WHEN access_points >= 3 AND access_points_status IN (1, 2, 4) THEN mid_line_qc_date_time END mid_line_qc_date_time,
                     CASE WHEN access_points = 4 AND access_points_status = 4 THEN end_line_qc_date_time END end_line_qc_date_time,
                     CASE WHEN manually_closed = 1 THEN manually_closed END manually_closed
                    
-                  FROM vt_few_days_po_pcs 
+                  FROM tb_care_labels 
                     
-                ) vt_few_days_po_pcs WHERE line_id=$line_id GROUP BY so_no,po_no,item,quality,color,purchase_order, line_id) as t1
+                ) tb_care_labels WHERE line_id=$line_id GROUP BY so_no,po_no,item,quality,color,purchase_order, line_id) as t1
                 
                 LEFT JOIN
                 (SELECT po_no, so_no, purchase_order, item, quality, color, style_no, style_name, brand, ex_factory_date, 
@@ -6005,7 +6003,7 @@ class Access_model extends CI_Model {
         return $query;
     }
 
-    public function midLineQC($carelabel_tracking_no, $access_points, $access_point_status, $date_time)
+    public function midLineQC($carelabel_tracking_no, $access_points, $access_point_status, $date_time, $sub_line_id)
     {
 //        $sql = "Update `tb_care_labels`
 //                SET
@@ -6018,7 +6016,8 @@ class Access_model extends CI_Model {
                 SET 
                 access_points = $access_points,
                 access_points_status = $access_point_status,
-                mid_line_qc_date_time = '$date_time'
+                mid_line_qc_date_time = '$date_time',
+                mid_qc_sub_line_id = $sub_line_id
                 where pc_tracking_no = '$carelabel_tracking_no'";
 
         $query = $this->db->query($sql);

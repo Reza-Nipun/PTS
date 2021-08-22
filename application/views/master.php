@@ -373,6 +373,11 @@
             ?>
 <!--            <li> <a href="--><?php //echo base_url();?><!--access/care_label_mid_line"><i class="fa fa-circle"></i> Mid-Line QC</a></li>-->
             <li> <a href="<?php echo base_url();?>access/care_label_mid_line_new"><i class="fa fa-circle"></i> Mid-Line QC</a></li>
+            <li> <a href="javascript:void(0);"> <i class="fa fa-plus"></i> Reports <span class="plus"><i class="fa fa-plus"></i></span></a>
+                <ul>
+                    <li> <a style="margin-bottom: 1px;" target="_blank" href="<?php echo base_url();?>dashboard/lineMidQCDashboard/<?php echo $line_id;?>"> <span>&nbsp;</span> <i class="fa fa-circle"></i> <b>Mid-QC Dashboard</b> </a> </li>
+                </ul>
+            </li>
             <?php
             }
 

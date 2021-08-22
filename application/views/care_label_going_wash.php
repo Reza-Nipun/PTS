@@ -52,69 +52,69 @@
 
           </div><!--/block-web--> 
         </div><!--/col-md-12-->
-            <div class="row">
-                <div class="col-md-1">
-                    <input type="text" class="form-control" name="carelabel_tracking_no" autofocus autocomplete="off" required id="carelabel_tracking_no" onkeyup="clickToSubmitBtn();" />
+        <div class="row">
+            <div class="col-md-1">
+                <input type="text" class="form-control" name="carelabel_tracking_no" autofocus autocomplete="off" required id="carelabel_tracking_no" onkeyup="clickToSubmitBtn();" />
 <!--                    <button style="display: none;" id="submit_btn" class="btn btn-success">Send</button>-->
 
-                    <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
-                    <br />
-                    <br />
-                    <span style="margin-top: 30px;" id="refresh_report" class="btn btn-primary" onclick="getGoingWashReport();">Report</span>
-                    <br />
-                    <br />
-                    <?php if($access_points == 2){ ?>
-                    <a href="<?php echo base_url();?>access/care_label_input_line" id="" class="btn btn-success">INPUT</a>
-                    <?php } ?>
-                    <br />
-                    <br />
-                    <?php if($access_points != 2){ ?>
-                    <a href="<?php echo base_url();?>access/care_label_washing" id="" class="btn btn-primary ">Wash Return</a>
-                    <?php } ?>
-                </div>
-                <div class="col-md-11 scroll" id="reload_div">
+                <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
+                <br />
+                <br />
+                <span style="margin-top: 30px;" id="refresh_report" class="btn btn-info" onclick="getGoingWashReport();">Report</span>
+                <br />
+                <br />
+                <?php if($access_points == 2){ ?>
+                <a href="<?php echo base_url();?>access/care_label_input_line" id="" class="btn btn-success">INPUT</a>
+                <?php } ?>
+                <br />
+                <br />
+                <?php if($access_points != 2){ ?>
+                <a href="<?php echo base_url();?>access/care_label_washing" id="" class="btn btn-primary ">Wash Return</a>
+                <?php } ?>
+            </div>
+            <div class="col-md-11 scroll" id="reload_div">
 
-                </div><!--/block-web-->
-            </div><!--/col-md-12-->
+            </div><!--/block-web-->
+        </div><!--/col-md-12-->
 
           <div class="row">
-              <div class="col-md-8 scroll2">
-                  <div class="block-web">
+<!--              <div class="col-md-8 scroll2">-->
+<!--                  <div class="block-web">-->
+<!---->
+<!--                      <div class="porlets-content">-->
+<!---->
+<!--                          <div class="table-responsive" id="size_tbl">-->
+<!--                              <table class="display table table-bordered table-striped">-->
+<!--                                  <thead>-->
+<!--                                  <tr>-->
+<!--                                      <th class="hidden-phone center">Size</th>-->
+<!--                                      <th class="hidden-phone center">Cut</th>-->
+<!--                                      <th class="hidden-phone center">End</th>-->
+<!--                                      <th class="hidden-phone center">Wash</th>-->
+<!--                                  </tr>-->
+<!--                                  </thead>-->
+<!--                                  <tbody>-->
+<!--                                  <tr>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                      <td class="hidden-phone center"></td>-->
+<!--                                  </tr>-->
+<!--                                  </tbody>-->
+<!--                              </table>-->
+<!--                          </div>-->
+<!--                      </div>-->
+<!---->
+<!--                  </div>-->
+<!--              </div>-->
 
-                      <div class="porlets-content">
-
-                          <div class="table-responsive" id="size_tbl">
-                              <table class="display table table-bordered table-striped">
-                                  <thead>
-                                  <tr>
-                                      <th class="hidden-phone center">Size</th>
-                                      <th class="hidden-phone center">Cut</th>
-                                      <th class="hidden-phone center">End</th>
-                                      <th class="hidden-phone center">Wash</th>
-                                  </tr>
-                                  </thead>
-                                  <tbody>
-                                  <tr>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                      <td class="hidden-phone center"></td>
-                                  </tr>
-                                  </tbody>
-                              </table>
-                          </div><!--/table-responsive-->
-                      </div>
-
-                  </div><!--/porlets-content-->
-              </div><!--/block-web-->
-
-              <div class="col-md-3 scroll4">
-                  <div class="porlets-content">
-                      <div class="table-responsive" id="">
-
-                      </div>
-                  </div>
-              </div>
+<!--              <div class="col-md-3 scroll4">-->
+<!--                  <div class="porlets-content">-->
+<!--                      <div class="table-responsive" id="">-->
+<!---->
+<!--                      </div>-->
+<!--                  </div>-->
+<!--              </div>-->
 
           </div><!--/col-md-12-->
       </div>

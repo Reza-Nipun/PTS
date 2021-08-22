@@ -4326,6 +4326,124 @@ class Access extends CI_Controller {
         }
     }
 
+    public function subLines($line_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Sub-Lines';
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $data['line_id'] = $line_id;
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['line_info'] = $this->access_model->selectTableData("*", "tb_line", 'id', $line_id);
+            $data['sub_lines'] = $this->access_model->selectTableData("*", "tb_sub_line", 'line_id', $line_id);
+
+            $data['maincontent'] = $this->load->view('sub_lines', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function addNewSubLine($line_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'New Sub-Line';
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $data['line_info'] = $this->access_model->selectTableData("*", "tb_line", 'id', $line_id);
+
+            $data['maincontent'] = $this->load->view('add_new_sub_line', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function saveNewSubLineInfo(){
+        $line_id = $this->input->post('line_id');
+        $sub_line_name = $this->input->post('sub_line_name');
+        $status = $this->input->post('status');
+
+        $data = array(
+            'line_id' => $line_id,
+            'sub_line_name' => $sub_line_name,
+            'status' => $status,
+        );
+
+        $this->access_model->insertingData('tb_sub_line', $data);
+
+        $data_s['message'] = $sub_line_name." is Successfully Added!";
+        $this->session->set_userdata($data_s);
+
+        return redirect('access/subLines/'.$line_id);
+    }
+
+    public function editSubLineInfo($sub_line_id){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $data['title'] = 'Edit Sub-Line';
+        $data['user_name'] = $this->session->userdata('user_name');
+        $data['user_description'] = $this->session->userdata('user_description');
+        $data['access_points'] = $this->session->userdata('access_points');
+
+        $cur_url = __METHOD__;
+
+        $res = $this->checkAuthorization($data['access_points'], $cur_url);
+
+        if(sizeof($res) > 0) {
+            $sub_line_info = $this->access_model->selectTableData("*", "tb_sub_line", 'id', $sub_line_id);
+            $data['sub_line_info'] = $sub_line_info;
+
+            $line_id = $sub_line_info[0]['line_id'];
+            $data['line_info'] = $this->access_model->selectTableData("*", "tb_line", 'id', $line_id);
+
+            $data['maincontent'] = $this->load->view('edit_sub_line', $data, true);
+            $this->load->view('master', $data);
+        }else{
+            echo $this->load->view('404');
+        }
+    }
+
+    public function updateSubLineInfo(){
+        $line_id = $this->input->post('line_id');
+        $sub_line_id = $this->input->post('sub_line_id');
+        $sub_line_name = $this->input->post('sub_line_name');
+        $status = $this->input->post('status');
+
+        $data = array(
+            'sub_line_name' => $sub_line_name,
+            'status' => $status,
+        );
+
+        $this->access_model->updateTbl('tb_sub_line', $sub_line_id, $data);
+
+        $data_s['message'] = $sub_line_name." is Successfully Added!";
+        $this->session->set_userdata($data_s);
+
+        return redirect('access/subLines/'.$line_id);
+
+    }
+
     public function getLines(){
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         $date_time=$datex->format('Y-m-d H:i:s');
@@ -5453,6 +5571,7 @@ class Access extends CI_Controller {
         $data['user_name'] = $this->session->userdata('user_name');
         $data['user_description'] = $this->session->userdata('user_description');
         $data['access_points'] = $this->session->userdata('access_points');
+        $data['line_id'] = $this->session->userdata('line_id');
         $data['msg'] = '';
         $data['session_out'] = $this->session_out;
 
@@ -5468,6 +5587,8 @@ class Access extends CI_Controller {
 
 //        $data['prod_summary'] = $this->access_model->getProducitonSummaryReport();
 //        $data['prod_summary'] = $this->access_model->getProducitonSummaryReportFilter($where);
+
+        $data['sub_lines'] = $this->access_model->selectTableDataRowQuery('*', 'tb_sub_line', " AND line_id=$line_id AND status=1");
 
         $data['maincontent'] = $this->load->view('care_label_mid_line_new', $data, true);
         $this->load->view('master', $data);
@@ -7636,6 +7757,7 @@ class Access extends CI_Controller {
         $line = $this->session->userdata('line_id');
 
         $carelabel_tracking_no = $this->input->post('cl_track_no_defect');
+        $sub_line_id = $this->input->post('sub_line_id');
 
         $line_check = $this->access_model->lineValidation($carelabel_tracking_no);
         $line_id = $line_check[0]['line_id'];
@@ -7654,13 +7776,13 @@ class Access extends CI_Controller {
             }else{
                 if($line == $line_id){
                     if(($last_access_points == 2) && ($last_access_points_status == 1)){
-                        $this->access_model->midLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time);
+                        $this->access_model->midLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time, $sub_line_id);
                         echo 'Successfully Passed!';
                     }
                     elseif (($last_access_points == $access_points) && ($last_access_points_status == 2)){
                         $this->access_model->updateDefectStatus($carelabel_tracking_no, $line, $access_points, $access_points_status, $date_time);
 
-                        $this->access_model->midLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time);
+                        $this->access_model->midLineQC($carelabel_tracking_no, $access_points, $access_points_status, $date_time, $sub_line_id);
                         echo 'Successfully Passed!';
                     }
                     //            elseif (($last_access_points == $access_points) && ($last_access_points_status == 3)){
