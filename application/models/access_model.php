@@ -329,7 +329,10 @@ class Access_model extends CI_Model {
         $sql = "SELECT t1.*, t2.*
                 FROM (SELECT * FROM `tb_floor` WHERE status=1) AS t1
                 LEFT JOIN
-                (SELECT line_id, floor_id, date, hour, SUM(qty) AS line_qty, efficiency 
+                (SELECT line_id, floor_id, date, hour, SUM(qty) AS line_qty, 
+                SUM(manual_qty) AS line_manual_qty, efficiency, 
+                SUM(produce_minute_1) AS floor_produce_minute_1, SUM(produce_minute_2) AS floor_produce_minute_2, 
+                SUM(produce_minute_3) AS floor_produce_minute_3, SUM(produce_minute_4) AS floor_produce_minute_4 
                  FROM `tb_today_line_output_qty` 
                  GROUP BY floor_id, hour, date) AS t2
                 ON t1.id=t2.floor_id

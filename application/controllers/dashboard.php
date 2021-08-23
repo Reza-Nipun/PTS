@@ -3938,7 +3938,7 @@ class Dashboard extends CI_Controller {
             $min=$datex->format('i');
             $date=$datex->format('Y-m-d');
 
-            $last_hour = ($hour-6).':00:00';
+            $last_hour = ($hour-2).':00:00';
 
             $where = '';
             $select_fields = " date, start_time, end_time, SUM(qty) as total_hour_output_qty ";
