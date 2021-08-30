@@ -258,7 +258,7 @@
                     </ul>
                 </li>
 
-                <li> <a href="<?php echo base_url();?>access/sms_file_upload_test"><i class="fa fa-cloud-upload"></i> Manual File Upload </a></li>
+                <li> <a href="<?php echo base_url();?>access/sms_file_upload_test"><i class="fa fa-cloud-upload"></i> PO Upload </a></li>
 
             <?php
             }

@@ -119,7 +119,7 @@ $sizes_count = sizeof($sizes);
                 ?>
 
                     <td class="hidden-phone center size_carton_quantity"
-                        <?php if($count_size_carton_qty+$count_size_wh_qty < $min_value_order_cut){ ?> style="background-color: rgba(255,145,135,0.88); color: white;" <?php } ?>
+                        <?php if($count_size_carton_qty+$count_size_wh_qty < $min_value_order_cut){ ?> style="background-color: red; color: white;" <?php } ?>
                         <?php if($count_size_carton_qty+$count_size_wh_qty >= $min_value_order_cut){ ?> style="background-color: rgba(112,255,86,0.88); color: white;" <?php } ?>
                         <?php if($count_size_carton_qty > $size_order_qty){ ?> style="background-color: rgba(241,255,84,0.88); color: white;" <?php } ?>
                     >

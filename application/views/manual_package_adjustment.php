@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <span class="btn btn-success" onclick="cuttingPackageReadyManualAdjustment();">PROCESS</span>
+                <span class="btn btn-success" onclick="cuttingPackageReadyManualAdjustment();">PROCESS PACKAGE</span>
             </div>
             <div class="col-md-1" id="loader" style="display: none;"><div class="loader"></div></div>
         </div>

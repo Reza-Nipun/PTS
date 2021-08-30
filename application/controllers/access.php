@@ -6147,6 +6147,11 @@ class Access extends CI_Controller {
     }
 
     public function updatePieceLastScanningPoint(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
         $scanning_point = $this->input->post('scanning_point');
         $pc_nos = $this->input->post('pc_nos');
 
@@ -6154,25 +6159,21 @@ class Access extends CI_Controller {
             $pc_info = $this->access_model->selectTableDataRowQuery('*', 'tb_care_labels', " AND pc_tracking_no='$pc_no'");
 
             $line_id = $pc_info[0]['line_id'];
+            $access_points = $pc_info[0]['access_points'];
+            $access_points_status = $pc_info[0]['access_points_status'];
 
             if($line_id > 0){
-                if($scanning_point == 3){
+                if(($scanning_point == 3) && ($access_points >= 2) && ($access_points < 4)){
                     $data = array(
                         'access_points' => 3,
-                        'access_points' => 1,
-                        'end_line_qc_date_time' => '0000-00-00 00:00:00',
+                        'access_points_status' => 1,
                         'is_going_wash' => 0,
-                        'going_wash_scan_date_time' => '0000-00-00 00:00:00',
                         'washing_status' => 0,
-                        'washing_date_time' => '0000-00-00 00:00:00',
                         'packing_status' => 0,
-                        'packing_date_time' => '0000-00-00 00:00:00',
                         'carton_status' => 0,
-                        'carton_date_time' => '0000-00-00 00:00:00',
                         'warehouse_qa_type' => 0,
                         'manually_closed' => 0,
                         'is_manually_adjusted' => 0,
-                        'manual_adjustment_date_time' => '0000-00-00 00:00:00',
                         'manual_adjustment_by' => '',
                     );
 
@@ -6182,19 +6183,14 @@ class Access extends CI_Controller {
                 if($scanning_point == 4){
                     $data = array(
                         'access_points' => 4,
-                        'access_points' => 4,
+                        'access_points_status' => 4,
                         'is_going_wash' => 0,
-                        'going_wash_scan_date_time' => '0000-00-00 00:00:00',
                         'washing_status' => 0,
-                        'washing_date_time' => '0000-00-00 00:00:00',
                         'packing_status' => 0,
-                        'packing_date_time' => '0000-00-00 00:00:00',
                         'carton_status' => 0,
-                        'carton_date_time' => '0000-00-00 00:00:00',
                         'warehouse_qa_type' => 0,
                         'manually_closed' => 0,
                         'is_manually_adjusted' => 0,
-                        'manual_adjustment_date_time' => '0000-00-00 00:00:00',
                         'manual_adjustment_by' => '',
                     );
 
@@ -7741,6 +7737,37 @@ class Access extends CI_Controller {
             echo 'Not Found';
         }
 
+    }
+
+    public function adjustLineLastHourProduction(){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+        $hour_time=$datex->format('H:i:s');
+
+        $line_id = $this->input->post('line_id');
+
+        $hour_info = $this->access_model->selectTableDataRowQuery("*", "tb_today_line_output_qty", " AND date='$date' AND line_id=$line_id AND '$hour_time' between start_time AND end_time");
+        $last_hour = $hour_info[0]['hour'] - 1;
+
+        if($last_hour > 0){
+            $last_hour_info = $this->access_model->selectTableDataRowQuery("*", "tb_today_line_output_qty", " AND date='$date' AND line_id=$line_id AND hour = '$last_hour'");
+            $last_hour = $last_hour_info[0]['hour'];
+            $start_time = $last_hour_info[0]['start_time'];
+            $end_time = $last_hour_info[0]['end_time'];
+            $qty = $last_hour_info[0]['qty'];
+
+            $hour_production_info = $this->access_model->selectTableDataRowQuery("COUNT(id) AS count_hour_production", "tb_care_labels", " AND DATE_FORMAT(end_line_qc_date_time, '%Y-%m-%d')='$date' AND line_id=$line_id AND DATE_FORMAT(end_line_qc_date_time, '%H:%i:%s') BETWEEN '$start_time' AND '$end_time'");
+            $last_hour_prod_qty = $hour_production_info[0]['count_hour_production'];
+
+            if($last_hour_prod_qty <> $qty){
+                $this->access_model->updateTblFields('tb_today_line_output_qty', " SET qty='$qty'", " AND date='$date' AND line_id=$line_id AND hour = '$last_hour'");
+            }
+        }
+
+
+        echo $last_hour_prod_qty;
     }
 
     public function careLabelMidPassSave(){
@@ -11088,17 +11115,13 @@ class Access extends CI_Controller {
                     $last_segment_time_diff_min = round(($last_segment_time_diff_sec / 60), 2);
                     $last_segment_time_diff_hour = round(($last_segment_time_diff_sec / 3600), 2);
 
-//                    echo '<pre>';
-//                    print_r($last_segment_time_diff_hour.'  '.$last_segment_time_diff_sec);
-//                    echo '</pre>';
 
-
-                    $data5 = array(
-                        'work_minute_4' => $last_segment_time_diff_min * $mp,
-                        'work_hour_4' => $last_segment_time_diff_hour
-                    );
-
-                    $this->access_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line_id, $data5);
+//                    $data5 = array(
+//                        'work_minute_4' => $last_segment_time_diff_min * $mp,
+//                        'work_hour_4' => $last_segment_time_diff_hour
+//                    );
+//
+//                    $this->access_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line_id, $data5);
 
 
                     $set_fields .= " Set target_hour='$target_hour', last_segment_time='$last_segment_time', target='$target', man_power_4='$mp', remarks='$remarks' ";
@@ -13022,6 +13045,72 @@ class Access extends CI_Controller {
 
     }
 
+    public function linePackageReady($bundle_tracking_no){
+        $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
+
+        $date_time=$datex->format('Y-m-d H:i:s');
+        $date=$datex->format('Y-m-d');
+
+        $bp_array = array();
+
+        $info=$this->access_model->search_po_no($bundle_tracking_no);
+
+//        echo '<pre>';
+//        print_r($info);
+//        echo '</pre>';
+
+        $po_no=$info[0]['po_no'];
+        $bundle_part=$this->access_model->search_part_no($po_no);
+
+        foreach ($bundle_part as $bp){
+            array_push($bp_array, $bp['part_code']);
+        }
+
+//                echo '<pre>';
+//                print_r($bp_array);
+//                echo '</pre>';
+//                die();
+
+        $collar_outer = array_search('collar_outer', $bp_array);
+        $cuff_outer = array_search('cuff_outer', $bp_array);
+
+//                echo '<pre>';
+//                print_r($back.'-'.$collar_outer.'-'.$cuff_outer.'-'.$yoke_upper.'-'.$slv_pkt_r.'-'.$slv_r.'-'.$pocket);
+//                echo '</pre>';
+//                die();
+
+        $where = "";
+        if ( $po_no != '') {
+            $where .= " AND po_no = '$po_no'";
+        }
+
+        if ($bundle_tracking_no != '') {
+            $where .= " AND bundle_tracking_no = '$bundle_tracking_no'";
+        }
+        if ($collar_outer > -1) {
+            $where .= " AND is_bundle_collar_scanned_line = 1";
+        }
+        if ($cuff_outer > -1) {
+            $where .= " AND is_bundle_cuff_scanned_line = 1";
+        }
+
+        $check_pkg=$this->access_model->check_package($where);
+
+        $array_size = sizeof($check_pkg);
+
+//        echo '<pre>';
+//        print_r($po_no.' ~ '.$array_size);
+//        echo '</pre>';
+//        die();
+
+        if($array_size == 1){
+            $set_fields = " SET is_bundle_collar_cuff_scanned_line=1, bundle_collar_cuff_scanned_line_date_time='$date_time' ";
+            $this->access_model->updateTblFields("tb_cut_summary", $set_fields, " AND bundle_tracking_no = '$bundle_tracking_no'");
+        }else{
+            return 0;
+        }
+    }
+
     public function packageReady($bundle_tracking_no){
         $datex = new DateTime('now', new DateTimeZone('Asia/Dhaka'));
         
@@ -13216,6 +13305,7 @@ class Access extends CI_Controller {
 
         foreach ($bundle_nos AS $v){
             $this->packageReady($v['bundle_tracking_no']);
+            $this->linePackageReady($v['bundle_tracking_no']);
         }
 
         $data['message'] = 'Package Adjustment Successful!';

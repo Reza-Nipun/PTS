@@ -102,6 +102,7 @@
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">BLNC</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">ProdMin</th>
         <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">SMV</th>
+        <th align="center" rowspan="2" style="font-size: 20px; font-weight: 900; width: 40px;">WorkMin</th>
     </tr>
     <tr style="background-color: #f7ffb0;">
         <?php foreach ($hours as $h){ ?>
@@ -124,9 +125,11 @@
     $grand_average_eff = 0;
     $grand_average_dhu = 0;
     $grand_produce_min = 0;
+    $grand_work_min = 0;
 
     $count_line = 0;
     $total_wh = 0;
+    $total_work_min = 0;
     $total_produce_min = 0;
 
     $res_hour = $this->method_call->getHoursByTimeRange();
@@ -149,6 +152,13 @@
         $work_hour_4 = ($dhu_summary[0]['work_hour_4'] != '' ? $dhu_summary[0]['work_hour_4'] : 0);
 
         $total_wh = $work_hour_1+$work_hour_2+$work_hour_3+$work_hour_4;
+
+        $work_minute_1 = ($dhu_summary[0]['work_minute_1'] != '' ? $dhu_summary[0]['work_minute_1'] : 0);
+        $work_minute_2 = ($dhu_summary[0]['work_minute_2'] != '' ? $dhu_summary[0]['work_minute_2'] : 0);
+        $work_minute_3 = ($dhu_summary[0]['work_minute_3'] != '' ? $dhu_summary[0]['work_minute_3'] : 0);
+        $work_minute_4 = ($dhu_summary[0]['work_minute_4'] != '' ? $dhu_summary[0]['work_minute_4'] : 0);
+
+        $total_work_min = $work_minute_1+$work_minute_2+$work_minute_3+$work_minute_4;
 
         $produce_minute_1 = ($dhu_summary[0]['produce_minute_1'] != '' ? $dhu_summary[0]['produce_minute_1'] : 0);
         $produce_minute_2 = ($dhu_summary[0]['produce_minute_2'] != '' ? $dhu_summary[0]['produce_minute_2'] : 0);
@@ -264,6 +274,7 @@
             <td align="center"><?php echo $total_output_balance;?></td>
             <td align="center"><?php echo $total_produce_min;?></td>
             <td align="center"><?php echo round($total_produce_min/$total_output, 2);?></td>
+            <td align="center"><?php echo $total_work_min;?></td>
         </tr>
 
         <?php
@@ -278,6 +289,7 @@
         $grand_total_eff += $line_rep[0]['efficiency'];
         $grand_total_dhu += $dhu;
         $grand_produce_min += $total_produce_min;
+        $grand_work_min += $total_work_min;
     }
 
     $grand_average_eff = round($grand_total_eff/$count_line, 2);
@@ -286,32 +298,33 @@
 
     </tbody>
     <tfoot>
-    <tr>
-        <th align="center" style="font-size: 20px; font-weight: 900;">Total</th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_target?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($grand_total_line_target_per_hour);?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_line_mp;?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_eff;?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_dhu;?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo '';?></th>
-        <?php
-        foreach ($hours as $h_2){
-            $hour_summary = $this->method_call->getHourlySummaryReport($h_2['hour']);
-
-            ?>
-            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $hour_summary[0]['total_hour_qty'];?></th>
+        <tr>
+            <th align="center" style="font-size: 20px; font-weight: 900;">Total</th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_target?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($grand_total_line_target_per_hour);?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_line_mp;?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_eff;?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_average_dhu;?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo '';?></th>
             <?php
+            foreach ($hours as $h_2){
+                $hour_summary = $this->method_call->getHourlySummaryReport($h_2['hour']);
 
-        }
-        ?>
+                ?>
+                <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $hour_summary[0]['total_hour_qty'];?></th>
+                <?php
 
-        <th align="center" title="<?php echo $working_hour;?>"><?php echo round($grand_total_output/$working_hour, 2);?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;" title="Manual Adjustment"><?php echo $grand_total_manual_output?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_output?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_output - $grand_total_target;?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_produce_min?></th>
-        <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($grand_produce_min/$grand_total_output, 2);?></th>
-    </tr>
+            }
+            ?>
+
+            <th align="center" title="<?php echo $working_hour;?>"><?php echo round($grand_total_output/$working_hour, 2);?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;" title="Manual Adjustment"><?php echo $grand_total_manual_output?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_output?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_total_output - $grand_total_target;?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_produce_min?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($grand_produce_min/$grand_total_output, 2);?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $grand_work_min?></th>
+        </tr>
     <?php
 
     foreach ($floors as $floor){
@@ -323,6 +336,8 @@
 
         $floor_total_dhu = 0;
         $floor_average_dhu = 0;
+        $floor_total_no_of_defect = 0;
+        $floor_total_inspected_qty = 0;
 
         $floor_total_line_mp = 0;
 
@@ -339,6 +354,8 @@
             if($fe['efficiency'] > 0){
                 $floor_total_efficiency += $fe['efficiency'];
                 $floor_total_dhu += $fe['dhu'];
+                $floor_total_no_of_defect += $fe['total_no_of_defect'];
+                $floor_total_inspected_qty += $fe['total_inspected_qty'];
 
                 $count_lines++;
             }
@@ -365,7 +382,7 @@
         }
 
         $floor_average_efficiency = round($floor_total_efficiency/$count_lines, 2);
-        $floor_average_dhu = round($floor_total_dhu/$count_lines, 2);
+        $floor_average_dhu = round(($floor_total_no_of_defect/$floor_total_inspected_qty)*100, 2);
 //                        $floor_line_target_per_hour = $floor_total_target / 10;
         ?>
         <tr>
@@ -374,7 +391,7 @@
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($floor_line_target_per_hour);?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_total_line_mp?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_average_efficiency?></th>
-            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_average_dhu;?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;" title="<?php echo 'Defects: '.$floor_total_no_of_defect.' Inspected: '.$floor_total_inspected_qty?>"><?php echo $floor_average_dhu;?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo ''?></th>
             <?php
 
@@ -383,6 +400,7 @@
             foreach ($hours as $h_2){
                 $floor_total_output = 0;
                 $floor_total_produce_min = 0;
+                $floor_total_work_min = 0;
 
                 $floor_hour_summary = $this->method_call->getHourlyFloorSummaryReport($h_2['hour'], $floor_id);
 
@@ -390,9 +408,9 @@
 //                    $floor_total_output += $fhs['line_qty'];
 //                }
 
-                $floor_total_output = $floor_hour_summary[0]['line_qty'] + $floor_hour_summary[0]['line_manual_qty'];
+                $floor_total_output = $floor_hour_summary[0]['line_qty'];
 
-                $floor_grand_total_output += $floor_total_output;
+                $floor_grand_total_output += ($floor_hour_summary[0]['line_qty'] + $floor_hour_summary[0]['line_manual_qty']);
                 $floor_grand_total_manual_output += $floor_hour_summary[0]['line_manual_qty'];
 
                 $floor_produce_minute_1 = ($floor_hour_summary[0]['floor_produce_minute_1'] != '' ? $floor_hour_summary[0]['floor_produce_minute_1'] : 0);
@@ -401,6 +419,13 @@
                 $floor_produce_minute_4 = ($floor_hour_summary[0]['floor_produce_minute_4'] != '' ? $floor_hour_summary[0]['floor_produce_minute_4'] : 0);
 
                 $floor_total_produce_min = round($floor_produce_minute_1+$floor_produce_minute_2+$floor_produce_minute_3+$floor_produce_minute_4, 2);
+
+                $floor_work_minute_1 = ($floor_hour_summary[0]['floor_work_minute_1'] != '' ? $floor_hour_summary[0]['floor_work_minute_1'] : 0);
+                $floor_work_minute_2 = ($floor_hour_summary[0]['floor_work_minute_2'] != '' ? $floor_hour_summary[0]['floor_work_minute_2'] : 0);
+                $floor_work_minute_3 = ($floor_hour_summary[0]['floor_work_minute_3'] != '' ? $floor_hour_summary[0]['floor_work_minute_3'] : 0);
+                $floor_work_minute_4 = ($floor_hour_summary[0]['floor_work_minute_4'] != '' ? $floor_hour_summary[0]['floor_work_minute_4'] : 0);
+
+                $floor_total_work_min = round($floor_work_minute_1+$floor_work_minute_2+$floor_work_minute_3+$floor_work_minute_4, 2);
                 ?>
                 <th class="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_total_output;?></th>
                 <?php
@@ -413,6 +438,7 @@
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_grand_total_output - $floor_total_target;?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_total_produce_min;?></th>
             <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo round($floor_total_produce_min/$floor_grand_total_output, 2);?></th>
+            <th align="center" style="font-size: 20px; font-weight: 900;"><?php echo $floor_total_work_min;?></th>
         </tr>
     <?php } ?>
     </tfoot>

@@ -108,7 +108,9 @@ class Dashboard extends CI_Controller {
 //            if(($today <= $v['ex_factory_date']) || ($till_date <= $v['ex_factory_date']) || (($v['total_cut_qty'] - $total_finishing_wh_qa) > 0)){
 //            if((($v['total_cut_qty'] - $total_finishing_wh_qa) > 0)){
 
-            if($v['status'] != 'CLOSE') {
+            $total_po_item_balance = $v['total_cut_qty'] - $total_finishing_wh_qa;
+
+            if($v['status'] != 'CLOSE' && $total_po_item_balance > 0) {
                 $ship_date = $v['ex_factory_date'];
                 $approved_ex_factory_date = $v['approved_ex_factory_date'];
 
@@ -140,8 +142,6 @@ class Dashboard extends CI_Controller {
                 $end_balance_qty = $v['total_cut_qty'] - $v['count_end_line_qc_pass'];
                 $pack_balance_qty = $v['total_order_qty'] - $v['count_packing_pass'];
                 $carton_balance_qty = $v['total_order_qty'] - $v['count_carton_pass'];
-
-                $total_po_item_balance = $v['total_cut_qty'] - $total_finishing_wh_qa;
 
 
                 $object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $v["purchase_order"]);
@@ -3938,7 +3938,7 @@ class Dashboard extends CI_Controller {
             $min=$datex->format('i');
             $date=$datex->format('Y-m-d');
 
-            $last_hour = ($hour-2).':00:00';
+            $last_hour = ($hour-1).':00:00';
 
             $where = '';
             $select_fields = " date, start_time, end_time, SUM(qty) as total_hour_output_qty ";
@@ -5932,10 +5932,18 @@ class Dashboard extends CI_Controller {
         if($segment_id == 2)
         {
             $work_time = $this->access_model->getSegments($time, $floor_id);
-//            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
-            $min_time_to_sec = $work_time[0]['min_time_to_sec'];
 
-            $data['work_time'] = ($max_time_to_sec - $min_time_to_sec);
+            $segment_start_time = $work_time[0]['start_time'];
+            $last_segment_time = $work_time[0]['end_time'];
+//            $min_time_to_sec = $work_time[0]['min_time_to_sec'];
+
+            $parsed1 = date_parse($segment_start_time);
+            $segment_start_time_seconds = $parsed1['hour'] * 3600 + $parsed1['minute'] * 60 + $parsed1['second'];
+
+            $parsed2 = date_parse($last_segment_time);
+            $last_segment_time_seconds = $parsed2['hour'] * 3600 + $parsed2['minute'] * 60 + $parsed2['second'];
+
+            $data['work_time'] = $last_segment_time_seconds - $segment_start_time_seconds;
 
             $select_fields .= "  id, line_id, target, man_power_2, date, remarks ";
 
@@ -5954,10 +5962,18 @@ class Dashboard extends CI_Controller {
         if($segment_id == 3)
         {
             $work_time = $this->access_model->getSegments($time, $floor_id);
-//            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
-            $min_time_to_sec = $work_time[0]['min_time_to_sec'];
 
-            $data['work_time'] = ($max_time_to_sec - $min_time_to_sec);
+            $segment_start_time = $work_time[0]['start_time'];
+            $last_segment_time = $work_time[0]['end_time'];
+//            $min_time_to_sec = $work_time[0]['min_time_to_sec'];
+
+            $parsed1 = date_parse($segment_start_time);
+            $segment_start_time_seconds = $parsed1['hour'] * 3600 + $parsed1['minute'] * 60 + $parsed1['second'];
+
+            $parsed2 = date_parse($last_segment_time);
+            $last_segment_time_seconds = $parsed2['hour'] * 3600 + $parsed2['minute'] * 60 + $parsed2['second'];
+
+            $data['work_time'] = $last_segment_time_seconds - $segment_start_time_seconds;
 
             $select_fields .= "  id, line_id, target, man_power_3, date, remarks ";
 
@@ -5979,12 +5995,12 @@ class Dashboard extends CI_Controller {
 //            $data['work_time'] = $work_time[0]['working_time_diff_to_sec'];
 
             $work_time = $this->access_model->getSegments($time, $floor_id);
-//            $segment_start_time = $work_time[0]['start_time'];
-            $min_time_to_sec = $work_time[0]['min_time_to_sec'];
+            $segment_start_time = $work_time[0]['start_time'];
+//            $min_time_to_sec = $work_time[0]['min_time_to_sec'];
 
 
-//            $parsed1 = date_parse($segment_start_time);
-//            $segment_start_time_seconds = $parsed1['hour'] * 3600 + $parsed1['minute'] * 60 + $parsed1['second'];
+            $parsed1 = date_parse($segment_start_time);
+            $segment_start_time_seconds = $parsed1['hour'] * 3600 + $parsed1['minute'] * 60 + $parsed1['second'];
 
             $select_fields .= "  id, line_id, target, man_power_4, date, remarks ";
 
@@ -5993,12 +6009,12 @@ class Dashboard extends CI_Controller {
             $line_target = $line_trgt[0]['target'];
             $last_segment_time = $line_trgt[0]['last_segment_time'];
 
-//            $parsed2 = date_parse($last_segment_time);
-//            $last_segment_time_seconds = $parsed2['hour'] * 3600 + $parsed2['minute'] * 60 + $parsed2['second'];
+            $parsed2 = date_parse($last_segment_time);
+            $last_segment_time_seconds = $parsed2['hour'] * 3600 + $parsed2['minute'] * 60 + $parsed2['second'];
 
-//            $data['work_time'] = $last_segment_time_seconds - $segment_start_time_seconds;
+            $data['work_time'] = $last_segment_time_seconds - $segment_start_time_seconds;
 
-            $data['work_time'] = ($max_time_to_sec - $min_time_to_sec);
+//            $data['work_time'] = ($max_time_to_sec - $min_time_to_sec);
 
             $man_power = $line_trgt[0]['man_power_4'];
             $data['man_power'] = $man_power;
@@ -6405,7 +6421,6 @@ class Dashboard extends CI_Controller {
         $data['defect_report'] = $this->dashboard_model->sameDefectFoundForMultipleTimesPiecesReport($where);
 
         echo $this->load->view('reports/same_defect_found_for_multiple_times_pieces_report', $data);
-
     }
 
     public function sameDefectFoundForMultipleTimesPiecesReport(){
@@ -6532,9 +6547,11 @@ class Dashboard extends CI_Controller {
         $this->dashboard_model->lineQualityDefectSave($line_id, $dhu, $time);
     }
 
-    public function lineDhuUpdate($line_id, $dhu){
+    public function lineDhuUpdate($line_id, $dhu, $total_no_of_defect, $total_inspected_qty){
         $data = array(
-            'dhu' => $dhu
+            'dhu' => $dhu,
+            'total_no_of_defect' => $total_no_of_defect,
+            'total_inspected_qty' => $total_inspected_qty
         );
 
         $this->dashboard_model->updateTblNew('tb_today_line_output_qty', 'line_id', $line_id, $data);

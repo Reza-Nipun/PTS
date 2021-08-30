@@ -1719,7 +1719,9 @@ class Dashboard_model extends CI_Model {
     public function getTodayLineProductionSummaryReport($date, $floor_id){
         $sql = "SELECT A.line_id, A.line_name, A.line_code, J.floor_name, K.target, 
                 K.remarks, B.total_line_output, B.total_manual_output, B.efficiency, B.wip, B.dhu,
-                B.work_hour_1, B.work_hour_2, B.work_hour_3, B.work_hour_4
+                B.work_hour_1, B.work_hour_2, B.work_hour_3, B.work_hour_4,
+                B.work_minute_1, B.work_minute_2, B.work_minute_3, B.work_minute_4,
+                B.produce_minute_1, B.produce_minute_2, B.produce_minute_3, B.produce_minute_4
                 
                 FROM 
                 (SELECT id AS line_id, line_name, 
@@ -1728,7 +1730,9 @@ class Dashboard_model extends CI_Model {
                 
                 LEFT JOIN
                 (SELECT line_id, `date`, SUM(qty) as total_line_output, SUM(manual_qty) AS total_manual_output, 
-                efficiency, wip, dhu, work_hour_1, work_hour_2, work_hour_3, work_hour_4
+                efficiency, wip, dhu, work_hour_1, work_hour_2, work_hour_3, work_hour_4,
+                work_minute_1, work_minute_2, work_minute_3, work_minute_4,
+                produce_minute_1, produce_minute_2, produce_minute_3, produce_minute_4
                 FROM `tb_today_line_output_qty` WHERE line_id !=0
                 AND `date`='$date'
                 GROUP BY `date`, line_id) as B

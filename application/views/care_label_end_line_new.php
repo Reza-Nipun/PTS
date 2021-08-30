@@ -285,6 +285,17 @@
 
         setInterval(function() {
             $("#efficiency").load('<?php echo base_url();?>dashboard/getEfficiencyReload/<?php echo $line_id;?>');
+
+            $.ajax({
+                url: "<?php echo base_url();?>access/adjustLineLastHourProduction/", //Change this URL as per your settings
+                type: "POST",
+                data: {line_id: '<?php echo $line_id;?>'},
+                dataType: "html",
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+
         }, 60000);
     });
 

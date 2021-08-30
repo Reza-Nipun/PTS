@@ -40,7 +40,7 @@
 
                     $dhu_res = round(($total_no_of_defect * 100) / $total_inspected_qty, 2);
 
-                    $this->method_call->lineDhuUpdate($line_id, $dhu_res);
+                    $this->method_call->lineDhuUpdate($line_id, $dhu_res, $total_no_of_defect, $total_inspected_qty);
                     ?>
                 </b>
                 <b>DHU(%): </b> <?php echo $dhu_res;?>

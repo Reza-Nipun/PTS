@@ -216,7 +216,8 @@ class Access_model extends CI_Model {
         $sql = "SELECT t1.*, t2.*
                 FROM (SELECT * FROM `tb_line` WHERE status=1) AS t1
                 LEFT JOIN
-                (SELECT line_id, date, efficiency, dhu, (work_hour_1+work_hour_2+work_hour_3+work_hour_4) AS work_hour
+                (SELECT line_id, date, efficiency, dhu, (work_hour_1+work_hour_2+work_hour_3+work_hour_4) AS work_hour,
+                total_no_of_defect, total_inspected_qty
                  FROM `tb_today_line_output_qty`
                  GROUP BY line_id) AS t2
                 ON t1.id=t2.line_id
@@ -332,7 +333,9 @@ class Access_model extends CI_Model {
                 (SELECT line_id, floor_id, date, hour, SUM(qty) AS line_qty, 
                 SUM(manual_qty) AS line_manual_qty, efficiency, 
                 SUM(produce_minute_1) AS floor_produce_minute_1, SUM(produce_minute_2) AS floor_produce_minute_2, 
-                SUM(produce_minute_3) AS floor_produce_minute_3, SUM(produce_minute_4) AS floor_produce_minute_4 
+                SUM(produce_minute_3) AS floor_produce_minute_3, SUM(produce_minute_4) AS floor_produce_minute_4,
+                SUM(work_minute_1) AS floor_work_minute_1, SUM(work_minute_2) AS floor_work_minute_2, 
+                SUM(work_minute_3) AS floor_work_minute_3, SUM(work_minute_4) AS floor_work_minute_4
                  FROM `tb_today_line_output_qty` 
                  GROUP BY floor_id, hour, date) AS t2
                 ON t1.id=t2.floor_id
@@ -2271,8 +2274,10 @@ class Access_model extends CI_Model {
 
     public function getLineDHUSummary($where){
         $sql = "SELECT line_id, dhu, SUM(qty) as total_output_qty, brand,
+                work_minute_1, work_minute_2, work_minute_3, work_minute_4,
                 work_hour_1, work_hour_2, work_hour_3, work_hour_4,
-                produce_minute_1, produce_minute_2, produce_minute_3, produce_minute_4
+                produce_minute_1, produce_minute_2, produce_minute_3, produce_minute_4,
+                total_no_of_defect, total_inspected_qty
                 FROM `tb_today_line_output_qty` 
                 WHERE 1 $where";
 

@@ -74,6 +74,8 @@ $grand_sum_eff = 0;
 $grand_average_eff = 0;
 $grand_achievement_rate = 0;
 $grand_wip = 0;
+$grand_work_min = 0;
+$grand_produce_min = 0;
 
 foreach ($floors as $v_f){
 
@@ -106,10 +108,6 @@ foreach ($floors as $v_f){
     $count_lines=0;
 
     $line_prod = $this->method_call->getTodayLineProductionSummaryReport($search_date, $floor_id);
-//    echo '<pre>';
-//    print_r($line_prod);
-//    echo '</pre>';
-//    die();
 
     foreach ($line_prod as $v){
 
@@ -124,6 +122,12 @@ foreach ($floors as $v_f){
         $total_line_target += $line_target;
         $total_line_output += $line_output;
         $total_wip += $wip;
+
+        $work_min = $v['work_minute_1']+$v['work_minute_2']+$v['work_minute_3']+$v['work_minute_4'];
+        $produce_minute = $v['produce_minute_1']+$v['produce_minute_2']+$v['produce_minute_3']+$v['produce_minute_4'];
+
+        $grand_work_min += $work_min;
+        $grand_produce_min += $produce_minute;
         ?>
         <tr>
             <td class="center">
@@ -138,7 +142,7 @@ foreach ($floors as $v_f){
             <td class="center">
                 <?php
 
-                echo $line_efficiency = ($v['efficiency'] != '' ? $v['efficiency'] : "0.00");
+                echo $line_efficiency = ($v['efficiency'] != '' ? $v['efficiency'] : "0.00").' '.$work_min;
 
                 $total_sum_efficiency += $line_efficiency;
 
@@ -234,7 +238,7 @@ foreach ($floors as $v_f){
             <td class="center">
                 <h5>
                     <?php
-                    $grand_average_eff = ($grand_sum_eff/$count_floor);
+                    $grand_average_eff = ($grand_produce_min/$grand_work_min) * 100;
                     echo round($grand_average_eff, 2);
                     ?>
                 </h5>
