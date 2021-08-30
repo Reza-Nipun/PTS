@@ -4,6 +4,7 @@
         <th class="hidden-phone center"><input type="checkbox" id="checkAll"/></th>
         <th class="hidden-phone center">Piece No</th>
         <th class="hidden-phone center">Size</th>
+        <th class="hidden-phone center">Last Scan</th>
         <th class="hidden-phone center">SO</th>
         <th class="hidden-phone center">Type</th>
         <th class="hidden-phone center">Brand</th>
@@ -14,7 +15,7 @@
         <th class="hidden-phone center">Quality</th>
         <th class="hidden-phone center">Color</th>
         <th class="hidden-phone center">ExFac</th>
-        <th class="hidden-phone center">Package Ready?</th>
+        <th class="hidden-phone center">Cutting Package Ready?</th>
         <th class="hidden-phone center">Sent to Sew</th>
         <th class="hidden-phone center">Line</th>
         <th class="hidden-phone center">Line Input</th>
@@ -36,6 +37,50 @@
             </td>
             <td class="center"><?php echo $p['pc_tracking_no'];?></td>
             <td class="center"><?php echo $p['size'];?></td>
+            <td class="center">
+                <?php
+
+                $last_scanning_point = "";
+
+                if($p['warehouse_qa_type'] == 1){
+                    $last_scanning_point = "Buyer Warehouse";
+                } elseif($p['warehouse_qa_type'] == 2){
+                    $last_scanning_point = "Factory Warehouse";
+                } elseif($p['warehouse_qa_type'] == 3){
+                    $last_scanning_point = "Trash";
+                } elseif($p['warehouse_qa_type'] == 4){
+                    $last_scanning_point = "Production Sample Warehouse";
+                } elseif($p['warehouse_qa_type'] == 5){
+                    $last_scanning_point = "Other Purpose";
+                } elseif($p['warehouse_qa_type'] == 6){
+                    $last_scanning_point = "Lost";
+                } elseif($p['warehouse_qa_type'] == 7){
+                    $last_scanning_point = "Size Set";
+                } elseif($p['carton_status'] == 1){
+                    $last_scanning_point = "Carton";
+                } elseif($p['packing_status'] == 1){
+                    $last_scanning_point = "Packing";
+                } elseif($p['washing_status'] == 1){
+                    $last_scanning_point = "Wash Return";
+                } elseif($p['is_going_wash'] == 1){
+                    $last_scanning_point = "Wash Send";
+                } elseif(($p['access_points'] == 4) && ($p['access_points_status'] == 4)){
+                    $last_scanning_point = "End Line";
+                } elseif(($p['access_points'] == 4) && ($p['access_points_status'] == 2)){
+                    $last_scanning_point = "Mid Line & End-Line Defect";
+                } elseif($p['access_points'] == 3){
+                    $last_scanning_point = "Mid Line";
+                } elseif($p['access_points'] == 2){
+                    $last_scanning_point = "Input Line";
+                } elseif($p['sent_to_production'] == 1){
+                    $last_scanning_point = "Cutting";
+                } elseif($p['sent_to_production'] == 0){
+                    $last_scanning_point = "Cutting not Sent";
+                }
+
+                echo $last_scanning_point;
+                ?>
+            </td>
             <td class="center"><?php echo $p['so_no'];?></td>
             <td class="center">
                 <?php

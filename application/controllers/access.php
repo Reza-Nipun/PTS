@@ -6130,11 +6130,16 @@ class Access extends CI_Controller {
 
     public function filterPieces(){
         $so_no = $this->input->post('so_no');
+        $last_scan_status = $this->input->post('last_scan');
         $size = $this->input->post('size');
 
         $where = '';
         if($so_no != ''){
             $where .= " AND so_no='$so_no'";
+        }
+
+        if($last_scan_status != ''){
+            $where .= " AND access_points=$last_scan_status";
         }
 
         if($size != ''){
@@ -6155,48 +6160,96 @@ class Access extends CI_Controller {
         $scanning_point = $this->input->post('scanning_point');
         $pc_nos = $this->input->post('pc_nos');
 
-        foreach($pc_nos as $pc_no){
-            $pc_info = $this->access_model->selectTableDataRowQuery('*', 'tb_care_labels', " AND pc_tracking_no='$pc_no'");
+        if($scanning_point == 8){
+            $pc_nos_string = "'" . implode ( "', '", $pc_nos ) . "'";
 
-            $line_id = $pc_info[0]['line_id'];
-            $access_points = $pc_info[0]['access_points'];
-            $access_points_status = $pc_info[0]['access_points_status'];
+            $bundle_info = $this->access_model->selectTableDataRowQuery('po_no, bundle_tracking_no', 'tb_care_labels', " AND pc_tracking_no IN ($pc_nos_string)");
+            $po_no = $bundle_info[0]['po_no'];
 
-            if($line_id > 0){
-                if(($scanning_point == 3) && ($access_points >= 2) && ($access_points < 4)){
-                    $data = array(
-                        'access_points' => 3,
-                        'access_points_status' => 1,
-                        'is_going_wash' => 0,
-                        'washing_status' => 0,
-                        'packing_status' => 0,
-                        'carton_status' => 0,
-                        'warehouse_qa_type' => 0,
-                        'manually_closed' => 0,
-                        'is_manually_adjusted' => 0,
-                        'manual_adjustment_by' => '',
-                    );
+            $part_info = $this->access_model->selectTableDataRowQuery('part_code', 'tb_po_part_detail', " AND po_no='$po_no'");
 
-                    $this->access_model->updateTblNew('tb_care_labels', 'pc_tracking_no', $pc_no, $data);
-                }
+            $parts_array = [];
+            foreach($part_info AS $p){
+                array_push($parts_array, $p['part_code']);
+            }
 
-                if($scanning_point == 4){
-                    $data = array(
-                        'access_points' => 4,
-                        'access_points_status' => 4,
-                        'is_going_wash' => 0,
-                        'washing_status' => 0,
-                        'packing_status' => 0,
-                        'carton_status' => 0,
-                        'warehouse_qa_type' => 0,
-                        'manually_closed' => 0,
-                        'is_manually_adjusted' => 0,
-                        'manual_adjustment_by' => '',
-                    );
+            $collar_outer = array_search('collar_outer', $parts_array);
+            $cuff_outer = array_search('cuff_outer', $parts_array);
 
-                    $this->access_model->updateTblNew('tb_care_labels', 'pc_tracking_no', $pc_no, $data);
+            $bundle_nos_array = [];
+            foreach($bundle_info AS $b){
+                array_push($bundle_nos_array, $b['bundle_tracking_no']);
+            }
+
+            $bundle_nos_string = "'" . implode ( "', '", $bundle_nos_array ) . "'";
+
+            $where = "";
+            $set_fields = "";
+
+            $set_fields .= " SET is_bundle_collar_cuff_scanned_line=1";
+
+            if($collar_outer > -1){
+                $set_fields .= ", is_bundle_collar_scanned_line=1";
+
+            }else{
+                $set_fields .= ", is_bundle_collar_scanned_line=0";
+            }
+
+            if($cuff_outer > -1){
+                $set_fields .= ", is_bundle_cuff_scanned_line=1";
+            }else{
+                $set_fields .= ", is_bundle_cuff_scanned_line=0";
+            }
+
+            $this->access_model->updateTblFields("tb_cut_summary", $set_fields, " AND bundle_tracking_no IN ($bundle_nos_string)");
+
+        }else{
+
+            foreach($pc_nos as $pc_no){
+                $pc_info = $this->access_model->selectTableDataRowQuery('*', 'tb_care_labels', " AND pc_tracking_no='$pc_no'");
+
+                $line_id = $pc_info[0]['line_id'];
+                $access_points = $pc_info[0]['access_points'];
+                $access_points_status = $pc_info[0]['access_points_status'];
+
+                if($line_id > 0){
+                    if(($scanning_point == 3) && ($access_points >= 2) && ($access_points < 4)){
+                        $data = array(
+                            'access_points' => 3,
+                            'access_points_status' => 1,
+                            'is_going_wash' => 0,
+                            'washing_status' => 0,
+                            'packing_status' => 0,
+                            'carton_status' => 0,
+                            'warehouse_qa_type' => 0,
+                            'manually_closed' => 0,
+                            'is_manually_adjusted' => 0,
+                            'manual_adjustment_by' => '',
+                        );
+
+                        $this->access_model->updateTblNew('tb_care_labels', 'pc_tracking_no', $pc_no, $data);
+                    }
+
+                    if($scanning_point == 4){
+                        $data = array(
+                            'access_points' => 4,
+                            'access_points_status' => 4,
+                            'is_going_wash' => 0,
+                            'washing_status' => 0,
+                            'packing_status' => 0,
+                            'carton_status' => 0,
+                            'warehouse_qa_type' => 0,
+                            'manually_closed' => 0,
+                            'is_manually_adjusted' => 0,
+                            'manual_adjustment_by' => '',
+                        );
+
+                        $this->access_model->updateTblNew('tb_care_labels', 'pc_tracking_no', $pc_no, $data);
+                    }
+
                 }
             }
+
         }
 
         echo 'done';

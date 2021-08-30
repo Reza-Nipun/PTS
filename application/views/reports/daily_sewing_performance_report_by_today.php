@@ -142,7 +142,7 @@ foreach ($floors as $v_f){
             <td class="center">
                 <?php
 
-                echo $line_efficiency = ($v['efficiency'] != '' ? $v['efficiency'] : "0.00").' '.$work_min;
+                echo $line_efficiency = ($v['efficiency'] != '' ? $v['efficiency'] : "0.00");
 
                 $total_sum_efficiency += $line_efficiency;
 
